@@ -22,33 +22,6 @@ namespace VisBox {
 		
 		private bool mouseDown = false;
 		
-		/*
-		private int _minimum = 0;
-		public int Minimum {
-			get { return _minimum; }
-			set { _minimum = value; }
-		}
-		
-		
-		private int _maximum = 100;
-		public int Maximum {
-			get { return _maximum; }
-			set { _maximum = value; }
-		}
-		
-		
-		
-		private int _value = 0;
-		public int Value {
-			get { return _value; }
-			set {
-				if( value >= _minimum && value <= _maximum ) _value = value;
-				this.Invalidate();
-			}
-		}
-		*/
-		
-		
 		private int _parts = 10;
 		public int Parts {
 			get { return _parts; }
@@ -56,10 +29,10 @@ namespace VisBox {
 		}
 		
 		
-		private bool _fix2nerby = false;
-		public bool Fix2Nerby {
-			get { return _fix2nerby; }
-			set { _fix2nerby = value; }
+		private bool _fix2Nearby = false;
+		public bool Fix2Nearby {
+			get { return _fix2Nearby; }
+			set { _fix2Nearby = value; }
 		}
 		
 		
@@ -217,7 +190,7 @@ namespace VisBox {
 				
 				val = (float)( dmv * deltaV ) / wid;
 				
-				if( _fix2nerby ) {
+				if( _fix2Nearby ) {
 					val = dmv/dv;
 					dmv = (int)( ( dmv + dv/2 - val )/dv)*dv;
 					val = dmv/dv;
@@ -340,7 +313,7 @@ void ZipBarMouseMove(object sender, MouseEventArgs e) {
 				
 				val = ( dmv * deltaV + _parts ) / wid + _minimum;
 				
-				if( _fix2nerby ) {
+				if( _fix2Nearby ) {
 					val = dmv/dv;
 					dmv = ( ( dmv + dv/2 - val )/dv)*dv;
 					val = dmv/dv;

@@ -23,20 +23,6 @@ namespace VisBox {
 		
 		
 		protected Point _center = new Point( 0, 0 );
-
-//		protected Color _colorFillOn = Color.Red;
-//		[DefaultValue(typeof(Color), "Red")]
-//		public Color ColorFillOn {
-//			get { return _colorFillOn; }
-//			set { _colorFillOn = value; Invalidate(); }
-//		}
-//		
-//		protected Color _colorOff = Color.FromArgb( 64, 64, 64 );
-//		[DefaultValue(typeof(Color), "64, 64, 64")]
-//		public override Color ColorOff {
-//			get { return _colorOff; }
-//			set { _colorOff = value; Invalidate(); }
-//		}
 		
 		
 		protected float _scale = 1.0f;

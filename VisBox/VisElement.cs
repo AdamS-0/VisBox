@@ -29,15 +29,15 @@ namespace VisBox {
 		
 		public event EventHandler ValueChanged;
 		protected virtual void OnValueChanged( EventArgs e ){
-			EventHandler handler = ValueChanged;
-			if( handler != null ) handler( this, e );
+			if( ValueChanged == null ) { return; }
+			ValueChanged( this, e );
 		}
 		
 		
 		public event EventHandler StateChanged;
 		protected virtual void OnStateChanged( EventArgs e ){
-			EventHandler handler = StateChanged;
-			if( handler != null ) handler( this, e );
+		    if( StateChanged == null ) { return; }
+		    StateChanged( this, e );
 		}
 		
 		

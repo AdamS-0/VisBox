@@ -31,42 +31,6 @@ namespace VisBox {
 			set { _increment = value; }
 		}
 		
-		
-		/*
-		private float _value = 0.0f;
-		[DefaultValue(typeof(float), "0")]
-		public float Value {
-			get { return _value; }
-			set {
-				_value = value % (_maximum - _minimum);
-				if( _value < _minimum ) _value += (_maximum - _minimum);
-				else if( _value > _maximum ) _value -= (_maximum - _minimum);
-				this.Invalidate();
-			}
-		}
-		
-		
-		private float _minimum = 0;
-		[DefaultValue(typeof(float), "0")]
-		public float Minimum {
-			get { return _minimum; }
-			set {
-				_minimum = value;
-				this.Invalidate();
-			}
-		}
-		
-		private float _maximum = 100;
-		[DefaultValue(typeof(float), "100")]
-		public float Maximum {
-			get { return _maximum; }
-			set {
-				_maximum = value;
-				this.Invalidate();
-			}
-		}
-		*/
-		
 		private Color _colorPointer = Color.Blue;
 		[DefaultValue(typeof(Color), "Blue")]
 		public Color ColorPointer{

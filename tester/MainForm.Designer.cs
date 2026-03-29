@@ -195,7 +195,7 @@ namespace tester
 		    this.zipBar1.BorderWidth = 2F;
 		    this.zipBar1.ColorHandle = System.Drawing.Color.Gainsboro;
 		    this.zipBar1.ColorLine = System.Drawing.Color.Black;
-		    this.zipBar1.Fix2Nerby = false;
+		    this.zipBar1.Fix2Nearby = false;
 		    this.zipBar1.FlatStyle = VisBox.VisElement.VisFlatStyle.Popup;
 		    this.zipBar1.Location = new System.Drawing.Point(3, 198);
 		    this.zipBar1.Name = "zipBar1";
@@ -209,7 +209,7 @@ namespace tester
 		    // 
 		    this.pushButton1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
 		    this.pushButton1.ColorBorder = System.Drawing.SystemColors.Control;
-		    this.pushButton1.ColorTop = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+		    this.pushButton1.ColorButton = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
 		    this.pushButton1.FlatStyle = VisBox.VisElement.VisFlatStyle.Popup;
 		    this.pushButton1.LayoutShape = VisBox.VisElement.Shape.Ellipse;
 		    this.pushButton1.Location = new System.Drawing.Point(12, 55);
@@ -218,11 +218,12 @@ namespace tester
 		    this.pushButton1.Size = new System.Drawing.Size(32, 32);
 		    this.pushButton1.TabIndex = 6;
 		    this.pushButton1.Text = null;
+		    this.pushButton1.WithLight = true;
 		    this.pushButton1.StateChanged += new System.EventHandler(this.PushButton1StateChanged);
 		    // 
 		    // pushButton2
 		    // 
-		    this.pushButton2.ColorTop = System.Drawing.SystemColors.Control;
+		    this.pushButton2.ColorButton = System.Drawing.SystemColors.Control;
 		    this.pushButton2.FlatStyle = VisBox.VisElement.VisFlatStyle.Popup;
 		    this.pushButton2.Location = new System.Drawing.Point(47, 55);
 		    this.pushButton2.Name = "pushButton2";
@@ -236,7 +237,7 @@ namespace tester
 		    // 
 		    this.pushButton3.BorderWidth = 4F;
 		    this.pushButton3.ColorBorder = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-		    this.pushButton3.ColorTop = System.Drawing.SystemColors.Control;
+		    this.pushButton3.ColorButton = System.Drawing.SystemColors.Control;
 		    this.pushButton3.Location = new System.Drawing.Point(85, 55);
 		    this.pushButton3.Name = "pushButton3";
 		    this.pushButton3.PushButtonManager = this.pushButtonManager2;
@@ -247,7 +248,7 @@ namespace tester
 		    // 
 		    // pushButton6
 		    // 
-		    this.pushButton6.ColorTop = System.Drawing.SystemColors.Control;
+		    this.pushButton6.ColorButton = System.Drawing.SystemColors.Control;
 		    this.pushButton6.FlatStyle = VisBox.VisElement.VisFlatStyle.Collapsed;
 		    this.pushButton6.Location = new System.Drawing.Point(85, 93);
 		    this.pushButton6.Name = "pushButton6";
@@ -258,19 +259,22 @@ namespace tester
 		    // 
 		    // pushButton7
 		    // 
-		    this.pushButton7.ColorTop = System.Drawing.SystemColors.Control;
+		    this.pushButton7.ColorButton = System.Drawing.SystemColors.Control;
+		    this.pushButton7.ColorOff = System.Drawing.Color.Green;
+		    this.pushButton7.ColorOn = System.Drawing.Color.Lime;
 		    this.pushButton7.FlatStyle = VisBox.VisElement.VisFlatStyle.Popup;
 		    this.pushButton7.Location = new System.Drawing.Point(12, 93);
 		    this.pushButton7.Name = "pushButton7";
 		    this.pushButton7.Size = new System.Drawing.Size(67, 32);
 		    this.pushButton7.TabIndex = 10;
 		    this.pushButton7.Text = null;
+		    this.pushButton7.WithLight = true;
 		    // 
 		    // pushButton8
 		    // 
 		    this.pushButton8.BackColor = System.Drawing.SystemColors.Control;
 		    this.pushButton8.ColorBorder = System.Drawing.SystemColors.Control;
-		    this.pushButton8.ColorTop = System.Drawing.SystemColors.Control;
+		    this.pushButton8.ColorButton = System.Drawing.SystemColors.Control;
 		    this.pushButton8.FlatStyle = VisBox.VisElement.VisFlatStyle.Popup;
 		    this.pushButton8.LayoutShape = VisBox.VisElement.Shape.Ellipse;
 		    this.pushButton8.Location = new System.Drawing.Point(12, 131);
@@ -283,7 +287,7 @@ namespace tester
 		    // 
 		    this.pushButton9.BackColor = System.Drawing.SystemColors.Control;
 		    this.pushButton9.ColorBorder = System.Drawing.SystemColors.Control;
-		    this.pushButton9.ColorTop = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+		    this.pushButton9.ColorButton = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
 		    this.pushButton9.LayoutShape = VisBox.VisElement.Shape.Ellipse;
 		    this.pushButton9.Location = new System.Drawing.Point(85, 131);
 		    this.pushButton9.Name = "pushButton9";
@@ -306,7 +310,7 @@ namespace tester
 		    this.zipBar2.BorderWidth = 2F;
 		    this.zipBar2.ColorHandle = System.Drawing.SystemColors.Control;
 		    this.zipBar2.ColorLine = System.Drawing.Color.Black;
-		    this.zipBar2.Fix2Nerby = false;
+		    this.zipBar2.Fix2Nearby = false;
 		    this.zipBar2.LayoutDirection = VisBox.VisElement.Direction.Vertical;
 		    this.zipBar2.Location = new System.Drawing.Point(161, 3);
 		    this.zipBar2.Name = "zipBar2";
@@ -347,7 +351,7 @@ namespace tester
 		    this.zipBar3.BorderWidth = 2F;
 		    this.zipBar3.ColorHandle = System.Drawing.Color.Gainsboro;
 		    this.zipBar3.ColorLine = System.Drawing.Color.Black;
-		    this.zipBar3.Fix2Nerby = true;
+		    this.zipBar3.Fix2Nearby = true;
 		    this.zipBar3.FlatStyle = VisBox.VisElement.VisFlatStyle.Popup;
 		    this.zipBar3.Location = new System.Drawing.Point(204, 198);
 		    this.zipBar3.Name = "zipBar3";
@@ -362,7 +366,7 @@ namespace tester
 		    this.zipBar4.BorderWidth = 2F;
 		    this.zipBar4.ColorHandle = System.Drawing.Color.Gainsboro;
 		    this.zipBar4.ColorLine = System.Drawing.Color.Black;
-		    this.zipBar4.Fix2Nerby = true;
+		    this.zipBar4.Fix2Nearby = true;
 		    this.zipBar4.FlatStyle = VisBox.VisElement.VisFlatStyle.Popup;
 		    this.zipBar4.Location = new System.Drawing.Point(204, 169);
 		    this.zipBar4.Name = "zipBar4";
@@ -377,7 +381,7 @@ namespace tester
 		    this.zipBar5.BorderWidth = 2F;
 		    this.zipBar5.ColorHandle = System.Drawing.Color.Gainsboro;
 		    this.zipBar5.ColorLine = System.Drawing.Color.Black;
-		    this.zipBar5.Fix2Nerby = true;
+		    this.zipBar5.Fix2Nearby = true;
 		    this.zipBar5.FlatStyle = VisBox.VisElement.VisFlatStyle.Popup;
 		    this.zipBar5.Location = new System.Drawing.Point(204, 140);
 		    this.zipBar5.Name = "zipBar5";
@@ -392,7 +396,7 @@ namespace tester
 		    this.zipBar6.BorderWidth = 2F;
 		    this.zipBar6.ColorHandle = System.Drawing.Color.Gainsboro;
 		    this.zipBar6.ColorLine = System.Drawing.Color.Black;
-		    this.zipBar6.Fix2Nerby = true;
+		    this.zipBar6.Fix2Nearby = true;
 		    this.zipBar6.FlatStyle = VisBox.VisElement.VisFlatStyle.Popup;
 		    this.zipBar6.Location = new System.Drawing.Point(204, 111);
 		    this.zipBar6.Name = "zipBar6";
@@ -407,7 +411,7 @@ namespace tester
 		    this.zipBar10.BorderWidth = 2F;
 		    this.zipBar10.ColorHandle = System.Drawing.Color.Gainsboro;
 		    this.zipBar10.ColorLine = System.Drawing.Color.Black;
-		    this.zipBar10.Fix2Nerby = true;
+		    this.zipBar10.Fix2Nearby = true;
 		    this.zipBar10.FlatStyle = VisBox.VisElement.VisFlatStyle.Popup;
 		    this.zipBar10.Location = new System.Drawing.Point(204, 3);
 		    this.zipBar10.Name = "zipBar10";

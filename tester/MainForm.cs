@@ -27,8 +27,8 @@ namespace tester
         
 		int nSampl = 200;
 		
-		VisBox.Series ser1 = new VisBox.Series(ref dataX, ref dataY, new VisBox.Marker(Color.Blue, ' '), new Pen(Color.Blue), "Data1");
-		VisBox.Series ser2 = new VisBox.Series(ref dataX, ref dataY2, new VisBox.Marker(Color.Blue, ' '), new Pen(Color.Yellow), "Data2");
+		VisBox.Series ser1 = new VisBox.Series(ref dataX, ref dataY, new VisBox.Marker(Color.Yellow, ' '), new Pen(Color.Blue), "Data1");
+		VisBox.Series ser2 = new VisBox.Series(ref dataX, ref dataY2, new VisBox.Marker(Color.Purple, ' '), new Pen(Color.Yellow), "Data2");
         
 		public MainForm() {
 			InitializeComponent();
