@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <ProjectGuid>{25930442-BA15-4F7C-9149-43C1A14C1BD2}</ProjectGuid>
+    <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <OutputType>Library</OutputType>
+    <RootNamespace>VisBox</RootNamespace>
+    <AssemblyName>VisBox</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>Full</DebugType>
+    <Optimize>False</Optimize>
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <DebugSymbols>False</DebugSymbols>
+    <DebugType>None</DebugType>
+    <Optimize>True</Optimize>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AnalogMeter.cs" />
+    <Compile Include="AnalogMeter.Designer.cs">
+      <DependentUpon>AnalogMeter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Bar.cs" />
+    <Compile Include="Bar.Designer.cs">
+      <DependentUpon>Bar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ControlKnob.cs" />
+    <Compile Include="ControlKnob.Designer.cs">
+      <DependentUpon>ControlKnob.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lamp.cs" />
+    <Compile Include="Lamp.Designer.cs">
+      <DependentUpon>Lamp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LCD5x8Char.cs" />
+    <Compile Include="LCDDisplay.cs" />
+    <Compile Include="LCDDisplay.Designer.cs">
+      <DependentUpon>LCDDisplay.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Plot.cs" />
+    <Compile Include="Plot.Designer.cs">
+      <DependentUpon>Plot.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PushButton.cs" />
+    <Compile Include="PushButton.Designer.cs">
+      <DependentUpon>PushButton.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DisplaySegment.cs" />
+    <Compile Include="DisplaySegment.Designer.cs">
+      <DependentUpon>DisplaySegment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Display14Segment.cs" />
+    <Compile Include="Display14Segment.Designer.cs">
+      <DependentUpon>Display14Segment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DisplaySegmentManager.cs" />
+    <Compile Include="PushButtonManager.cs" />
+    <Compile Include="Switch.cs" />
+    <Compile Include="Switch.Designer.cs">
+      <DependentUpon>Switch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VisElement.cs" />
+    <Compile Include="VisElement.Designer.cs">
+      <DependentUpon>VisElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ZipBar.cs" />
+    <Compile Include="ZipBar.Designer.cs">
+      <DependentUpon>ZipBar.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AnalogMeter.resx">
+      <DependentUpon>AnalogMeter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Bar.resx">
+      <DependentUpon>Bar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ControlKnob.resx">
+      <DependentUpon>ControlKnob.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lamp.resx">
+      <DependentUpon>Lamp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LCDDisplay.resx">
+      <DependentUpon>LCDDisplay.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Plot.resx">
+      <DependentUpon>Plot.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PushButton.resx">
+      <DependentUpon>PushButton.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DisplaySegment.resx">
+      <DependentUpon>DisplaySegment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Display14Segment.resx">
+      <DependentUpon>Display14Segment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Switch.resx">
+      <DependentUpon>Switch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VisElement.resx">
+      <DependentUpon>VisElement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ZipBar.resx">
+      <DependentUpon>ZipBar.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
