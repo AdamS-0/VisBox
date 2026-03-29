@@ -26,6 +26,7 @@ namespace VisBox {
 		
 		private float _increment = 0.05f;
 		[DefaultValue(typeof(float), "0.05")]
+		[Description("Smallest value that will be added when MouseWheel detected on this Control")]
 		public float Incrementer {
 			get { return _increment; }
 			set { _increment = value; }

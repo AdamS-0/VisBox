@@ -185,7 +185,7 @@ namespace tester
 		
 		void ZipBar10ValueChanged(object sender, EventArgs e) {
 			VisBox.ZipBar ziper = sender as VisBox.ZipBar;
-			label2.Text = "" + ziper.GetScaledValue( ziper.Parts - 1 ) + ";" + ziper.Text;
+			label2.Text = "" + ziper.GetScaledValue( ziper.Parts - 1 ) + ";" + ziper.Value + ";" + ziper.Text;
 		}
 		
 		void ZipBar2ValueChanged(object sender, EventArgs e) {

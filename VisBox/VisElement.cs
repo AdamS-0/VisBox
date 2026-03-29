@@ -116,6 +116,7 @@ namespace VisBox {
 		
 		protected float _value = 0;
 		[DefaultValue(typeof(float), "0")]
+		[Description("Always from 0.0 to 1.0")]
 		public float Value {
 			get { return _value; }
 			set {

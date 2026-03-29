@@ -67,6 +67,7 @@ namespace tester
 		private System.Windows.Forms.TextBox textBox1;
 		private VisBox.Plot plot1;
 		private System.Windows.Forms.TextBox txtBxPlotMarker;
+		private VisBox.ZipBar zipBar7;
 		
 		/// <summary>
 		/// Disposes resources used by the form.
@@ -144,6 +145,7 @@ namespace tester
 		    this.textBox1 = new System.Windows.Forms.TextBox();
 		    this.plot1 = new VisBox.Plot();
 		    this.txtBxPlotMarker = new System.Windows.Forms.TextBox();
+		    this.zipBar7 = new VisBox.ZipBar();
 		    this.SuspendLayout();
 		    // 
 		    // lamp1
@@ -194,13 +196,11 @@ namespace tester
 		    // 
 		    this.zipBar1.BorderWidth = 2F;
 		    this.zipBar1.ColorHandle = System.Drawing.Color.Gainsboro;
-		    this.zipBar1.ColorLine = System.Drawing.Color.Black;
-		    this.zipBar1.Fix2Nearby = false;
 		    this.zipBar1.FlatStyle = VisBox.VisElement.VisFlatStyle.Popup;
-		    this.zipBar1.Location = new System.Drawing.Point(3, 198);
+		    this.zipBar1.Location = new System.Drawing.Point(3, 172);
 		    this.zipBar1.Name = "zipBar1";
 		    this.zipBar1.Parts = 5;
-		    this.zipBar1.Size = new System.Drawing.Size(195, 23);
+		    this.zipBar1.Size = new System.Drawing.Size(207, 23);
 		    this.zipBar1.TabIndex = 5;
 		    this.zipBar1.Text = null;
 		    this.zipBar1.ValueChanged += new System.EventHandler(this.ZipBar1ValueChanged);
@@ -309,13 +309,12 @@ namespace tester
 		    // 
 		    this.zipBar2.BorderWidth = 2F;
 		    this.zipBar2.ColorHandle = System.Drawing.SystemColors.Control;
-		    this.zipBar2.ColorLine = System.Drawing.Color.Black;
-		    this.zipBar2.Fix2Nearby = false;
+		    this.zipBar2.FlatStyle = VisBox.VisElement.VisFlatStyle.Popup;
 		    this.zipBar2.LayoutDirection = VisBox.VisElement.Direction.Vertical;
-		    this.zipBar2.Location = new System.Drawing.Point(161, 3);
+		    this.zipBar2.Location = new System.Drawing.Point(158, 3);
 		    this.zipBar2.Name = "zipBar2";
 		    this.zipBar2.Parts = 11;
-		    this.zipBar2.Size = new System.Drawing.Size(19, 160);
+		    this.zipBar2.Size = new System.Drawing.Size(23, 160);
 		    this.zipBar2.TabIndex = 16;
 		    this.zipBar2.Text = null;
 		    this.zipBar2.ValueChanged += new System.EventHandler(this.ZipBar2ValueChanged);
@@ -350,13 +349,12 @@ namespace tester
 		    // 
 		    this.zipBar3.BorderWidth = 2F;
 		    this.zipBar3.ColorHandle = System.Drawing.Color.Gainsboro;
-		    this.zipBar3.ColorLine = System.Drawing.Color.Black;
 		    this.zipBar3.Fix2Nearby = true;
 		    this.zipBar3.FlatStyle = VisBox.VisElement.VisFlatStyle.Popup;
-		    this.zipBar3.Location = new System.Drawing.Point(204, 198);
+		    this.zipBar3.Location = new System.Drawing.Point(216, 172);
 		    this.zipBar3.Name = "zipBar3";
 		    this.zipBar3.Parts = 2;
-		    this.zipBar3.Size = new System.Drawing.Size(143, 23);
+		    this.zipBar3.Size = new System.Drawing.Size(131, 23);
 		    this.zipBar3.TabIndex = 19;
 		    this.zipBar3.Text = null;
 		    this.zipBar3.ValueChanged += new System.EventHandler(this.ZipBar10ValueChanged);
@@ -365,13 +363,12 @@ namespace tester
 		    // 
 		    this.zipBar4.BorderWidth = 2F;
 		    this.zipBar4.ColorHandle = System.Drawing.Color.Gainsboro;
-		    this.zipBar4.ColorLine = System.Drawing.Color.Black;
 		    this.zipBar4.Fix2Nearby = true;
 		    this.zipBar4.FlatStyle = VisBox.VisElement.VisFlatStyle.Popup;
-		    this.zipBar4.Location = new System.Drawing.Point(204, 169);
+		    this.zipBar4.Location = new System.Drawing.Point(216, 143);
 		    this.zipBar4.Name = "zipBar4";
 		    this.zipBar4.Parts = 3;
-		    this.zipBar4.Size = new System.Drawing.Size(143, 23);
+		    this.zipBar4.Size = new System.Drawing.Size(131, 23);
 		    this.zipBar4.TabIndex = 20;
 		    this.zipBar4.Text = null;
 		    this.zipBar4.ValueChanged += new System.EventHandler(this.ZipBar10ValueChanged);
@@ -380,13 +377,12 @@ namespace tester
 		    // 
 		    this.zipBar5.BorderWidth = 2F;
 		    this.zipBar5.ColorHandle = System.Drawing.Color.Gainsboro;
-		    this.zipBar5.ColorLine = System.Drawing.Color.Black;
 		    this.zipBar5.Fix2Nearby = true;
 		    this.zipBar5.FlatStyle = VisBox.VisElement.VisFlatStyle.Popup;
-		    this.zipBar5.Location = new System.Drawing.Point(204, 140);
+		    this.zipBar5.Location = new System.Drawing.Point(216, 114);
 		    this.zipBar5.Name = "zipBar5";
 		    this.zipBar5.Parts = 4;
-		    this.zipBar5.Size = new System.Drawing.Size(143, 23);
+		    this.zipBar5.Size = new System.Drawing.Size(131, 23);
 		    this.zipBar5.TabIndex = 21;
 		    this.zipBar5.Text = null;
 		    this.zipBar5.ValueChanged += new System.EventHandler(this.ZipBar10ValueChanged);
@@ -395,13 +391,12 @@ namespace tester
 		    // 
 		    this.zipBar6.BorderWidth = 2F;
 		    this.zipBar6.ColorHandle = System.Drawing.Color.Gainsboro;
-		    this.zipBar6.ColorLine = System.Drawing.Color.Black;
 		    this.zipBar6.Fix2Nearby = true;
 		    this.zipBar6.FlatStyle = VisBox.VisElement.VisFlatStyle.Popup;
-		    this.zipBar6.Location = new System.Drawing.Point(204, 111);
+		    this.zipBar6.Location = new System.Drawing.Point(216, 85);
 		    this.zipBar6.Name = "zipBar6";
 		    this.zipBar6.Parts = 5;
-		    this.zipBar6.Size = new System.Drawing.Size(143, 23);
+		    this.zipBar6.Size = new System.Drawing.Size(131, 23);
 		    this.zipBar6.TabIndex = 22;
 		    this.zipBar6.Text = null;
 		    this.zipBar6.ValueChanged += new System.EventHandler(this.ZipBar10ValueChanged);
@@ -410,22 +405,21 @@ namespace tester
 		    // 
 		    this.zipBar10.BorderWidth = 2F;
 		    this.zipBar10.ColorHandle = System.Drawing.Color.Gainsboro;
-		    this.zipBar10.ColorLine = System.Drawing.Color.Black;
 		    this.zipBar10.Fix2Nearby = true;
 		    this.zipBar10.FlatStyle = VisBox.VisElement.VisFlatStyle.Popup;
-		    this.zipBar10.Location = new System.Drawing.Point(204, 3);
+		    this.zipBar10.Location = new System.Drawing.Point(3, 201);
 		    this.zipBar10.Name = "zipBar10";
-		    this.zipBar10.Parts = 9;
-		    this.zipBar10.Size = new System.Drawing.Size(143, 23);
+		    this.zipBar10.Parts = 20;
+		    this.zipBar10.Size = new System.Drawing.Size(344, 23);
 		    this.zipBar10.TabIndex = 26;
 		    this.zipBar10.Text = null;
 		    this.zipBar10.ValueChanged += new System.EventHandler(this.ZipBar10ValueChanged);
 		    // 
 		    // label2
 		    // 
-		    this.label2.Location = new System.Drawing.Point(80, 172);
+		    this.label2.Location = new System.Drawing.Point(216, 59);
 		    this.label2.Name = "label2";
-		    this.label2.Size = new System.Drawing.Size(100, 23);
+		    this.label2.Size = new System.Drawing.Size(60, 23);
 		    this.label2.TabIndex = 27;
 		    this.label2.Text = "label2";
 		    // 
@@ -711,7 +705,7 @@ namespace tester
 		    // 
 		    // controlKnob1
 		    // 
-		    this.controlKnob1.Location = new System.Drawing.Point(204, 32);
+		    this.controlKnob1.Location = new System.Drawing.Point(216, 3);
 		    this.controlKnob1.Name = "controlKnob1";
 		    this.controlKnob1.Size = new System.Drawing.Size(50, 50);
 		    this.controlKnob1.TabIndex = 48;
@@ -724,11 +718,11 @@ namespace tester
 		    this.lcdDisplay1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
 		    this.lcdDisplay1.BlockColorOff = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(159)))), ((int)(((byte)(47)))));
 		    this.lcdDisplay1.BlockColorOn = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(63)))), ((int)(((byte)(48)))));
-		    this.lcdDisplay1.Cols = 24;
+		    this.lcdDisplay1.Cols = 16;
 		    this.lcdDisplay1.Location = new System.Drawing.Point(0, 227);
 		    this.lcdDisplay1.Name = "lcdDisplay1";
 		    this.lcdDisplay1.Rows = 2;
-		    this.lcdDisplay1.Size = new System.Drawing.Size(290, 88);
+		    this.lcdDisplay1.Size = new System.Drawing.Size(515, 88);
 		    this.lcdDisplay1.TabIndex = 49;
 		    this.lcdDisplay1.Text = "Test";
 		    // 
@@ -770,12 +764,27 @@ namespace tester
 		    this.txtBxPlotMarker.TabIndex = 53;
 		    this.txtBxPlotMarker.TextChanged += new System.EventHandler(this.TxtBxPlotMarkerTextChanged);
 		    // 
+		    // zipBar7
+		    // 
+		    this.zipBar7.BorderWidth = 2F;
+		    this.zipBar7.ColorHandle = System.Drawing.SystemColors.Control;
+		    this.zipBar7.Fix2Nearby = true;
+		    this.zipBar7.FlatStyle = VisBox.VisElement.VisFlatStyle.Popup;
+		    this.zipBar7.LayoutDirection = VisBox.VisElement.Direction.Vertical;
+		    this.zipBar7.Location = new System.Drawing.Point(187, 3);
+		    this.zipBar7.Name = "zipBar7";
+		    this.zipBar7.Parts = 11;
+		    this.zipBar7.Size = new System.Drawing.Size(23, 160);
+		    this.zipBar7.TabIndex = 54;
+		    this.zipBar7.Text = null;
+		    // 
 		    // MainForm
 		    // 
 		    this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 		    this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 		    this.BackColor = System.Drawing.SystemColors.Control;
 		    this.ClientSize = new System.Drawing.Size(1026, 353);
+		    this.Controls.Add(this.zipBar7);
 		    this.Controls.Add(this.txtBxPlotMarker);
 		    this.Controls.Add(this.plot1);
 		    this.Controls.Add(this.textBox1);
