@@ -184,7 +184,7 @@ namespace tester
 		    this.bar1.ColorOn = System.Drawing.Color.Empty;
 		    this.bar1.Dock = System.Windows.Forms.DockStyle.Bottom;
 		    this.bar1.FlatStyle = VisBox.VisElement.VisFlatStyle.Collapsed;
-		    this.bar1.Location = new System.Drawing.Point(0, 313);
+		    this.bar1.Location = new System.Drawing.Point(0, 287);
 		    this.bar1.Name = "bar1";
 		    this.bar1.Padding = new System.Windows.Forms.Padding(3);
 		    this.bar1.Size = new System.Drawing.Size(1026, 40);
@@ -195,12 +195,11 @@ namespace tester
 		    // zipBar1
 		    // 
 		    this.zipBar1.BorderWidth = 2F;
-		    this.zipBar1.ColorHandle = System.Drawing.Color.Gainsboro;
 		    this.zipBar1.FlatStyle = VisBox.VisElement.VisFlatStyle.Popup;
-		    this.zipBar1.Location = new System.Drawing.Point(3, 172);
+		    this.zipBar1.Location = new System.Drawing.Point(3, 170);
 		    this.zipBar1.Name = "zipBar1";
 		    this.zipBar1.Parts = 5;
-		    this.zipBar1.Size = new System.Drawing.Size(207, 23);
+		    this.zipBar1.Size = new System.Drawing.Size(178, 23);
 		    this.zipBar1.TabIndex = 5;
 		    this.zipBar1.Text = null;
 		    this.zipBar1.ValueChanged += new System.EventHandler(this.ZipBar1ValueChanged);
@@ -308,13 +307,12 @@ namespace tester
 		    // zipBar2
 		    // 
 		    this.zipBar2.BorderWidth = 2F;
-		    this.zipBar2.ColorHandle = System.Drawing.SystemColors.Control;
 		    this.zipBar2.FlatStyle = VisBox.VisElement.VisFlatStyle.Popup;
 		    this.zipBar2.LayoutDirection = VisBox.VisElement.Direction.Vertical;
 		    this.zipBar2.Location = new System.Drawing.Point(158, 3);
 		    this.zipBar2.Name = "zipBar2";
 		    this.zipBar2.Parts = 11;
-		    this.zipBar2.Size = new System.Drawing.Size(23, 160);
+		    this.zipBar2.Size = new System.Drawing.Size(23, 161);
 		    this.zipBar2.TabIndex = 16;
 		    this.zipBar2.Text = null;
 		    this.zipBar2.ValueChanged += new System.EventHandler(this.ZipBar2ValueChanged);
@@ -348,10 +346,9 @@ namespace tester
 		    // zipBar3
 		    // 
 		    this.zipBar3.BorderWidth = 2F;
-		    this.zipBar3.ColorHandle = System.Drawing.Color.Gainsboro;
 		    this.zipBar3.Fix2Nearby = true;
 		    this.zipBar3.FlatStyle = VisBox.VisElement.VisFlatStyle.Popup;
-		    this.zipBar3.Location = new System.Drawing.Point(216, 172);
+		    this.zipBar3.Location = new System.Drawing.Point(216, 141);
 		    this.zipBar3.Name = "zipBar3";
 		    this.zipBar3.Parts = 2;
 		    this.zipBar3.Size = new System.Drawing.Size(131, 23);
@@ -362,10 +359,9 @@ namespace tester
 		    // zipBar4
 		    // 
 		    this.zipBar4.BorderWidth = 2F;
-		    this.zipBar4.ColorHandle = System.Drawing.Color.Gainsboro;
 		    this.zipBar4.Fix2Nearby = true;
 		    this.zipBar4.FlatStyle = VisBox.VisElement.VisFlatStyle.Popup;
-		    this.zipBar4.Location = new System.Drawing.Point(216, 143);
+		    this.zipBar4.Location = new System.Drawing.Point(216, 112);
 		    this.zipBar4.Name = "zipBar4";
 		    this.zipBar4.Parts = 3;
 		    this.zipBar4.Size = new System.Drawing.Size(131, 23);
@@ -376,10 +372,9 @@ namespace tester
 		    // zipBar5
 		    // 
 		    this.zipBar5.BorderWidth = 2F;
-		    this.zipBar5.ColorHandle = System.Drawing.Color.Gainsboro;
 		    this.zipBar5.Fix2Nearby = true;
 		    this.zipBar5.FlatStyle = VisBox.VisElement.VisFlatStyle.Popup;
-		    this.zipBar5.Location = new System.Drawing.Point(216, 114);
+		    this.zipBar5.Location = new System.Drawing.Point(216, 83);
 		    this.zipBar5.Name = "zipBar5";
 		    this.zipBar5.Parts = 4;
 		    this.zipBar5.Size = new System.Drawing.Size(131, 23);
@@ -390,10 +385,9 @@ namespace tester
 		    // zipBar6
 		    // 
 		    this.zipBar6.BorderWidth = 2F;
-		    this.zipBar6.ColorHandle = System.Drawing.Color.Gainsboro;
 		    this.zipBar6.Fix2Nearby = true;
 		    this.zipBar6.FlatStyle = VisBox.VisElement.VisFlatStyle.Popup;
-		    this.zipBar6.Location = new System.Drawing.Point(216, 85);
+		    this.zipBar6.Location = new System.Drawing.Point(216, 54);
 		    this.zipBar6.Name = "zipBar6";
 		    this.zipBar6.Parts = 5;
 		    this.zipBar6.Size = new System.Drawing.Size(131, 23);
@@ -404,20 +398,19 @@ namespace tester
 		    // zipBar10
 		    // 
 		    this.zipBar10.BorderWidth = 2F;
-		    this.zipBar10.ColorHandle = System.Drawing.Color.Gainsboro;
 		    this.zipBar10.Fix2Nearby = true;
 		    this.zipBar10.FlatStyle = VisBox.VisElement.VisFlatStyle.Popup;
-		    this.zipBar10.Location = new System.Drawing.Point(3, 201);
+		    this.zipBar10.Location = new System.Drawing.Point(187, 170);
 		    this.zipBar10.Name = "zipBar10";
 		    this.zipBar10.Parts = 20;
-		    this.zipBar10.Size = new System.Drawing.Size(344, 23);
+		    this.zipBar10.Size = new System.Drawing.Size(160, 23);
 		    this.zipBar10.TabIndex = 26;
 		    this.zipBar10.Text = null;
 		    this.zipBar10.ValueChanged += new System.EventHandler(this.ZipBar10ValueChanged);
 		    // 
 		    // label2
 		    // 
-		    this.label2.Location = new System.Drawing.Point(216, 59);
+		    this.label2.Location = new System.Drawing.Point(272, 12);
 		    this.label2.Name = "label2";
 		    this.label2.Size = new System.Drawing.Size(60, 23);
 		    this.label2.TabIndex = 27;
@@ -507,7 +500,7 @@ namespace tester
 		    this.display14Segment1.BackColor = System.Drawing.Color.Black;
 		    this.display14Segment1.ColorOff = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
 		    this.display14Segment1.ColorOn = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(254)))), ((int)(((byte)(2)))));
-		    this.display14Segment1.Location = new System.Drawing.Point(350, 115);
+		    this.display14Segment1.Location = new System.Drawing.Point(350, 116);
 		    this.display14Segment1.Margin = new System.Windows.Forms.Padding(0);
 		    this.display14Segment1.Name = "display14Segment1";
 		    this.display14Segment1.Scale = 1F;
@@ -522,7 +515,7 @@ namespace tester
 		    this.display14Segment2.BackColor = System.Drawing.Color.Black;
 		    this.display14Segment2.ColorOff = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
 		    this.display14Segment2.ColorOn = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(254)))), ((int)(((byte)(2)))));
-		    this.display14Segment2.Location = new System.Drawing.Point(382, 115);
+		    this.display14Segment2.Location = new System.Drawing.Point(382, 116);
 		    this.display14Segment2.Margin = new System.Windows.Forms.Padding(0);
 		    this.display14Segment2.Name = "display14Segment2";
 		    this.display14Segment2.Scale = 1F;
@@ -537,7 +530,7 @@ namespace tester
 		    this.display14Segment3.BackColor = System.Drawing.Color.Black;
 		    this.display14Segment3.ColorOff = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
 		    this.display14Segment3.ColorOn = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(254)))), ((int)(((byte)(2)))));
-		    this.display14Segment3.Location = new System.Drawing.Point(414, 115);
+		    this.display14Segment3.Location = new System.Drawing.Point(414, 116);
 		    this.display14Segment3.Margin = new System.Windows.Forms.Padding(0);
 		    this.display14Segment3.Name = "display14Segment3";
 		    this.display14Segment3.Scale = 1F;
@@ -552,7 +545,7 @@ namespace tester
 		    this.display14Segment4.BackColor = System.Drawing.Color.Black;
 		    this.display14Segment4.ColorOff = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
 		    this.display14Segment4.ColorOn = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(254)))), ((int)(((byte)(2)))));
-		    this.display14Segment4.Location = new System.Drawing.Point(446, 115);
+		    this.display14Segment4.Location = new System.Drawing.Point(446, 116);
 		    this.display14Segment4.Margin = new System.Windows.Forms.Padding(0);
 		    this.display14Segment4.Name = "display14Segment4";
 		    this.display14Segment4.Scale = 1F;
@@ -567,7 +560,7 @@ namespace tester
 		    this.display14Segment5.BackColor = System.Drawing.Color.Black;
 		    this.display14Segment5.ColorOff = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
 		    this.display14Segment5.ColorOn = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(254)))), ((int)(((byte)(2)))));
-		    this.display14Segment5.Location = new System.Drawing.Point(478, 115);
+		    this.display14Segment5.Location = new System.Drawing.Point(478, 116);
 		    this.display14Segment5.Margin = new System.Windows.Forms.Padding(0);
 		    this.display14Segment5.Name = "display14Segment5";
 		    this.display14Segment5.Scale = 1F;
@@ -582,7 +575,7 @@ namespace tester
 		    this.display14Segment6.BackColor = System.Drawing.Color.Black;
 		    this.display14Segment6.ColorOff = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
 		    this.display14Segment6.ColorOn = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(254)))), ((int)(((byte)(2)))));
-		    this.display14Segment6.Location = new System.Drawing.Point(350, 163);
+		    this.display14Segment6.Location = new System.Drawing.Point(350, 164);
 		    this.display14Segment6.Margin = new System.Windows.Forms.Padding(0);
 		    this.display14Segment6.Name = "display14Segment6";
 		    this.display14Segment6.Scale = 1F;
@@ -597,7 +590,7 @@ namespace tester
 		    this.display14Segment7.BackColor = System.Drawing.Color.Black;
 		    this.display14Segment7.ColorOff = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
 		    this.display14Segment7.ColorOn = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(254)))), ((int)(((byte)(2)))));
-		    this.display14Segment7.Location = new System.Drawing.Point(382, 163);
+		    this.display14Segment7.Location = new System.Drawing.Point(382, 164);
 		    this.display14Segment7.Margin = new System.Windows.Forms.Padding(0);
 		    this.display14Segment7.Name = "display14Segment7";
 		    this.display14Segment7.Scale = 1F;
@@ -612,7 +605,7 @@ namespace tester
 		    this.display14Segment8.BackColor = System.Drawing.Color.Black;
 		    this.display14Segment8.ColorOff = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
 		    this.display14Segment8.ColorOn = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(254)))), ((int)(((byte)(2)))));
-		    this.display14Segment8.Location = new System.Drawing.Point(414, 163);
+		    this.display14Segment8.Location = new System.Drawing.Point(414, 164);
 		    this.display14Segment8.Margin = new System.Windows.Forms.Padding(0);
 		    this.display14Segment8.Name = "display14Segment8";
 		    this.display14Segment8.Scale = 1F;
@@ -627,7 +620,7 @@ namespace tester
 		    this.display14Segment9.BackColor = System.Drawing.Color.Black;
 		    this.display14Segment9.ColorOff = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
 		    this.display14Segment9.ColorOn = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(254)))), ((int)(((byte)(2)))));
-		    this.display14Segment9.Location = new System.Drawing.Point(446, 163);
+		    this.display14Segment9.Location = new System.Drawing.Point(446, 164);
 		    this.display14Segment9.Margin = new System.Windows.Forms.Padding(0);
 		    this.display14Segment9.Name = "display14Segment9";
 		    this.display14Segment9.Scale = 1F;
@@ -642,7 +635,7 @@ namespace tester
 		    this.display14Segment10.BackColor = System.Drawing.Color.Black;
 		    this.display14Segment10.ColorOff = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
 		    this.display14Segment10.ColorOn = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(254)))), ((int)(((byte)(2)))));
-		    this.display14Segment10.Location = new System.Drawing.Point(478, 163);
+		    this.display14Segment10.Location = new System.Drawing.Point(478, 164);
 		    this.display14Segment10.Margin = new System.Windows.Forms.Padding(0);
 		    this.display14Segment10.Name = "display14Segment10";
 		    this.display14Segment10.Scale = 1F;
@@ -659,7 +652,7 @@ namespace tester
 		    this.display14SegmentLoading.ColorOff = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
 		    this.display14SegmentLoading.ColorOn = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(254)))), ((int)(((byte)(2)))));
 		    this.display14SegmentLoading.FlatStyle = VisBox.VisElement.VisFlatStyle.Popup;
-		    this.display14SegmentLoading.Location = new System.Drawing.Point(528, 115);
+		    this.display14SegmentLoading.Location = new System.Drawing.Point(513, 116);
 		    this.display14SegmentLoading.Margin = new System.Windows.Forms.Padding(0);
 		    this.display14SegmentLoading.Name = "display14SegmentLoading";
 		    this.display14SegmentLoading.Scale = 1F;
@@ -697,7 +690,7 @@ namespace tester
 		    // 
 		    // switch1
 		    // 
-		    this.switch1.Location = new System.Drawing.Point(528, 163);
+		    this.switch1.Location = new System.Drawing.Point(513, 164);
 		    this.switch1.Name = "switch1";
 		    this.switch1.Size = new System.Drawing.Size(32, 48);
 		    this.switch1.TabIndex = 47;
@@ -707,7 +700,7 @@ namespace tester
 		    // 
 		    this.controlKnob1.Location = new System.Drawing.Point(216, 3);
 		    this.controlKnob1.Name = "controlKnob1";
-		    this.controlKnob1.Size = new System.Drawing.Size(50, 50);
+		    this.controlKnob1.Size = new System.Drawing.Size(46, 46);
 		    this.controlKnob1.TabIndex = 48;
 		    this.controlKnob1.Text = "controlKnob1";
 		    // 
@@ -718,27 +711,27 @@ namespace tester
 		    this.lcdDisplay1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
 		    this.lcdDisplay1.BlockColorOff = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(159)))), ((int)(((byte)(47)))));
 		    this.lcdDisplay1.BlockColorOn = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(63)))), ((int)(((byte)(48)))));
-		    this.lcdDisplay1.Cols = 16;
-		    this.lcdDisplay1.Location = new System.Drawing.Point(0, 227);
+		    this.lcdDisplay1.Cols = 14;
+		    this.lcdDisplay1.Location = new System.Drawing.Point(3, 199);
 		    this.lcdDisplay1.Name = "lcdDisplay1";
 		    this.lcdDisplay1.Rows = 2;
-		    this.lcdDisplay1.Size = new System.Drawing.Size(515, 88);
+		    this.lcdDisplay1.Size = new System.Drawing.Size(344, 88);
 		    this.lcdDisplay1.TabIndex = 49;
 		    this.lcdDisplay1.Text = "Test";
 		    // 
 		    // button1
 		    // 
-		    this.button1.Location = new System.Drawing.Point(123, 284);
+		    this.button1.Location = new System.Drawing.Point(350, 244);
 		    this.button1.Name = "button1";
-		    this.button1.Size = new System.Drawing.Size(75, 23);
+		    this.button1.Size = new System.Drawing.Size(100, 23);
 		    this.button1.TabIndex = 50;
-		    this.button1.Text = "button1";
+		    this.button1.Text = "Print on screen";
 		    this.button1.UseVisualStyleBackColor = true;
 		    this.button1.Click += new System.EventHandler(this.Button1Click);
 		    // 
 		    // textBox1
 		    // 
-		    this.textBox1.Location = new System.Drawing.Point(17, 286);
+		    this.textBox1.Location = new System.Drawing.Point(350, 218);
 		    this.textBox1.Name = "textBox1";
 		    this.textBox1.Size = new System.Drawing.Size(100, 20);
 		    this.textBox1.TabIndex = 51;
@@ -750,15 +743,15 @@ namespace tester
 		    this.plot1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
 		    this.plot1.BorderWidth = 1F;
 		    this.plot1.FlatStyle = VisBox.VisElement.VisFlatStyle.Collapsed;
-		    this.plot1.Location = new System.Drawing.Point(567, 3);
+		    this.plot1.Location = new System.Drawing.Point(548, 3);
 		    this.plot1.Name = "plot1";
-		    this.plot1.Size = new System.Drawing.Size(435, 303);
+		    this.plot1.Size = new System.Drawing.Size(472, 284);
 		    this.plot1.TabIndex = 52;
 		    this.plot1.Text = "plot1";
 		    // 
 		    // txtBxPlotMarker
 		    // 
-		    this.txtBxPlotMarker.Location = new System.Drawing.Point(510, 217);
+		    this.txtBxPlotMarker.Location = new System.Drawing.Point(495, 218);
 		    this.txtBxPlotMarker.Name = "txtBxPlotMarker";
 		    this.txtBxPlotMarker.Size = new System.Drawing.Size(50, 20);
 		    this.txtBxPlotMarker.TabIndex = 53;
@@ -767,14 +760,13 @@ namespace tester
 		    // zipBar7
 		    // 
 		    this.zipBar7.BorderWidth = 2F;
-		    this.zipBar7.ColorHandle = System.Drawing.SystemColors.Control;
 		    this.zipBar7.Fix2Nearby = true;
 		    this.zipBar7.FlatStyle = VisBox.VisElement.VisFlatStyle.Popup;
 		    this.zipBar7.LayoutDirection = VisBox.VisElement.Direction.Vertical;
 		    this.zipBar7.Location = new System.Drawing.Point(187, 3);
 		    this.zipBar7.Name = "zipBar7";
-		    this.zipBar7.Parts = 11;
-		    this.zipBar7.Size = new System.Drawing.Size(23, 160);
+		    this.zipBar7.Parts = 20;
+		    this.zipBar7.Size = new System.Drawing.Size(23, 161);
 		    this.zipBar7.TabIndex = 54;
 		    this.zipBar7.Text = null;
 		    // 
@@ -783,7 +775,7 @@ namespace tester
 		    this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 		    this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 		    this.BackColor = System.Drawing.SystemColors.Control;
-		    this.ClientSize = new System.Drawing.Size(1026, 353);
+		    this.ClientSize = new System.Drawing.Size(1026, 327);
 		    this.Controls.Add(this.zipBar7);
 		    this.Controls.Add(this.txtBxPlotMarker);
 		    this.Controls.Add(this.plot1);
