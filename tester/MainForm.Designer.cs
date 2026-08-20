@@ -69,6 +69,7 @@ namespace tester
 		private System.Windows.Forms.TextBox txtBxPlotMarker;
 		private VisBox.ZipBar zipBar7;
 		private System.Windows.Forms.Button btnShowPlotProperty;
+		private VisBox.TreeListView treeListView1;
 		
 		/// <summary>
 		/// Disposes resources used by the form.
@@ -96,6 +97,15 @@ namespace tester
 		    VisBox.AxisLimits axisLimits1 = new VisBox.AxisLimits();
 		    VisBox.AxisLimits axisLimits2 = new VisBox.AxisLimits();
 		    VisBox.AxisMargin axisMargin1 = new VisBox.AxisMargin();
+		    VisBox.TreeListViewColumnItem treeListViewColumnItem1 = new VisBox.TreeListViewColumnItem();
+		    VisBox.TreeListViewColumnItem treeListViewColumnItem2 = new VisBox.TreeListViewColumnItem();
+		    VisBox.TreeListViewItem treeListViewItem1 = new VisBox.TreeListViewItem();
+		    VisBox.TreeListViewItem treeListViewItem2 = new VisBox.TreeListViewItem();
+		    VisBox.TreeListViewSubItem treeListViewSubItem1 = new VisBox.TreeListViewSubItem();
+		    VisBox.TreeListViewItem treeListViewItem3 = new VisBox.TreeListViewItem();
+		    VisBox.TreeListViewSubItem treeListViewSubItem2 = new VisBox.TreeListViewSubItem();
+		    VisBox.TreeListViewItem treeListViewItem4 = new VisBox.TreeListViewItem();
+		    VisBox.TreeListViewSubItem treeListViewSubItem3 = new VisBox.TreeListViewSubItem();
 		    this.lamp1 = new VisBox.Lamp();
 		    this.label1 = new System.Windows.Forms.Label();
 		    this.timer1 = new System.Windows.Forms.Timer(this.components);
@@ -151,6 +161,7 @@ namespace tester
 		    this.txtBxPlotMarker = new System.Windows.Forms.TextBox();
 		    this.zipBar7 = new VisBox.ZipBar();
 		    this.btnShowPlotProperty = new System.Windows.Forms.Button();
+		    this.treeListView1 = new VisBox.TreeListView();
 		    this.SuspendLayout();
 		    // 
 		    // lamp1
@@ -798,12 +809,64 @@ namespace tester
 		    this.btnShowPlotProperty.UseVisualStyleBackColor = true;
 		    this.btnShowPlotProperty.Click += new System.EventHandler(this.BtnShowPlotPropertyClick);
 		    // 
+		    // treeListView1
+		    // 
+		    treeListViewColumnItem1.Font = new System.Drawing.Font("Arial", 10F);
+		    treeListViewColumnItem1.ForeColor = System.Drawing.Color.Black;
+		    treeListViewColumnItem1.Text = "Name";
+		    treeListViewColumnItem1.Width = 75;
+		    treeListViewColumnItem2.Font = new System.Drawing.Font("Arial", 10F);
+		    treeListViewColumnItem2.ForeColor = System.Drawing.Color.Black;
+		    treeListViewColumnItem2.Text = "Type";
+		    treeListViewColumnItem2.Width = 75;
+		    this.treeListView1.Columns.Add(treeListViewColumnItem1);
+		    this.treeListView1.Columns.Add(treeListViewColumnItem2);
+		    this.treeListView1.Location = new System.Drawing.Point(642, 54);
+		    this.treeListView1.Name = "treeListView1";
+		    treeListViewItem1.Collapsed = false;
+		    treeListViewItem1.Font = new System.Drawing.Font("Arial", 10F);
+		    treeListViewItem1.ForeColor = System.Drawing.Color.Black;
+		    treeListViewItem2.Collapsed = false;
+		    treeListViewItem2.Font = new System.Drawing.Font("Arial", 10F);
+		    treeListViewItem2.ForeColor = System.Drawing.Color.Black;
+		    treeListViewSubItem1.Font = new System.Drawing.Font("Arial", 10F);
+		    treeListViewSubItem1.ForeColor = System.Drawing.Color.Black;
+		    treeListViewSubItem1.Text = "uint16_t";
+		    treeListViewItem2.Subitems.Add(treeListViewSubItem1);
+		    treeListViewItem2.Text = "Sync";
+		    treeListViewItem3.Collapsed = false;
+		    treeListViewItem3.Font = new System.Drawing.Font("Arial", 10F);
+		    treeListViewItem3.ForeColor = System.Drawing.Color.Black;
+		    treeListViewSubItem2.Font = new System.Drawing.Font("Arial", 10F);
+		    treeListViewSubItem2.ForeColor = System.Drawing.Color.Black;
+		    treeListViewSubItem2.Text = "uint16_t";
+		    treeListViewItem3.Subitems.Add(treeListViewSubItem2);
+		    treeListViewItem3.Text = "MsgId";
+		    treeListViewItem4.Collapsed = false;
+		    treeListViewItem4.Font = new System.Drawing.Font("Arial", 10F);
+		    treeListViewItem4.ForeColor = System.Drawing.Color.Black;
+		    treeListViewSubItem3.Font = new System.Drawing.Font("Arial", 10F);
+		    treeListViewSubItem3.ForeColor = System.Drawing.Color.Black;
+		    treeListViewSubItem3.Text = "uint32_t";
+		    treeListViewItem4.Subitems.Add(treeListViewSubItem3);
+		    treeListViewItem4.Text = "Flags";
+		    treeListViewItem1.Nodes.Add(treeListViewItem2);
+		    treeListViewItem1.Nodes.Add(treeListViewItem3);
+		    treeListViewItem1.Nodes.Add(treeListViewItem4);
+		    treeListViewItem1.Text = "Header";
+		    this.treeListView1.Nodes.Add(treeListViewItem1);
+		    this.treeListView1.Size = new System.Drawing.Size(193, 150);
+		    this.treeListView1.TabIndex = 56;
+		    this.treeListView1.Text = "treeListView1";
+		    this.treeListView1.TreeLine = null;
+		    // 
 		    // MainForm
 		    // 
 		    this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 		    this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 		    this.BackColor = System.Drawing.SystemColors.Control;
 		    this.ClientSize = new System.Drawing.Size(1026, 327);
+		    this.Controls.Add(this.treeListView1);
 		    this.Controls.Add(this.btnShowPlotProperty);
 		    this.Controls.Add(this.zipBar7);
 		    this.Controls.Add(this.txtBxPlotMarker);

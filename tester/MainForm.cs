@@ -83,48 +83,51 @@ namespace tester
 //			plot1.gridYminor.ShowLables = false;
 
 			
-			TreeListView treeListView1 = new TreeListView();
+//			TreeListView treeListView1 = new TreeListView();
 			treeListView1.Left = 700;
 			treeListView1.Top = 100;
 			treeListView1.FlatStyle = VisBox.VisElement.VisFlatStyle.Collapsed;
 			treeListView1.Width = 300;
 			treeListView1.Height = 120;
+//			treeListView1.Columns.Clear();
+//			treeListView1.Nodes.Clear();
             
-			Controls.Add( treeListView1 );
-			treeListView1.BringToFront();
+            
+//			Controls.Add( treeListView1 );
+//			treeListView1.BringToFront();
 			
-			treeListView1.AddColumn( "Name" );
-			treeListView1.AddColumn( "Type" );
-			treeListView1.AddColumn( "Value" );
-            
-            TreeListViewItem trvi = new TreeListViewItem("Node A");
-            
-            TreeListViewItem trviA2 = new TreeListViewItem( "Node A2");
-            trviA2.Font = new Font( "Times New Roman", 15 );
-            trviA2.Nodes.Add( new TreeListViewItem("A2a") );
-            trviA2.Nodes.Add( new TreeListViewItem("A2b") );
-            trviA2.Subitems.Add( new TreeListViewSubItem("test1") );
-            trviA2.Subitems.Add( new TreeListViewSubItem("test2") );
-            trvi.Nodes.Add( new TreeListViewItem( "Node A1") );
-            trvi.Nodes.Add( trviA2 );
-            trvi.Nodes.Add( new TreeListViewItem( "Node A3") );
-            
-            treeListView1.Nodes.Add( trvi );
-            treeListView1.Nodes.Add( new TreeListViewItem("Node B") );
-            treeListView1.Nodes.Add( new TreeListViewItem("Node C") );
-//            treeListView1.Nodes.Add( new TreeListViewItem("Node D") );
-//            treeListView1.Nodes.Add( new TreeListViewItem("Node E") );
-//            treeListView1.Nodes.Add( new TreeListViewItem("Node F") );
-//            treeListView1.Nodes.Add( new TreeListViewItem("Node G") );
-//            treeListView1.Nodes.Add( new TreeListViewItem("Node H") );
-//            treeListView1.Nodes.Add( new TreeListViewItem("Node I") );
-//            treeListView1.Nodes.Add( new TreeListViewItem("Node J") );
-//            treeListView1.Nodes.Add( new TreeListViewItem("Node K") );
-//            treeListView1.Nodes.Add( new TreeListViewItem("Node L") );
+//			treeListView1.AddColumn( "Name" );
+//			treeListView1.AddColumn( "Type" );
+//			treeListView1.AddColumn( "Value" );
 //            
-//            for (int idx = 0; idx < 1000; idx++) {
-//                treeListView1.Nodes.Add( new TreeListViewItem("Node idx: " + idx) );
-//            }
+//            TreeListViewItem trvi = new TreeListViewItem("Node A");
+//            
+//            TreeListViewItem trviA2 = new TreeListViewItem( "Node A2");
+//            trviA2.Font = new Font( "Times New Roman", 15 );
+//            trviA2.Nodes.Add( new TreeListViewItem("A2a") );
+//            trviA2.Nodes.Add( new TreeListViewItem("A2b") );
+//            trviA2.Subitems.Add( new TreeListViewSubItem("test1") );
+//            trviA2.Subitems.Add( new TreeListViewSubItem("test2") );
+//            trvi.Nodes.Add( new TreeListViewItem( "Node A1") );
+//            trvi.Nodes.Add( trviA2 );
+//            trvi.Nodes.Add( new TreeListViewItem( "Node A3") );
+//            
+//            treeListView1.Nodes.Add( trvi );
+//            treeListView1.Nodes.Add( new TreeListViewItem("Node B") );
+//            treeListView1.Nodes.Add( new TreeListViewItem("Node C") );
+////            treeListView1.Nodes.Add( new TreeListViewItem("Node D") );
+////            treeListView1.Nodes.Add( new TreeListViewItem("Node E") );
+////            treeListView1.Nodes.Add( new TreeListViewItem("Node F") );
+////            treeListView1.Nodes.Add( new TreeListViewItem("Node G") );
+////            treeListView1.Nodes.Add( new TreeListViewItem("Node H") );
+////            treeListView1.Nodes.Add( new TreeListViewItem("Node I") );
+////            treeListView1.Nodes.Add( new TreeListViewItem("Node J") );
+////            treeListView1.Nodes.Add( new TreeListViewItem("Node K") );
+////            treeListView1.Nodes.Add( new TreeListViewItem("Node L") );
+////            
+////            for (int idx = 0; idx < 1000; idx++) {
+////                treeListView1.Nodes.Add( new TreeListViewItem("Node idx: " + idx) );
+////            }
             
             treeListView1.NumberOfVisibleNodesChanged();
 		}

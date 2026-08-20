@@ -11,12 +11,13 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace VisBox {
     /// <summary>
     /// Description of TreeListView.
     /// </summary>
-    public partial class TreeListView : VisBox.VisElement {
+    public partial class TreeListView : VisElement {
         
         private class TreeViewItemBtnInfo {
             public Point Location = new Point(0, 0);
@@ -32,13 +33,18 @@ namespace VisBox {
         
         private List<TreeListViewItem> _nodes = new List<TreeListViewItem>();
         
+        [Category("VisBox")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public List<TreeListViewItem> Nodes {
             get { return _nodes; }
             set {_nodes = value; }
         }
         
-        
+
         private List<TreeListViewColumnItem> _columns = new List<TreeListViewColumnItem>();
+        
+        [Category("VisBox")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public List<TreeListViewColumnItem> Columns {
             get { return _columns; }
             set { _columns = value; }
@@ -76,7 +82,8 @@ namespace VisBox {
             int nodeHeight  = 0;
             for ( int idx = 0; idx < node.Nodes.Count; idx++ ) {
                 TreeListViewItem tlvi = node.Nodes[idx];
-                nodeHeight   = (int)tlvi.GetNodeSize().Height;
+                
+                nodeHeight   = (int)tlvi.GetItemSize().Height;
                 totalHeight += nodeHeight;
                 if ( _smallestNodeHeight > nodeHeight ) {
                     _smallestNodeHeight = nodeHeight;
@@ -95,7 +102,7 @@ namespace VisBox {
             int nodeHeight      = 0;
             for ( int idx = 0; idx < _nodes.Count; idx++ ) {
                 TreeListViewItem tlvi = _nodes[idx];
-                nodeHeight   = (int)tlvi.GetNodeSize().Height;
+                nodeHeight   = (int)tlvi.GetItemSize().Height;
                 totalHeight += nodeHeight;
                 if ( _smallestNodeHeight > nodeHeight ) {
                     _smallestNodeHeight = nodeHeight;
@@ -399,7 +406,7 @@ namespace VisBox {
             int xOffset = 0;
             /* Get maximum height of columns header */
             foreach ( TreeListViewColumnItem col in _columns ) {
-                int colHdrHeight = (int)col.GetTextSize().Height;
+                int colHdrHeight = (int)col.GetItemSize().Height;
                 if ( _columnsHeaderHeight < colHdrHeight ) {
                     _columnsHeaderHeight = colHdrHeight;
                 }
@@ -477,7 +484,7 @@ namespace VisBox {
             
             int     parentX     = areaToDraw.X;
             
-            SizeF   nodeSize    = node.GetNodeSize();
+            SizeF   nodeSize    = node.GetItemSize();
             int     rowHeight   = (int)nodeSize.Height;
             
             int     treeLineX   = areaToDraw.X + Indent / 2;
@@ -513,7 +520,7 @@ namespace VisBox {
                             isLastChild ? treeLineY : areaToDraw.Y + rowHeight );
                 
                 /* Draw other columns data */
-                for ( int idx = 1; idx < _columns.Count && idx < node.Subitems.Count; idx++ ) {
+                for ( int idx = 1; idx < _columns.Count && (idx - 1) < node.Subitems.Count; idx++ ) {
                     columnClip.X = Math.Max( _columns[idx].BoundBox.Left , previousClip.X );
                     columnClip.Width = _columns[idx].BoundBox.Right - columnClip.X;
                     
@@ -523,8 +530,8 @@ namespace VisBox {
                         Math.Max( areaToDraw.X + Indent, _columns[idx].BoundBox.Left ),
                         areaToDraw.Y, _columns[idx].Width, rowHeight );
                     strBox.Width = _columns[idx].BoundBox.Right - strBox.Left;
-                    gr.DrawString(node.Subitems[idx].Text,
-                                  node.Subitems[idx].Font, node.Subitems[idx].Brush, strBox, _strFormatNodes);
+                    gr.DrawString(node.Subitems[idx-1].Text,
+                                  node.Subitems[idx-1].Font, node.Subitems[idx-1].Brush, strBox, _strFormatNodes);
                 }
                 
                 _numberOfDrawnNodes++;
@@ -570,50 +577,29 @@ namespace VisBox {
         private void SetNewLogicSize(Size newLogicSize) {
             this.AutoScrollMinSize = newLogicSize;
         }
-
-
-
-
-
+        
+        
         
     }
     
-    [Serializable]
-    public class TreeListViewItem {
+    
+    [TypeConverter(typeof(ExpandableObjectConverter))]
+    public class TreeListViewItem : TreeListViewSubItem {
         
-        private List<TreeListViewSubItem> _subitems = new List<TreeListViewSubItem>() { new TreeListViewSubItem("") };
+        private List<TreeListViewSubItem> _subitems = new List<TreeListViewSubItem>();
+         
+        [Category("VisBox")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public List<TreeListViewSubItem> Subitems {
             get { return _subitems; }
             set { _subitems = value; }
         }
         
-        public string Text {
-            get { return _subitems[0].Text; }
-            set { _subitems[0].Text = value; }
-        }
-        
         public bool Collapsed { get; set; }
         
-        public Font Font {
-            get { return _subitems[0].Font; }
-            set { _subitems[0].Font = value; }
-        }
-        
-        public Color ForeColor {
-            get { return _subitems[0].ForeColor; }
-            set { _subitems[0].ForeColor = value; }
-        }
-        
-        
-        public Brush Brush {
-            get { return _subitems[0].Brush; }
-            set { _subitems[0].Brush = value; }
-        }
-        
-        private static Bitmap _bmp = new Bitmap(10, 10);
-        private static Graphics _gr = Graphics.FromImage( _bmp );
-        
         private List<TreeListViewItem> _nodes = new List<TreeListViewItem>();
+        [Category("VisBox")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public List<TreeListViewItem> Nodes {
             get { return _nodes; }
             set {_nodes = value; }
@@ -625,10 +611,6 @@ namespace VisBox {
             if ( text == null ) throw new ArgumentNullException("text");
             this.Text = text;
             
-        }
-        
-        public SizeF GetNodeSize() {
-            return _gr.MeasureString(Text, Font, PointF.Empty, StringFormat.GenericTypographic);
         }
         
         public TreeListViewSubItem AddSubitem(TreeListViewSubItem subItem) {
@@ -643,22 +625,8 @@ namespace VisBox {
     }
     
     
-    [Serializable]
-    public class TreeListViewColumnItem {
-        public string Text { get; set; }
-        
-        private Font _font = new Font( "Arial", 10 );
-        public Font Font {
-            get { return _font; }
-            set { _font = value; }
-        }
-        
-        
-        private Color _foreColor = Color.Black;
-        public Color ForeColor {
-            get { return _foreColor; }
-            set { _foreColor = value; }
-        }
+    [TypeConverter(typeof(ExpandableObjectConverter))]
+    public class TreeListViewColumnItem : TreeListViewSubItem {
         
         public Rectangle BoundBox = new Rectangle(0, 0, 75, 20);
         
@@ -667,30 +635,18 @@ namespace VisBox {
             set { BoundBox.Width = value; }
         }
         
-        private static Bitmap _bmp = new Bitmap(10, 10);
-        private static Graphics _gr = Graphics.FromImage( _bmp );
-        
-        public bool IsMouseOver     = false;
-        public bool IsMouseDown     = false;
         public bool IsWidthChange   = false;
         public TreeListViewColumnItem() { }
         
         public TreeListViewColumnItem(string text) {
             if ( text == null ) throw new ArgumentNullException("text");
             this.Text = text;
-            
         }
         
-        public SizeF GetTextSize() {
-            SizeF size = _gr.MeasureString(Text, _font, PointF.Empty, StringFormat.GenericTypographic);
-            size.Height += 1;
-            BoundBox.Height = (int)size.Height;
-            return size;
-        }
     }
     
     
-    [Serializable]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
     public class TreeListViewSubItem {
         public string Text { get; set; }
         
@@ -706,15 +662,13 @@ namespace VisBox {
             get { return _foreColor; }
             set {
                 _foreColor = value;
-                _brush = new SolidBrush( _foreColor );
+                Brush = new SolidBrush( _foreColor );
             }
         }
         
-        private Brush _brush = new SolidBrush(_foreColorDefault);
-        public Brush Brush {
-            get { return _brush; }
-            set { _brush = value; }
-        }
+        [NonSerialized]
+        public Brush Brush = new SolidBrush(_foreColorDefault);
+        
         
         private static Bitmap _bmp = new Bitmap(10, 10);
         private static Graphics _gr = Graphics.FromImage( _bmp );
@@ -730,10 +684,14 @@ namespace VisBox {
             
         }
         
-        public SizeF GetTextSize() {
+        public SizeF GetItemSize() {
             SizeF size = _gr.MeasureString(Text, _font, PointF.Empty, StringFormat.GenericTypographic);
             size.Height += 1;
             return size;
+        }
+        
+        public override string ToString() {
+            return this.GetType().ToString() + ": " + this.Text;
         }
     }
 }
