@@ -221,12 +221,15 @@ namespace VisBox
 					// here were detected some changes, so we have to update (repaint) this char
 					byte[] curByte =  new byte[5];
 					int charId = _array[j][i];
-					
-					if ( charId >= 32 ) {
-						charId -= 32;
-						for( int k = 0; k < 5; k++ ) curByte[k] = _chars[ charId, k ];
-					} else if ( charId < 8 ) {
-						for( int k = 0; k < 5; k++ ) curByte[k] = _customChars[ charId, k ];
+					try {
+    					if ( charId >= 32 ) {
+    						charId -= 32;
+    						for( int k = 0; k < 5; k++ ) curByte[k] = _chars[ charId, k ];
+    					} else if ( charId < 8 ) {
+    						for( int k = 0; k < 5; k++ ) curByte[k] = _customChars[ charId, k ];
+    					}
+					} catch {
+					    for( int k = 0; k < 5; k++ ) curByte[k] = _chars[ 0, k ];
 					}
 					
 					LCD5x8Char.Draw(gr, curByte,

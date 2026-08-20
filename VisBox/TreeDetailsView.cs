@@ -291,9 +291,12 @@ namespace VisBox {
                 
                 if ( _colMouseDown != null ) {
                     if ( _colMouseDown.IsWidthChange ) {
-                        _colMouseDown.Width = _colMouseDownLastWidth + ( e.X - _colMouseDownPoint.X );
-                        requiredRefresh = true;
-                        ColumnWidthChanged();
+                        int newWidth = _colMouseDownLastWidth + ( e.X - _colMouseDownPoint.X );;
+                        if ( newWidth >= _colMouseDown.MinimumWidth ) {
+                            _colMouseDown.Width = newWidth;
+                            requiredRefresh = true;
+                            ColumnWidthChanged();
+                        }
                     }
                 }
                 
@@ -527,7 +530,7 @@ namespace VisBox {
                     gr.SetClip( columnClip );
                     
                     strBox = new RectangleF(
-                        Math.Max( areaToDraw.X + Indent, _columns[idx].BoundBox.Left ),
+                        Math.Max( areaToDraw.X, _columns[idx].BoundBox.Left ),
                         areaToDraw.Y, _columns[idx].Width, rowHeight );
                     strBox.Width = _columns[idx].BoundBox.Right - strBox.Left;
                     gr.DrawString(node.Subitems[idx-1].Text,
@@ -622,6 +625,23 @@ namespace VisBox {
             return AddSubitem( new TreeDetailsViewSubItem( text ) );
         }
         
+        public new SizeF GetItemSize() {
+            SizeF size = _gr.MeasureString(Text, Font, PointF.Empty, StringFormat.GenericTypographic);
+            size.Height += 1;
+            
+            float maxHeight = size.Height;
+            for ( int idx = 0; idx < _subitems.Count; idx++ ) {
+                SizeF subItemSize = _subitems[idx].GetItemSize();
+                if ( maxHeight < subItemSize.Height ) {
+                    maxHeight = subItemSize.Height;
+                }
+            }
+            
+            size.Height = maxHeight;
+            
+            return size;
+        }
+        
     }
     
     
@@ -634,6 +654,8 @@ namespace VisBox {
             get { return BoundBox.Width; }
             set { BoundBox.Width = value; }
         }
+        
+        public int MinimumWidth = 20;
         
         public bool IsWidthChange   = false;
         public TreeDetailsViewColumnItem() { }
@@ -671,7 +693,7 @@ namespace VisBox {
         
         
         private static Bitmap _bmp = new Bitmap(10, 10);
-        private static Graphics _gr = Graphics.FromImage( _bmp );
+        protected static Graphics _gr = Graphics.FromImage( _bmp );
         
         public bool IsMouseOver = false;
         public bool IsMouseDown = false;
