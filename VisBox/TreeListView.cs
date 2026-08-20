@@ -122,6 +122,23 @@ namespace VisBox {
                 vScrlBr.Visible = false;
                 vScrlBr.Value = 0;
             }
+            
+        }
+        
+        private void ColumnWidthChanged() {
+            int totalWidth = 0;
+            for( int idx = 0; idx < _columns.Count; idx++ ) {
+                totalWidth += _columns[idx].Width;
+            }
+            
+            hScrlBr.Maximum = totalWidth;
+            hScrlBr.LargeChange = pMain.Width;
+            if ( totalWidth > pMain.Width ) {
+                hScrlBr.Visible = true;
+            } else {
+                hScrlBr.Visible = false;
+                hScrlBr.Value = 0;
+            }
         }
         
         
@@ -155,6 +172,12 @@ namespace VisBox {
             
             pMain.MouseWheel += PMainMouseWheel;
             
+            typeof(Panel).InvokeMember("DoubleBuffered",
+                System.Reflection.BindingFlags.SetProperty | 
+                System.Reflection.BindingFlags.Instance | 
+                System.Reflection.BindingFlags.NonPublic, 
+                null, pMain, new object[] { true });
+            
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
                     ControlStyles.AllPaintingInWmPaint |
                     ControlStyles.UserPaint |
@@ -163,7 +186,37 @@ namespace VisBox {
             NumberOfVisibleNodesChanged();
         }
         
+        
+        
+        
+        public TreeListViewItem AddNode(TreeListViewItem subItem) {
+            _nodes.Add( subItem );
+            NumberOfVisibleNodesChanged();
+            return subItem;
+        }
+        
+        public TreeListViewItem AddNode(string text) {
+            return AddNode( new TreeListViewItem( text ) );
+        }
+        
+        public TreeListViewColumnItem AddColumn(TreeListViewColumnItem subItem) {
+            _columns.Add( subItem );
+            ColumnWidthChanged();
+            return subItem;
+        }
+        
+        public TreeListViewColumnItem AddColumn(string text) {
+            return AddColumn( new TreeListViewColumnItem( text ) );
+        }
+        
+        
+        
+        
         void VScrlBrValueChanged ( object sender, EventArgs e ) {
+            this.Refresh();
+        }
+        
+        void HScrlBrValueChanged ( object sender, EventArgs e ) {
             this.Refresh();
         }
        
@@ -226,18 +279,14 @@ namespace VisBox {
         private TreeListViewColumnItem _colMouseDown = null;
         void PMainMouseMove ( object sender, MouseEventArgs e ) {
             bool requiredRefresh = false;
-            if ( _columns.Count > 0 ) {
-//                foreach ( TreeListViewColumnItem col in _columns ) {
-//                    col.IsMouseOver = false;
-//                    col.IsMouseDown = false;
-//                }
-                
+            if ( _columns.Count > 0 ) {                
                 Point ptRelMouse = new Point( e.X - _colStart.X, e.Y - _colStart.Y);
                 
                 if ( _colMouseDown != null ) {
-                    if ( _colMouseDown.IsMouseDown ) {
+                    if ( _colMouseDown.IsWidthChange ) {
                         _colMouseDown.Width = _colMouseDownLastWidth + ( e.X - _colMouseDownPoint.X );
                         requiredRefresh = true;
+                        ColumnWidthChanged();
                     }
                 }
                 
@@ -254,6 +303,7 @@ namespace VisBox {
                                     _colMouseDownPoint = new Point( e.X, e.Y );
                                     _colMouseDownLastWidth = col.Width;
                                     _colMouseDown = col;
+                                    if ( ptRelMouse.X > ( col.Width - 3 ) ) { col.IsWidthChange = true; }
                                 }
                                 col.IsMouseDown = true;
                             } else {
@@ -262,12 +312,13 @@ namespace VisBox {
                                     _colMouseDown = null;
                                 }
                                 col.IsMouseDown = false;
+                                col.IsWidthChange = false;
                             }
                             
                             /* Found column header under mouse pointer */
                             if ( ptRelMouse.X > ( col.Width - 3 ) ) {
                                 /* Mouse pointer on splitter */
-                                pMain.Cursor = Cursors.SizeWE;                                
+                                pMain.Cursor = Cursors.SizeWE;
                             } else {
                                 pMain.Cursor = Cursors.Default;
                             }
@@ -308,25 +359,28 @@ namespace VisBox {
             
             Rectangle areaToDraw = GetInnerSpace();
             gr.SetClip( areaToDraw );
+            RectangleF maxClipBounding = gr.ClipBounds;
+            
+            areaToDraw.X -= hScrlBr.Value;
             
             if ( _columns.Count > 0 ) {
                 DrawColumnHeaders( ref gr, ref areaToDraw );
-                gr.SetClip( areaToDraw );
+                areaToDraw.Y += 1;
+                areaToDraw.Height -= 1;
+                maxClipBounding.Y = areaToDraw.Y;
+                maxClipBounding.Height = areaToDraw.Height;
+                
+                gr.SetClip( maxClipBounding );
             }
             
             areaToDraw.Y -= vScrlBr.Value;
             int height = this.Height;
-//            Rectangle areaToDraw = new Rectangle(
-//                this.pMain.Padding.Left,
-//                this.pMain.Padding.Top - vScrlBr.Value,
-//                this.pMain.Width - (this.pMain.Padding.Left + this.pMain.Padding.Right),
-//                this.pMain.Height - (this.pMain.Padding.Top + this.pMain.Padding.Bottom ) );
             
             bool reachedBottomEndOfCanvas = false;
             
             for ( int idNode = _idNodeToShow; idNode < _nodes.Count; idNode++ ) {
                 TreeListViewItem nodeI = _nodes[idNode];
-                reachedBottomEndOfCanvas = DrawNode( ref gr, ref nodeI, ref areaToDraw, idNode == ( _nodes.Count - 1 ) );
+                reachedBottomEndOfCanvas = DrawNode( ref gr, ref nodeI, ref areaToDraw, maxClipBounding, idNode == ( _nodes.Count - 1 ) );
                 if ( reachedBottomEndOfCanvas ) {
                     break;
                 }
@@ -378,10 +432,6 @@ namespace VisBox {
                               new RectangleF(areaToDraw.X + xOffset + 1, areaToDraw.Y,
                                      col.Width - 1, _columnsHeaderHeight + 1 ),
                               format);
-                              
-//                gr.DrawString(col.Text, col.Font, brText,
-//                              areaToDraw.X + xOffset, areaToDraw.Y + _columnsHeaderHeight / 2,
-//                              format);
                 
                 xOffset += col.Width;
                 gr.DrawLine( penColLine,
@@ -390,6 +440,7 @@ namespace VisBox {
             }
             
             areaToDraw.Y += _columnsHeaderHeight + 1;
+            areaToDraw.Height -= _columnsHeaderHeight + 1;
             
             return _columnsHeaderHeight;
         }
@@ -416,22 +467,21 @@ namespace VisBox {
         }
         
         
-        private bool DrawNode( ref Graphics gr, ref TreeListViewItem node, ref Rectangle areaToDraw, bool isLastChild ) {
+        private bool DrawNode( ref Graphics gr, ref TreeListViewItem node, ref Rectangle areaToDraw, RectangleF maxClipBounding, bool isLastChild ) {
             bool reachedBottomEndOfCanvas = false;
             
-            if ( areaToDraw.Y >= areaToDraw.Height ) {
+            if ( areaToDraw.Y >= maxClipBounding.Y + maxClipBounding.Height ) {
                 /* There is no space to draw so quit! */
                 return reachedBottomEndOfCanvas = true;
             }
             
             int     parentX     = areaToDraw.X;
-            Brush   brText      = new SolidBrush( node.ForeColor );
             
             SizeF   nodeSize    = node.GetNodeSize();
-            float   rowHeight   = nodeSize.Height;
+            int     rowHeight   = (int)nodeSize.Height;
             
             int     treeLineX   = areaToDraw.X + Indent / 2;
-            int     treeLineY   = (int)( areaToDraw.Y + rowHeight / 2);
+            int     treeLineY   = areaToDraw.Y + rowHeight / 2;
             
             RectangleF previousClip = gr.ClipBounds;
             RectangleF columnClip   = gr.ClipBounds;
@@ -445,7 +495,7 @@ namespace VisBox {
                 
                 /* Draw first column, tree lines and buttons */
                 if ( _columns.Count > 0 ) {
-                    columnClip.X = _columns[0].BoundBox.Left;
+                    columnClip.X = Math.Max( _columns[0].BoundBox.Left, maxClipBounding.Left );
                     columnClip.Width = _columns[0].BoundBox.Right - columnClip.X;
                     strBox.X = Math.Max( areaToDraw.X + Indent, _columns[0].BoundBox.Left );
                     strBox.Width = columnClip.Width;
@@ -453,7 +503,7 @@ namespace VisBox {
                 gr.SetClip( columnClip );
                 
                 /* Draw first column text ============================================== */
-                gr.DrawString(node.Subitems[0], node.Font, brText, strBox, _strFormatNodes);
+                gr.DrawString(node.Text, node.Font, node.Brush, strBox, _strFormatNodes);
                         
                 /* Draw tree lines ===================================================== */
                 /* Draw horizontal dotted line to node's text */
@@ -464,7 +514,7 @@ namespace VisBox {
                 
                 /* Draw other columns data */
                 for ( int idx = 1; idx < _columns.Count && idx < node.Subitems.Count; idx++ ) {
-                    columnClip.X = _columns[idx].BoundBox.Left;
+                    columnClip.X = Math.Max( _columns[idx].BoundBox.Left , previousClip.X );
                     columnClip.Width = _columns[idx].BoundBox.Right - columnClip.X;
                     
                     gr.SetClip( columnClip );
@@ -473,22 +523,23 @@ namespace VisBox {
                         Math.Max( areaToDraw.X + Indent, _columns[idx].BoundBox.Left ),
                         areaToDraw.Y, _columns[idx].Width, rowHeight );
                     strBox.Width = _columns[idx].BoundBox.Right - strBox.Left;
-                    gr.DrawString(node.Subitems[idx], node.Font, brText, strBox, _strFormatNodes);
+                    gr.DrawString(node.Subitems[idx].Text,
+                                  node.Subitems[idx].Font, node.Subitems[idx].Brush, strBox, _strFormatNodes);
                 }
                 
                 _numberOfDrawnNodes++;
             }
-            areaToDraw.Y += (int)rowHeight;
+            areaToDraw.Y += rowHeight;
+            areaToDraw.Height -= rowHeight;
             
             gr.SetClip( previousClip );
-            //-------------------
             if ( node.Nodes.Count > 0 ) {
                 if ( !node.Collapsed ) {
                     /* This node is not collapsed so draw his childs */
                     areaToDraw.X += Indent;
                     for ( int idNode = 0; idNode < node.Nodes.Count; idNode++ ) {
                         TreeListViewItem nodeI = node.Nodes[idNode];
-                        reachedBottomEndOfCanvas = DrawNode( ref gr, ref nodeI, ref areaToDraw, idNode == ( node.Nodes.Count - 1 ) );
+                        reachedBottomEndOfCanvas = DrawNode( ref gr, ref nodeI, ref areaToDraw, maxClipBounding, idNode == ( node.Nodes.Count - 1 ) );
                         if ( reachedBottomEndOfCanvas ) { break; }
                     }
                 }
@@ -496,7 +547,7 @@ namespace VisBox {
                 if ( areaToDraw.Y > -rowHeight ) {
                     gr.SetClip( previousClip );
                     if ( _columns.Count > 0 ) {
-                        columnClip.X = _columns[0].BoundBox.Left;
+                        columnClip.X = Math.Max( _columns[0].BoundBox.Left , previousClip.X );
                         columnClip.Width = _columns[0].BoundBox.Right - columnClip.X;
                         gr.SetClip( columnClip );
                     }
@@ -512,7 +563,6 @@ namespace VisBox {
                 }
                 gr.SetClip( previousClip );
             }
-            //---------------------
             areaToDraw.X = parentX;
             return reachedBottomEndOfCanvas;
         }
@@ -524,35 +574,40 @@ namespace VisBox {
 
 
 
+
         
     }
     
     [Serializable]
     public class TreeListViewItem {
         
-        private List<string> _subitems = new List<string>() { "" };
-        public List<string> Subitems {
+        private List<TreeListViewSubItem> _subitems = new List<TreeListViewSubItem>() { new TreeListViewSubItem("") };
+        public List<TreeListViewSubItem> Subitems {
             get { return _subitems; }
             set { _subitems = value; }
         }
         
         public string Text {
-            get { return _subitems[0]; }
-            set { _subitems[0] = value; }
+            get { return _subitems[0].Text; }
+            set { _subitems[0].Text = value; }
         }
         
         public bool Collapsed { get; set; }
         
-        private Font _font = new Font( "Arial", 10 );
         public Font Font {
-            get { return _font; }
-            set { _font = value; }
+            get { return _subitems[0].Font; }
+            set { _subitems[0].Font = value; }
         }
         
-        private Color _foreColor = Color.Black;
         public Color ForeColor {
-            get { return _foreColor; }
-            set { _foreColor = value; }
+            get { return _subitems[0].ForeColor; }
+            set { _subitems[0].ForeColor = value; }
+        }
+        
+        
+        public Brush Brush {
+            get { return _subitems[0].Brush; }
+            set { _subitems[0].Brush = value; }
         }
         
         private static Bitmap _bmp = new Bitmap(10, 10);
@@ -573,8 +628,18 @@ namespace VisBox {
         }
         
         public SizeF GetNodeSize() {
-            return _gr.MeasureString(Text, _font, PointF.Empty, StringFormat.GenericTypographic);
+            return _gr.MeasureString(Text, Font, PointF.Empty, StringFormat.GenericTypographic);
         }
+        
+        public TreeListViewSubItem AddSubitem(TreeListViewSubItem subItem) {
+            _subitems.Add( subItem );
+            return subItem;
+        }
+        
+        public TreeListViewSubItem AddSubitem(string text) {
+            return AddSubitem( new TreeListViewSubItem( text ) );
+        }
+        
     }
     
     
@@ -605,9 +670,9 @@ namespace VisBox {
         private static Bitmap _bmp = new Bitmap(10, 10);
         private static Graphics _gr = Graphics.FromImage( _bmp );
         
-        public bool IsMouseOver = false;
-        public bool IsMouseDown = false;
-        
+        public bool IsMouseOver     = false;
+        public bool IsMouseDown     = false;
+        public bool IsWidthChange   = false;
         public TreeListViewColumnItem() { }
         
         public TreeListViewColumnItem(string text) {
@@ -624,4 +689,51 @@ namespace VisBox {
         }
     }
     
+    
+    [Serializable]
+    public class TreeListViewSubItem {
+        public string Text { get; set; }
+        
+        private Font _font = new Font( "Arial", 10 );
+        public Font Font {
+            get { return _font; }
+            set { _font = value; }
+        }
+        
+        private static Color _foreColorDefault = Color.Black;
+        private Color _foreColor = _foreColorDefault;
+        public Color ForeColor {
+            get { return _foreColor; }
+            set {
+                _foreColor = value;
+                _brush = new SolidBrush( _foreColor );
+            }
+        }
+        
+        private Brush _brush = new SolidBrush(_foreColorDefault);
+        public Brush Brush {
+            get { return _brush; }
+            set { _brush = value; }
+        }
+        
+        private static Bitmap _bmp = new Bitmap(10, 10);
+        private static Graphics _gr = Graphics.FromImage( _bmp );
+        
+        public bool IsMouseOver = false;
+        public bool IsMouseDown = false;
+        
+        public TreeListViewSubItem() { }
+        
+        public TreeListViewSubItem(string text) {
+            if ( text == null ) throw new ArgumentNullException("text");
+            this.Text = text;
+            
+        }
+        
+        public SizeF GetTextSize() {
+            SizeF size = _gr.MeasureString(Text, _font, PointF.Empty, StringFormat.GenericTypographic);
+            size.Height += 1;
+            return size;
+        }
+    }
 }

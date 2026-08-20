@@ -93,9 +93,9 @@ namespace tester
 			Controls.Add( treeListView1 );
 			treeListView1.BringToFront();
 			
-			treeListView1.Columns.Add( new TreeListViewColumnItem("Name") );
-			treeListView1.Columns.Add( new TreeListViewColumnItem("Type") );
-			treeListView1.Columns.Add( new TreeListViewColumnItem("Value") );
+			treeListView1.AddColumn( "Name" );
+			treeListView1.AddColumn( "Type" );
+			treeListView1.AddColumn( "Value" );
             
             TreeListViewItem trvi = new TreeListViewItem("Node A");
             
@@ -103,7 +103,8 @@ namespace tester
             trviA2.Font = new Font( "Times New Roman", 15 );
             trviA2.Nodes.Add( new TreeListViewItem("A2a") );
             trviA2.Nodes.Add( new TreeListViewItem("A2b") );
-
+            trviA2.Subitems.Add( new TreeListViewSubItem("test1") );
+            trviA2.Subitems.Add( new TreeListViewSubItem("test2") );
             trvi.Nodes.Add( new TreeListViewItem( "Node A1") );
             trvi.Nodes.Add( trviA2 );
             trvi.Nodes.Add( new TreeListViewItem( "Node A3") );

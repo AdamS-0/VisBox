@@ -73,6 +73,7 @@ namespace VisBox
             this.hScrlBr.Name = "hScrlBr";
             this.hScrlBr.Size = new System.Drawing.Size(133, 17);
             this.hScrlBr.TabIndex = 0;
+            this.hScrlBr.ValueChanged += new System.EventHandler(this.HScrlBrValueChanged);
             // 
             // TreeListView
             // 
