@@ -144,8 +144,14 @@ namespace VisBox {
         }
         
         
+        private StringFormat _strFormatNodes = new StringFormat();
         public TreeListView() {
             InitializeComponent();
+            
+            
+            _strFormatNodes.LineAlignment   = StringAlignment.Center;
+            _strFormatNodes.Trimming        = StringTrimming.EllipsisCharacter;
+            _strFormatNodes.FormatFlags     = StringFormatFlags.NoWrap;
             
             pMain.MouseWheel += PMainMouseWheel;
             
@@ -409,6 +415,7 @@ namespace VisBox {
             }
         }
         
+        
         private bool DrawNode( ref Graphics gr, ref TreeListViewItem node, ref Rectangle areaToDraw, bool isLastChild ) {
             bool reachedBottomEndOfCanvas = false;
             
@@ -417,21 +424,14 @@ namespace VisBox {
                 return reachedBottomEndOfCanvas = true;
             }
             
-            int parentX = areaToDraw.X;
-            Brush brText = new SolidBrush(this.ForeColor);
+            int     parentX     = areaToDraw.X;
+            Brush   brText      = new SolidBrush( node.ForeColor );
             
+            SizeF   nodeSize    = node.GetNodeSize();
+            float   rowHeight   = nodeSize.Height;
             
-            StringFormat format = new StringFormat();
-            format.LineAlignment = StringAlignment.Center;
-            format.Trimming = StringTrimming.EllipsisCharacter;
-            format.FormatFlags = StringFormatFlags.NoWrap;
-            
-            /* TODO: In the future: each node has own font & fore color! */
-            SizeF nodeSize = node.GetNodeSize();
-            float rowHeight = nodeSize.Height;
-            
-            int treeLineX = areaToDraw.X + Indent / 2;
-            int treeLineY = (int)( areaToDraw.Y + rowHeight / 2);
+            int     treeLineX   = areaToDraw.X + Indent / 2;
+            int     treeLineY   = (int)( areaToDraw.Y + rowHeight / 2);
             
             RectangleF previousClip = gr.ClipBounds;
             RectangleF columnClip   = gr.ClipBounds;
@@ -439,44 +439,49 @@ namespace VisBox {
             if ( areaToDraw.Y > -rowHeight ) {
                 /* At least part of node is on visible screen, so draw it! */
                 
+                RectangleF strBox = new RectangleF(
+                    areaToDraw.X + Indent, areaToDraw.Y,
+                    areaToDraw.Width, rowHeight );
                 
                 /* Draw first column, tree lines and buttons */
-                /* FIXME: tree buttons uotstand when first column is too thin */
-                /* Draw other columns data */
-                
                 if ( _columns.Count > 0 ) {
-                    for ( int idx = 0; idx < _columns.Count && idx < node.Subitems.Count; idx++ ) {
-                        columnClip.X = _columns[idx].BoundBox.Left;
-                        columnClip.Width = _columns[idx].BoundBox.Right - columnClip.X;
-                        
-                        gr.SetClip( columnClip );
-                        
-                        RectangleF strBox = new RectangleF(
-                            Math.Max( areaToDraw.X + Indent, _columns[idx].BoundBox.Left ),
-                            areaToDraw.Y, _columns[idx].Width, rowHeight );
-                        strBox.Width = _columns[idx].BoundBox.Right - strBox.Left;
-                        gr.DrawString(node.Subitems[idx], node.Font, brText, strBox, format);
-                    }
-                } else {
-                    gr.DrawString(node.Text, node.Font, brText,
-                                  areaToDraw.X + Indent, areaToDraw.Y + rowHeight / 2,
-                                  format);
+                    columnClip.X = _columns[0].BoundBox.Left;
+                    columnClip.Width = _columns[0].BoundBox.Right - columnClip.X;
+                    strBox.X = Math.Max( areaToDraw.X + Indent, _columns[0].BoundBox.Left );
+                    strBox.Width = columnClip.Width;
                 }
-                _numberOfDrawnNodes++;
+                gr.SetClip( columnClip );
+                
+                /* Draw first column text ============================================== */
+                gr.DrawString(node.Subitems[0], node.Font, brText, strBox, _strFormatNodes);
+                        
+                /* Draw tree lines ===================================================== */
                 /* Draw horizontal dotted line to node's text */
                 gr.DrawLine( penTreeDottedLine, treeLineX, treeLineY, areaToDraw.X + Indent, treeLineY );
                 /* Draw vertical line */
-                if ( isLastChild ) {
-                    gr.DrawLine( penTreeDottedLine, treeLineX, areaToDraw.Y, treeLineX, treeLineY );
-                } else {
-                    gr.DrawLine( penTreeDottedLine, treeLineX, areaToDraw.Y, treeLineX, areaToDraw.Y + rowHeight );
+                gr.DrawLine( penTreeDottedLine, treeLineX, areaToDraw.Y, treeLineX,
+                            isLastChild ? treeLineY : areaToDraw.Y + rowHeight );
+                
+                /* Draw other columns data */
+                for ( int idx = 1; idx < _columns.Count && idx < node.Subitems.Count; idx++ ) {
+                    columnClip.X = _columns[idx].BoundBox.Left;
+                    columnClip.Width = _columns[idx].BoundBox.Right - columnClip.X;
+                    
+                    gr.SetClip( columnClip );
+                    
+                    strBox = new RectangleF(
+                        Math.Max( areaToDraw.X + Indent, _columns[idx].BoundBox.Left ),
+                        areaToDraw.Y, _columns[idx].Width, rowHeight );
+                    strBox.Width = _columns[idx].BoundBox.Right - strBox.Left;
+                    gr.DrawString(node.Subitems[idx], node.Font, brText, strBox, _strFormatNodes);
                 }
                 
+                _numberOfDrawnNodes++;
             }
             areaToDraw.Y += (int)rowHeight;
             
             gr.SetClip( previousClip );
-            
+            //-------------------
             if ( node.Nodes.Count > 0 ) {
                 if ( !node.Collapsed ) {
                     /* This node is not collapsed so draw his childs */
@@ -486,18 +491,28 @@ namespace VisBox {
                         reachedBottomEndOfCanvas = DrawNode( ref gr, ref nodeI, ref areaToDraw, idNode == ( node.Nodes.Count - 1 ) );
                         if ( reachedBottomEndOfCanvas ) { break; }
                     }
-                    
-                    if ( areaToDraw.Y > -rowHeight ) {
-                        /* At least part of node is on visible screen, so draw it! */
-                        if ( !isLastChild ) {
-                            gr.DrawLine( penTreeDottedLine, treeLineX, treeLineY, treeLineX, areaToDraw.Y );
-                        }
-                    }
                 }
                 
-                /* This node does have at least one child, so draw button to collapse/expand */
-                DrawNodeBtn( ref gr, ref node, treeLineX, treeLineY, node.Collapsed );
+                if ( areaToDraw.Y > -rowHeight ) {
+                    gr.SetClip( previousClip );
+                    if ( _columns.Count > 0 ) {
+                        columnClip.X = _columns[0].BoundBox.Left;
+                        columnClip.Width = _columns[0].BoundBox.Right - columnClip.X;
+                        gr.SetClip( columnClip );
+                    }
+                    
+                    /* At least part of node is on visible screen, so draw it! */
+                    if ( !isLastChild ) {
+                        gr.DrawLine( penTreeDottedLine, treeLineX, treeLineY, treeLineX, areaToDraw.Y );
+                    }
+                    
+                    /* Draw tree buttons =================================================== */
+                    /* This node does have at least one child, so draw button to collapse/expand */
+                    DrawNodeBtn( ref gr, ref node, treeLineX, treeLineY, node.Collapsed );
+                }
+                gr.SetClip( previousClip );
             }
+            //---------------------
             areaToDraw.X = parentX;
             return reachedBottomEndOfCanvas;
         }
