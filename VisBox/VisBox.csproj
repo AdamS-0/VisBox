@@ -107,9 +107,9 @@
     <Compile Include="Switch.Designer.cs">
       <DependentUpon>Switch.cs</DependentUpon>
     </Compile>
-    <Compile Include="TreeListView.cs" />
-    <Compile Include="TreeListView.Designer.cs">
-      <DependentUpon>TreeListView.cs</DependentUpon>
+    <Compile Include="TreeDetailsView.cs" />
+    <Compile Include="TreeDetailsView.Designer.cs">
+      <DependentUpon>TreeDetailsView.cs</DependentUpon>
     </Compile>
     <Compile Include="VisElement.cs" />
     <Compile Include="VisElement.Designer.cs">
@@ -154,8 +154,8 @@
     <EmbeddedResource Include="Switch.resx">
       <DependentUpon>Switch.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TreeListView.resx">
-      <DependentUpon>TreeListView.cs</DependentUpon>
+    <EmbeddedResource Include="TreeDetailsView.resx">
+      <DependentUpon>TreeDetailsView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="VisElement.resx">
       <DependentUpon>VisElement.cs</DependentUpon>
