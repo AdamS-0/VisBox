@@ -12,6 +12,8 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
+using VisBox;
+
 namespace tester
 {
 	/// <summary>
@@ -67,19 +69,63 @@ namespace tester
 			plot1.AddSeries(ref ser1);
 //			plot1.AddSeries(ref ser2);
 			
-			plot1.ColorInner = Color.Black;
-			plot1.gridY.Pen.Color = Color.Green;
-			ser1.Pen.Color = Color.LightBlue;
-			plot1.AxisLimitsY.Min = -.4f;
-			plot1.AxisLimitsY.Max = 1.1f;
-			plot1.AxisLimitsY.Use = false;
-			plot1.AxisLimitsY.Margin = 0.1f;
-			plot1.gridY.Dots = new List<VisBox.GridDot> { new VisBox.GridDot(0, "zero"), new VisBox.GridDot(1, "One"), new VisBox.GridDot(-.1f, "negative") };
-			plot1.gridY.Format = "0.000";
+//			plot1.ColorInner = Color.Black;
+//			plot1.gridY.Pen.Color = Color.Green;
+//			ser1.Pen.Color = Color.LightBlue;
+//			plot1.AxisLimitsY.Min = -.4f;
+//			plot1.AxisLimitsY.Max = 1.1f;
+//			plot1.AxisLimitsY.Autoscale = false;
+//			plot1.gridY.Dots = new List<VisBox.GridDot> { new VisBox.GridDot(0, "zero"), new VisBox.GridDot(1, "One"), new VisBox.GridDot(-.1f, "negative") };
+//			plot1.gridY.Format = "0.000";
+//			
+//			plot1.gridYminor.GridOn = true;
+//			plot1.gridYminor.ScaleFactor = 0.25f;
+//			plot1.gridYminor.ShowLables = false;
+
 			
-			plot1.gridYminor.GridOn = true;
-			plot1.gridYminor.ScaleFactor = 0.25f;
-			plot1.gridYminor.ShowLables = false;
+			TreeListView treeListView1 = new TreeListView();
+			treeListView1.Left = 700;
+			treeListView1.Top = 100;
+			treeListView1.FlatStyle = VisBox.VisElement.VisFlatStyle.Collapsed;
+			treeListView1.Width = 300;
+			treeListView1.Height = 120;
+            
+			Controls.Add( treeListView1 );
+			treeListView1.BringToFront();
+			
+			treeListView1.Columns.Add( new TreeListViewColumnItem("Name") );
+			treeListView1.Columns.Add( new TreeListViewColumnItem("Type") );
+			treeListView1.Columns.Add( new TreeListViewColumnItem("Value") );
+            
+            TreeListViewItem trvi = new TreeListViewItem("Node A");
+            
+            TreeListViewItem trviA2 = new TreeListViewItem( "Node A2");
+            trviA2.Font = new Font( "Times New Roman", 15 );
+            trviA2.Nodes.Add( new TreeListViewItem("A2a") );
+            trviA2.Nodes.Add( new TreeListViewItem("A2b") );
+
+            trvi.Nodes.Add( new TreeListViewItem( "Node A1") );
+            trvi.Nodes.Add( trviA2 );
+            trvi.Nodes.Add( new TreeListViewItem( "Node A3") );
+            
+            treeListView1.Nodes.Add( trvi );
+            treeListView1.Nodes.Add( new TreeListViewItem("Node B") );
+            treeListView1.Nodes.Add( new TreeListViewItem("Node C") );
+//            treeListView1.Nodes.Add( new TreeListViewItem("Node D") );
+//            treeListView1.Nodes.Add( new TreeListViewItem("Node E") );
+//            treeListView1.Nodes.Add( new TreeListViewItem("Node F") );
+//            treeListView1.Nodes.Add( new TreeListViewItem("Node G") );
+//            treeListView1.Nodes.Add( new TreeListViewItem("Node H") );
+//            treeListView1.Nodes.Add( new TreeListViewItem("Node I") );
+//            treeListView1.Nodes.Add( new TreeListViewItem("Node J") );
+//            treeListView1.Nodes.Add( new TreeListViewItem("Node K") );
+//            treeListView1.Nodes.Add( new TreeListViewItem("Node L") );
+//            
+//            for (int idx = 0; idx < 1000; idx++) {
+//                treeListView1.Nodes.Add( new TreeListViewItem("Node idx: " + idx) );
+//            }
+            
+            treeListView1.NumberOfVisibleNodesChanged();
 		}
 		
 		
@@ -208,6 +254,11 @@ namespace tester
 		    else {
 		        plot1.Series[0].Marker.Symbol = txtBxPlotMarker.Text[0];
 		    }
+        }
+		
+		
+		
+		void BtnShowPlotPropertyClick ( object sender, EventArgs e ) {
         }
 		
 		

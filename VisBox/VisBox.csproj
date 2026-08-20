@@ -51,6 +51,12 @@
     <Compile Include="AnalogMeter.Designer.cs">
       <DependentUpon>AnalogMeter.cs</DependentUpon>
     </Compile>
+    <Compile Include="AxisLimits.cs">
+      <DependentUpon>Plot.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AxisMargin.cs">
+      <DependentUpon>Plot.cs</DependentUpon>
+    </Compile>
     <Compile Include="Bar.cs" />
     <Compile Include="Bar.Designer.cs">
       <DependentUpon>Bar.cs</DependentUpon>
@@ -58,6 +64,9 @@
     <Compile Include="ControlKnob.cs" />
     <Compile Include="ControlKnob.Designer.cs">
       <DependentUpon>ControlKnob.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Grid.cs">
+      <DependentUpon>Plot.cs</DependentUpon>
     </Compile>
     <Compile Include="Lamp.cs" />
     <Compile Include="Lamp.Designer.cs">
@@ -71,6 +80,10 @@
     <Compile Include="Plot.cs" />
     <Compile Include="Plot.Designer.cs">
       <DependentUpon>Plot.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PropEditor.cs" />
+    <Compile Include="PropEditor.Designer.cs">
+      <DependentUpon>PropEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PushButton.cs" />
@@ -87,9 +100,16 @@
     </Compile>
     <Compile Include="DisplaySegmentManager.cs" />
     <Compile Include="PushButtonManager.cs" />
+    <Compile Include="Series.cs">
+      <DependentUpon>Plot.cs</DependentUpon>
+    </Compile>
     <Compile Include="Switch.cs" />
     <Compile Include="Switch.Designer.cs">
       <DependentUpon>Switch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TreeListView.cs" />
+    <Compile Include="TreeListView.Designer.cs">
+      <DependentUpon>TreeListView.cs</DependentUpon>
     </Compile>
     <Compile Include="VisElement.cs" />
     <Compile Include="VisElement.Designer.cs">
@@ -118,6 +138,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Plot.resx">
       <DependentUpon>Plot.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropEditor.resx">
+      <DependentUpon>PropEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PushButton.resx">
       <DependentUpon>PushButton.cs</DependentUpon>

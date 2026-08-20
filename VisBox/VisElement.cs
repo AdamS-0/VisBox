@@ -60,28 +60,6 @@ namespace VisBox {
 		[DefaultValue(typeof(string), "")]
 		public override string Text { get; set;}
 		
-		/*
-		[Bindable(true)]
-		[EditorBrowsable(EditorBrowsableState.Always)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-		[Browsable(true)]
-		[Category("Appearance")]
-		[DefaultValue(typeof(string), "")]
-		public override string Text {
-			get { return base.Text; }
-			set {
-				if (base.Text != value) {
-					base.Text = value; this.Invalidate();
-					if(TextChanged != null) TextChanged(this, EventArgs.Empty);
-				}
-			}
-			
-		}
-		
-		[Browsable(true)]
-		public event EventHandler TextChanged;
-		*/
-		
 		public enum VisFlatStyle{
 			Flat,
 			Collapsed,
@@ -89,6 +67,7 @@ namespace VisBox {
 		}
 		
 		private VisFlatStyle _flatStyle = VisFlatStyle.Flat;
+		[Category("VisBox")]
 		[DefaultValue(typeof(VisFlatStyle), "Flat")]
 		public VisFlatStyle FlatStyle{
 			get { return _flatStyle; }
@@ -104,6 +83,7 @@ namespace VisBox {
 		}
 		
 		private Direction _direction = Direction.Horizontal;
+		[Category("VisBox")]
 		[DefaultValue(typeof(Direction), "Horizontal")]
 		public Direction LayoutDirection{
 			get { return _direction; }
@@ -115,7 +95,8 @@ namespace VisBox {
 		
 		
 		protected float _value = 0;
-		[DefaultValue(typeof(float), "0")]
+		[Category("VisBox")]
+        [DefaultValue(typeof(float), "0")]
 		[Description("Always from 0.0 to 1.0")]
 		public float Value {
 			get { return _value; }
@@ -131,7 +112,8 @@ namespace VisBox {
 		
 		
 		protected bool _state = false;
-		[DefaultValue(typeof(bool), "False")]
+		[Category("VisBox")]
+        [DefaultValue(typeof(bool), "False")]
 		public bool State {
 			get { return _state; }
 			set { _state = value; stateChanged(); Invalidate(); OnStateChanged( new EventArgs() );}
@@ -142,7 +124,8 @@ namespace VisBox {
 		
 		
 		protected Color _colorOn = Color.Red;
-		[DefaultValue(typeof(Color), "Red")]
+		[Category("VisBox")]
+        [DefaultValue(typeof(Color), "Red")]
 		public virtual Color ColorOn {
 			get { return _colorOn; }
 			set { _colorOn = value; colorChanged(); }
@@ -150,7 +133,8 @@ namespace VisBox {
 		
 		
 		protected Color _colorOff = Color.Maroon;
-		[DefaultValue(typeof(Color), "Maroon")]
+		[Category("VisBox")]
+        [DefaultValue(typeof(Color), "Maroon")]
 		public virtual Color ColorOff {
 			get { return _colorOff; }
 			set { _colorOff = value; colorChanged(); }
@@ -163,7 +147,8 @@ namespace VisBox {
 		
 		
 		protected Color _colorInner = SystemColors.Control;
-		[DefaultValue(typeof(Color), "Control")]
+		[Category("VisBox")]
+        [DefaultValue(typeof(Color), "Control")]
 		public Color ColorInner {
 			get { return _colorInner; }
 			set { _colorInner = value; }
@@ -171,7 +156,8 @@ namespace VisBox {
 		
 		
 		protected Color _colorBorder = Color.DarkGray;
-		[DefaultValue(typeof(Color), "DarkGray")]
+		[Category("VisBox")]
+        [DefaultValue(typeof(Color), "DarkGray")]
 		public Color ColorBorder {
 			get { return _colorBorder; }
 			set { _colorBorder = value; }
@@ -181,7 +167,8 @@ namespace VisBox {
 		
 		
 		protected float _borderWidth = 0;
-		[DefaultValue(typeof(float), "0")]
+		[Category("VisBox")]
+        [DefaultValue(typeof(float), "0")]
 		public float BorderWidth{
 			get { return _borderWidth; }
 			set { _borderWidth = value; this.Invalidate(); }

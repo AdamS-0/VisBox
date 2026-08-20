@@ -68,6 +68,7 @@ namespace tester
 		private VisBox.Plot plot1;
 		private System.Windows.Forms.TextBox txtBxPlotMarker;
 		private VisBox.ZipBar zipBar7;
+		private System.Windows.Forms.Button btnShowPlotProperty;
 		
 		/// <summary>
 		/// Disposes resources used by the form.
@@ -92,6 +93,9 @@ namespace tester
 		{
 		    this.components = new System.ComponentModel.Container();
 		    System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+		    VisBox.AxisLimits axisLimits1 = new VisBox.AxisLimits();
+		    VisBox.AxisLimits axisLimits2 = new VisBox.AxisLimits();
+		    VisBox.AxisMargin axisMargin1 = new VisBox.AxisMargin();
 		    this.lamp1 = new VisBox.Lamp();
 		    this.label1 = new System.Windows.Forms.Label();
 		    this.timer1 = new System.Windows.Forms.Timer(this.components);
@@ -146,6 +150,7 @@ namespace tester
 		    this.plot1 = new VisBox.Plot();
 		    this.txtBxPlotMarker = new System.Windows.Forms.TextBox();
 		    this.zipBar7 = new VisBox.ZipBar();
+		    this.btnShowPlotProperty = new System.Windows.Forms.Button();
 		    this.SuspendLayout();
 		    // 
 		    // lamp1
@@ -738,10 +743,23 @@ namespace tester
 		    // 
 		    // plot1
 		    // 
+		    axisLimits1.Max = 200F;
+		    axisLimits1.Min = 0F;
+		    this.plot1.AxisLimitsX = axisLimits1;
+		    axisLimits2.Max = 0F;
+		    axisLimits2.Min = 0F;
+		    this.plot1.AxisLimitsY = axisLimits2;
+		    axisMargin1.Bottom = 0F;
+		    axisMargin1.Left = 0F;
+		    axisMargin1.Right = 0F;
+		    axisMargin1.Top = 0F;
+		    this.plot1.AxisMargin = axisMargin1;
 		    this.plot1.BackColor = System.Drawing.Color.Gainsboro;
+		    this.plot1.BackgroundColor = System.Drawing.Color.Bisque;
 		    this.plot1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("plot1.BackgroundImage")));
 		    this.plot1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
 		    this.plot1.BorderWidth = 1F;
+		    this.plot1.ColorInner = System.Drawing.Color.Bisque;
 		    this.plot1.FlatStyle = VisBox.VisElement.VisFlatStyle.Collapsed;
 		    this.plot1.Location = new System.Drawing.Point(548, 3);
 		    this.plot1.Name = "plot1";
@@ -770,12 +788,23 @@ namespace tester
 		    this.zipBar7.TabIndex = 54;
 		    this.zipBar7.Text = null;
 		    // 
+		    // btnShowPlotProperty
+		    // 
+		    this.btnShowPlotProperty.Location = new System.Drawing.Point(450, 244);
+		    this.btnShowPlotProperty.Name = "btnShowPlotProperty";
+		    this.btnShowPlotProperty.Size = new System.Drawing.Size(95, 23);
+		    this.btnShowPlotProperty.TabIndex = 55;
+		    this.btnShowPlotProperty.Text = "ShowPlotProperty";
+		    this.btnShowPlotProperty.UseVisualStyleBackColor = true;
+		    this.btnShowPlotProperty.Click += new System.EventHandler(this.BtnShowPlotPropertyClick);
+		    // 
 		    // MainForm
 		    // 
 		    this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 		    this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 		    this.BackColor = System.Drawing.SystemColors.Control;
 		    this.ClientSize = new System.Drawing.Size(1026, 327);
+		    this.Controls.Add(this.btnShowPlotProperty);
 		    this.Controls.Add(this.zipBar7);
 		    this.Controls.Add(this.txtBxPlotMarker);
 		    this.Controls.Add(this.plot1);

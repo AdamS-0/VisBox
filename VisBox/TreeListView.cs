@@ -1,0 +1,612 @@
+﻿/*
+ * Created by SharpDevelop.
+ * User: AS
+ * Date: 19.08.2026
+ * Time: 06:53
+ * 
+ * To change this template use Tools | Options | Coding | Edit Standard Headers.
+ */
+using System;
+using System.ComponentModel;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Collections.Generic;
+
+namespace VisBox {
+    /// <summary>
+    /// Description of TreeListView.
+    /// </summary>
+    public partial class TreeListView : VisBox.VisElement {
+        
+        private class TreeViewItemBtnInfo {
+            public Point Location = new Point(0, 0);
+            public TreeListViewItem Node;
+            
+            public TreeViewItemBtnInfo(Point pt, ref TreeListViewItem node) {
+                Location = pt;
+                Node = node;
+            }
+        }
+        
+        private int _idNodeToShow = 0;
+        
+        private List<TreeListViewItem> _nodes = new List<TreeListViewItem>();
+        
+        public List<TreeListViewItem> Nodes {
+            get { return _nodes; }
+            set {_nodes = value; }
+        }
+        
+        
+        private List<TreeListViewColumnItem> _columns = new List<TreeListViewColumnItem>();
+        public List<TreeListViewColumnItem> Columns {
+            get { return _columns; }
+            set { _columns = value; }
+        }
+        
+        
+        private int GetNumOfVisibleChildNodes(ref TreeListViewItem node) {
+            int num = 0;
+            for ( int idx = 0; idx < node.Nodes.Count; idx++ ) {
+                TreeListViewItem tlvi = node.Nodes[idx];
+                num++;
+                if ( !tlvi.Collapsed ) {
+                    num += GetNumOfVisibleChildNodes( ref tlvi );
+                }
+            }
+            return num;
+        }
+        
+        private int GetNumOfVisibleNodes() {
+            int num = 0;
+            for ( int idx = 0; idx < _nodes.Count; idx++ ) {
+                TreeListViewItem tlvi = _nodes[idx];
+                num++;
+                if ( !tlvi.Collapsed ) {
+                    num += GetNumOfVisibleChildNodes( ref tlvi );
+                }
+            }
+            return num;
+        }
+        
+        
+        private int _smallestNodeHeight = int.MaxValue;
+        private int GetHeightOfAllNodes(ref TreeListViewItem node) {
+            int totalHeight = 0;
+            int nodeHeight  = 0;
+            for ( int idx = 0; idx < node.Nodes.Count; idx++ ) {
+                TreeListViewItem tlvi = node.Nodes[idx];
+                nodeHeight   = (int)tlvi.GetNodeSize().Height;
+                totalHeight += nodeHeight;
+                if ( _smallestNodeHeight > nodeHeight ) {
+                    _smallestNodeHeight = nodeHeight;
+                }
+                
+                if ( !tlvi.Collapsed ) {
+                    totalHeight += GetHeightOfAllNodes( ref tlvi );
+                }
+            }
+            return totalHeight;
+        }
+        
+        private int GetHeightOfAllNodes() {
+            _smallestNodeHeight = int.MaxValue;
+            int totalHeight     = 0;
+            int nodeHeight      = 0;
+            for ( int idx = 0; idx < _nodes.Count; idx++ ) {
+                TreeListViewItem tlvi = _nodes[idx];
+                nodeHeight   = (int)tlvi.GetNodeSize().Height;
+                totalHeight += nodeHeight;
+                if ( _smallestNodeHeight > nodeHeight ) {
+                    _smallestNodeHeight = nodeHeight;
+                }
+                
+                if ( !tlvi.Collapsed ) {
+                    totalHeight += GetHeightOfAllNodes( ref tlvi );
+                }
+            }
+            
+            vScrlBr.SmallChange = _smallestNodeHeight;
+            return totalHeight + _smallestNodeHeight;
+        }
+        
+        
+        
+        public void NumberOfVisibleNodesChanged() {
+            int maxHeight = GetHeightOfAllNodes();
+            vScrlBr.Maximum = maxHeight;
+            vScrlBr.LargeChange = pMain.Height;
+            if (maxHeight > pMain.Height) {
+                vScrlBr.Visible = true;
+            } else {
+                vScrlBr.Visible = false;
+                vScrlBr.Value = 0;
+            }
+        }
+        
+        
+        private List<TreeViewItemBtnInfo> _btns = new List<TreeViewItemBtnInfo>();
+        private int _btnWidth    = 9;
+        private int _btnHeight   = 9;
+        
+        private int _indent = 19;
+        [Category("VisBox")]
+        [DefaultValue(typeof(int), "19")]
+        public int Indent {
+            get { return _indent; }
+            set { _indent = value; }
+        }
+        
+        private Pen _penTreeLine { get; set; }
+        public Pen TreeLine {
+            get { return _penTreeLine; }
+            set { _penTreeLine = value; }
+        }
+        
+        
+        public TreeListView() {
+            InitializeComponent();
+            
+            pMain.MouseWheel += PMainMouseWheel;
+            
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
+                    ControlStyles.AllPaintingInWmPaint |
+                    ControlStyles.UserPaint |
+                    ControlStyles.ResizeRedraw, true );
+            
+            NumberOfVisibleNodesChanged();
+        }
+        
+        void VScrlBrValueChanged ( object sender, EventArgs e ) {
+            this.Refresh();
+        }
+       
+        private void PMainMouseWheel(object sender, MouseEventArgs e) {
+            try {
+                int currVal = vScrlBr.Value;
+                currVal -= vScrlBr.SmallChange * ( e.Delta > 0 ? 1 : -1 );
+                if ( currVal < 0 ) { currVal = 0; }
+                else if ( currVal >= ( vScrlBr.Maximum - vScrlBr.LargeChange ) ) {
+                    currVal = vScrlBr.Maximum - vScrlBr.LargeChange;
+                }
+                vScrlBr.Value = currVal;
+            } catch {}
+        }
+        
+        void PMainSizeChanged ( object sender, EventArgs e ) {
+            NumberOfVisibleNodesChanged();
+        }
+        
+        void TreeListViewMouseUp ( object sender, MouseEventArgs e ) {
+            Point ptClickOnControl = e.Location;
+            Point ptBtnRel = new Point(0, 0);
+            
+            foreach ( TreeViewItemBtnInfo btn in _btns ) {
+                ptBtnRel.X = btn.Location.X - ptClickOnControl.X;
+                ptBtnRel.Y = btn.Location.Y - ptClickOnControl.Y;
+                
+                if ( !( ( ptBtnRel.X >= -_btnWidth/2 ) &&
+                        ( ptBtnRel.X <= _btnWidth/2 ) ) )
+                {
+                    /* Click out of range OX relative to button */
+                    continue;
+                }
+                
+                if ( !( ( ptBtnRel.Y >= -_btnHeight/2 ) &&
+                        ( ptBtnRel.Y <= _btnHeight/2 ) ) )
+                {
+                    /* Click out of range OY relative to button */
+                    continue;
+                }
+                
+                /* Click in range of button */
+                btn.Node.Collapsed = !btn.Node.Collapsed;
+                NumberOfVisibleNodesChanged();
+                this.pMain.Invalidate();
+                this.Invalidate();
+                break;
+            }
+            
+        }
+        
+        
+        
+        void PMainMouseDown ( object sender, MouseEventArgs e ) {
+            
+        }
+        
+        private Point _colMouseDownPoint = new Point(0, 0);
+        private int _colMouseDownLastWidth = 0;
+        private TreeListViewColumnItem _colMouseDown = null;
+        void PMainMouseMove ( object sender, MouseEventArgs e ) {
+            bool requiredRefresh = false;
+            if ( _columns.Count > 0 ) {
+//                foreach ( TreeListViewColumnItem col in _columns ) {
+//                    col.IsMouseOver = false;
+//                    col.IsMouseDown = false;
+//                }
+                
+                Point ptRelMouse = new Point( e.X - _colStart.X, e.Y - _colStart.Y);
+                
+                if ( _colMouseDown != null ) {
+                    if ( _colMouseDown.IsMouseDown ) {
+                        _colMouseDown.Width = _colMouseDownLastWidth + ( e.X - _colMouseDownPoint.X );
+                        requiredRefresh = true;
+                    }
+                }
+                
+                /* Check if mouse over columns header */
+                if ( ( ptRelMouse.Y >= 0 ) && ( ptRelMouse.Y < _columnsHeaderHeight ) ) {
+                    /* Mouse over columns header! */
+                    foreach ( TreeListViewColumnItem col in _columns ) {
+                        if ( ( ptRelMouse.X > 0 ) && ( ptRelMouse.X <= col.Width + 1 ) ) {
+                            
+                            if ( e.Button == MouseButtons.Left ) {
+                                /* MouseDown now! */
+                                if ( !col.IsMouseDown && ( _colMouseDown == null ) ) {
+                                    /* Mouse down first! */
+                                    _colMouseDownPoint = new Point( e.X, e.Y );
+                                    _colMouseDownLastWidth = col.Width;
+                                    _colMouseDown = col;
+                                }
+                                col.IsMouseDown = true;
+                            } else {
+                                if ( col.IsMouseDown ) {
+                                    /* Last event of mouse down */
+                                    _colMouseDown = null;
+                                }
+                                col.IsMouseDown = false;
+                            }
+                            
+                            /* Found column header under mouse pointer */
+                            if ( ptRelMouse.X > ( col.Width - 3 ) ) {
+                                /* Mouse pointer on splitter */
+                                pMain.Cursor = Cursors.SizeWE;                                
+                            } else {
+                                pMain.Cursor = Cursors.Default;
+                            }
+                            
+                            if ( !col.IsMouseOver ) {
+                                requiredRefresh = true;
+                            }
+                            col.IsMouseOver = true;
+                        } else {
+                            if ( col.IsMouseOver ) { requiredRefresh = true; }
+                            col.IsMouseOver = false;
+                        }
+                        
+                        ptRelMouse.X -= col.Width;
+                    }
+                } else {
+                    foreach ( TreeListViewColumnItem col in _columns ) {
+                        if ( col.IsMouseOver ) { requiredRefresh = true; }
+                        col.IsMouseOver = false;
+                        col.IsMouseDown = false;
+                    }
+                    pMain.Cursor = Cursors.Default;
+                    _colMouseDown = null;
+                }
+            }
+            
+            if ( requiredRefresh ) {
+                pMain.Refresh();
+            }
+        }
+        
+        private int _numberOfDrawnNodes = 0;
+        void TreeListViewPaint ( object sender, PaintEventArgs e ) {
+            _numberOfDrawnNodes = 0;
+            Graphics gr = e.Graphics;
+            base.OnPaint(e);
+            penTreeDottedLine.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+            
+            Rectangle areaToDraw = GetInnerSpace();
+            gr.SetClip( areaToDraw );
+            
+            if ( _columns.Count > 0 ) {
+                DrawColumnHeaders( ref gr, ref areaToDraw );
+                gr.SetClip( areaToDraw );
+            }
+            
+            areaToDraw.Y -= vScrlBr.Value;
+            int height = this.Height;
+//            Rectangle areaToDraw = new Rectangle(
+//                this.pMain.Padding.Left,
+//                this.pMain.Padding.Top - vScrlBr.Value,
+//                this.pMain.Width - (this.pMain.Padding.Left + this.pMain.Padding.Right),
+//                this.pMain.Height - (this.pMain.Padding.Top + this.pMain.Padding.Bottom ) );
+            
+            bool reachedBottomEndOfCanvas = false;
+            
+            for ( int idNode = _idNodeToShow; idNode < _nodes.Count; idNode++ ) {
+                TreeListViewItem nodeI = _nodes[idNode];
+                reachedBottomEndOfCanvas = DrawNode( ref gr, ref nodeI, ref areaToDraw, idNode == ( _nodes.Count - 1 ) );
+                if ( reachedBottomEndOfCanvas ) {
+                    break;
+                }
+            }
+            
+        }
+        
+        
+        private int _columnsHeaderHeight    = 0;
+        private Point _colStart             = new Point(0, 0);
+        
+        private int DrawColumnHeaders( ref Graphics gr, ref Rectangle areaToDraw ) {
+            _columnsHeaderHeight    = 0;
+            _colStart.Y             = 0;
+            
+            int xOffset = 0;
+            /* Get maximum height of columns header */
+            foreach ( TreeListViewColumnItem col in _columns ) {
+                int colHdrHeight = (int)col.GetTextSize().Height;
+                if ( _columnsHeaderHeight < colHdrHeight ) {
+                    _columnsHeaderHeight = colHdrHeight;
+                }
+            }
+            
+            _colStart.X = areaToDraw.X;
+            _colStart.Y = areaToDraw.Y;
+
+            StringFormat format = new StringFormat();
+            format.LineAlignment = StringAlignment.Center;
+            format.Trimming = StringTrimming.EllipsisCharacter;
+            format.FormatFlags = StringFormatFlags.NoWrap;
+            
+            foreach ( TreeListViewColumnItem col in _columns ) {
+                int treeLineX = areaToDraw.X + Indent / 2;
+                int treeLineY = (int)( areaToDraw.Y + _columnsHeaderHeight / 2);
+                
+                Brush brText = new SolidBrush(col.ForeColor);
+                
+                col.BoundBox.X = areaToDraw.X + xOffset + 1;
+                col.BoundBox.Y = areaToDraw.Y;
+                
+                if ( col.IsMouseOver ) {
+                    gr.FillRectangle( new SolidBrush(Color.Gainsboro),
+                                     areaToDraw.X + xOffset + 1, areaToDraw.Y,
+                                     col.Width - 1, _columnsHeaderHeight + 1 );
+                }
+
+                gr.DrawString(col.Text, col.Font, brText,
+                              new RectangleF(areaToDraw.X + xOffset + 1, areaToDraw.Y,
+                                     col.Width - 1, _columnsHeaderHeight + 1 ),
+                              format);
+                              
+//                gr.DrawString(col.Text, col.Font, brText,
+//                              areaToDraw.X + xOffset, areaToDraw.Y + _columnsHeaderHeight / 2,
+//                              format);
+                
+                xOffset += col.Width;
+                gr.DrawLine( penColLine,
+                            areaToDraw.X + xOffset, areaToDraw.Y,
+                            areaToDraw.X + xOffset, areaToDraw.Y + _columnsHeaderHeight );
+            }
+            
+            areaToDraw.Y += _columnsHeaderHeight + 1;
+            
+            return _columnsHeaderHeight;
+        }
+        
+        Pen     penColLine          = new Pen( Color.DimGray );
+        Pen     penBtnBorder        = new Pen( Color.DimGray );
+        Brush   brBtnInner          = new SolidBrush( Color.LightGray );
+        Pen     penBtnIconLine      = new Pen( Color.RoyalBlue );
+        Pen     penTreeDottedLine   = new Pen( Color.DimGray );
+        
+        private void DrawNodeBtn( ref Graphics gr, ref TreeListViewItem node, int btnCenterX, int btnCenterY, bool collapsed ) {
+            gr.FillRectangle( brBtnInner, btnCenterX - _btnWidth/2, btnCenterY - _btnHeight/2, _btnWidth - 1, _btnHeight - 1 );
+            gr.DrawRectangle( penBtnBorder, btnCenterX - _btnWidth/2, btnCenterY - _btnHeight/2, _btnWidth - 1, _btnHeight - 1 );
+            
+            _btns.Add( new TreeViewItemBtnInfo( new Point( btnCenterX, btnCenterY ), ref node ) );
+            
+            // -
+            gr.DrawLine( penBtnIconLine, btnCenterX - _btnWidth/4, btnCenterY, btnCenterX + _btnWidth/4, btnCenterY );
+            
+            if ( collapsed ) {
+                // |
+                gr.DrawLine( penBtnIconLine, btnCenterX, btnCenterY - _btnHeight/4, btnCenterX, btnCenterY + _btnHeight/4 );
+            }
+        }
+        
+        private bool DrawNode( ref Graphics gr, ref TreeListViewItem node, ref Rectangle areaToDraw, bool isLastChild ) {
+            bool reachedBottomEndOfCanvas = false;
+            
+            if ( areaToDraw.Y >= areaToDraw.Height ) {
+                /* There is no space to draw so quit! */
+                return reachedBottomEndOfCanvas = true;
+            }
+            
+            int parentX = areaToDraw.X;
+            Brush brText = new SolidBrush(this.ForeColor);
+            
+            
+            StringFormat format = new StringFormat();
+            format.LineAlignment = StringAlignment.Center;
+            format.Trimming = StringTrimming.EllipsisCharacter;
+            format.FormatFlags = StringFormatFlags.NoWrap;
+            
+            /* TODO: In the future: each node has own font & fore color! */
+            SizeF nodeSize = node.GetNodeSize();
+            float rowHeight = nodeSize.Height;
+            
+            int treeLineX = areaToDraw.X + Indent / 2;
+            int treeLineY = (int)( areaToDraw.Y + rowHeight / 2);
+            
+            RectangleF previousClip = gr.ClipBounds;
+            RectangleF columnClip   = gr.ClipBounds;
+            
+            if ( areaToDraw.Y > -rowHeight ) {
+                /* At least part of node is on visible screen, so draw it! */
+                
+                
+                /* Draw first column, tree lines and buttons */
+                /* FIXME: tree buttons uotstand when first column is too thin */
+                /* Draw other columns data */
+                
+                if ( _columns.Count > 0 ) {
+                    for ( int idx = 0; idx < _columns.Count && idx < node.Subitems.Count; idx++ ) {
+                        columnClip.X = _columns[idx].BoundBox.Left;
+                        columnClip.Width = _columns[idx].BoundBox.Right - columnClip.X;
+                        
+                        gr.SetClip( columnClip );
+                        
+                        RectangleF strBox = new RectangleF(
+                            Math.Max( areaToDraw.X + Indent, _columns[idx].BoundBox.Left ),
+                            areaToDraw.Y, _columns[idx].Width, rowHeight );
+                        strBox.Width = _columns[idx].BoundBox.Right - strBox.Left;
+                        gr.DrawString(node.Subitems[idx], node.Font, brText, strBox, format);
+                    }
+                } else {
+                    gr.DrawString(node.Text, node.Font, brText,
+                                  areaToDraw.X + Indent, areaToDraw.Y + rowHeight / 2,
+                                  format);
+                }
+                _numberOfDrawnNodes++;
+                /* Draw horizontal dotted line to node's text */
+                gr.DrawLine( penTreeDottedLine, treeLineX, treeLineY, areaToDraw.X + Indent, treeLineY );
+                /* Draw vertical line */
+                if ( isLastChild ) {
+                    gr.DrawLine( penTreeDottedLine, treeLineX, areaToDraw.Y, treeLineX, treeLineY );
+                } else {
+                    gr.DrawLine( penTreeDottedLine, treeLineX, areaToDraw.Y, treeLineX, areaToDraw.Y + rowHeight );
+                }
+                
+            }
+            areaToDraw.Y += (int)rowHeight;
+            
+            gr.SetClip( previousClip );
+            
+            if ( node.Nodes.Count > 0 ) {
+                if ( !node.Collapsed ) {
+                    /* This node is not collapsed so draw his childs */
+                    areaToDraw.X += Indent;
+                    for ( int idNode = 0; idNode < node.Nodes.Count; idNode++ ) {
+                        TreeListViewItem nodeI = node.Nodes[idNode];
+                        reachedBottomEndOfCanvas = DrawNode( ref gr, ref nodeI, ref areaToDraw, idNode == ( node.Nodes.Count - 1 ) );
+                        if ( reachedBottomEndOfCanvas ) { break; }
+                    }
+                    
+                    if ( areaToDraw.Y > -rowHeight ) {
+                        /* At least part of node is on visible screen, so draw it! */
+                        if ( !isLastChild ) {
+                            gr.DrawLine( penTreeDottedLine, treeLineX, treeLineY, treeLineX, areaToDraw.Y );
+                        }
+                    }
+                }
+                
+                /* This node does have at least one child, so draw button to collapse/expand */
+                DrawNodeBtn( ref gr, ref node, treeLineX, treeLineY, node.Collapsed );
+            }
+            areaToDraw.X = parentX;
+            return reachedBottomEndOfCanvas;
+        }
+        
+        private void SetNewLogicSize(Size newLogicSize) {
+            this.AutoScrollMinSize = newLogicSize;
+        }
+
+
+
+
+        
+    }
+    
+    [Serializable]
+    public class TreeListViewItem {
+        
+        private List<string> _subitems = new List<string>() { "" };
+        public List<string> Subitems {
+            get { return _subitems; }
+            set { _subitems = value; }
+        }
+        
+        public string Text {
+            get { return _subitems[0]; }
+            set { _subitems[0] = value; }
+        }
+        
+        public bool Collapsed { get; set; }
+        
+        private Font _font = new Font( "Arial", 10 );
+        public Font Font {
+            get { return _font; }
+            set { _font = value; }
+        }
+        
+        private Color _foreColor = Color.Black;
+        public Color ForeColor {
+            get { return _foreColor; }
+            set { _foreColor = value; }
+        }
+        
+        private static Bitmap _bmp = new Bitmap(10, 10);
+        private static Graphics _gr = Graphics.FromImage( _bmp );
+        
+        private List<TreeListViewItem> _nodes = new List<TreeListViewItem>();
+        public List<TreeListViewItem> Nodes {
+            get { return _nodes; }
+            set {_nodes = value; }
+        }
+        
+        public TreeListViewItem() { }
+        
+        public TreeListViewItem(string text) {
+            if ( text == null ) throw new ArgumentNullException("text");
+            this.Text = text;
+            
+        }
+        
+        public SizeF GetNodeSize() {
+            return _gr.MeasureString(Text, _font, PointF.Empty, StringFormat.GenericTypographic);
+        }
+    }
+    
+    
+    [Serializable]
+    public class TreeListViewColumnItem {
+        public string Text { get; set; }
+        
+        private Font _font = new Font( "Arial", 10 );
+        public Font Font {
+            get { return _font; }
+            set { _font = value; }
+        }
+        
+        
+        private Color _foreColor = Color.Black;
+        public Color ForeColor {
+            get { return _foreColor; }
+            set { _foreColor = value; }
+        }
+        
+        public Rectangle BoundBox = new Rectangle(0, 0, 75, 20);
+        
+        public int Width {
+            get { return BoundBox.Width; }
+            set { BoundBox.Width = value; }
+        }
+        
+        private static Bitmap _bmp = new Bitmap(10, 10);
+        private static Graphics _gr = Graphics.FromImage( _bmp );
+        
+        public bool IsMouseOver = false;
+        public bool IsMouseDown = false;
+        
+        public TreeListViewColumnItem() { }
+        
+        public TreeListViewColumnItem(string text) {
+            if ( text == null ) throw new ArgumentNullException("text");
+            this.Text = text;
+            
+        }
+        
+        public SizeF GetTextSize() {
+            SizeF size = _gr.MeasureString(Text, _font, PointF.Empty, StringFormat.GenericTypographic);
+            size.Height += 1;
+            BoundBox.Height = (int)size.Height;
+            return size;
+        }
+    }
+    
+}
