@@ -19,8 +19,6 @@ namespace VisBox {
 	/// </summary>
 	public partial class VisElement : UserControl {
 		
-		
-		
 		public enum Shape {
 			Rectangle, Ellipse
 		}
@@ -246,14 +244,30 @@ namespace VisBox {
 		public VisElement() {
 			InitializeComponent();
 			this.DoubleBuffered = true;
+			_timerResize.Interval = 10000;
+			_timerResize.Tick += timerResize_Tick;
 		}
 		
 		
 		
+		private Timer _timerResize = new Timer();
+		protected int ResizeDelay {
+		    get { return _timerResize.Interval; }
+		    set { _timerResize.Interval = value; }
+		}
 		
+		protected bool ResizeDelayEnabled = false;
+		void VisElementSizeChanged ( object sender, EventArgs e ) {
+		    if ( ResizeDelayEnabled ) {
+		        _timerResize.Stop();
+		        _timerResize.Start();
+		    }
+        }
 		
-		
-		
+		private void timerResize_Tick(object sender, EventArgs e) {
+		    this.Refresh();
+		    _timerResize.Stop();
+		}
 		
 		void VisElementPaint(object sender, PaintEventArgs e) {
 //			if( BackgroundImage != null ) return;
@@ -315,6 +329,7 @@ namespace VisBox {
 				
 			}
 		}
+
 		
 	}
 }

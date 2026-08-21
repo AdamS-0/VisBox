@@ -36,13 +36,14 @@ namespace VisBox
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.SuspendLayout();
-			// 
-			// VisElement
-			// 
-			this.Name = "VisElement";
-			this.Paint += new System.Windows.Forms.PaintEventHandler(this.VisElementPaint);
-			this.ResumeLayout(false);
+		    this.SuspendLayout();
+		    // 
+		    // VisElement
+		    // 
+		    this.Name = "VisElement";
+		    this.SizeChanged += new System.EventHandler(this.VisElementSizeChanged);
+		    this.Paint += new System.Windows.Forms.PaintEventHandler(this.VisElementPaint);
+		    this.ResumeLayout(false);
 
 		}
 	}

@@ -129,7 +129,6 @@ namespace VisBox {
                 vScrlBr.Visible = false;
                 vScrlBr.Value = 0;
             }
-            
         }
         
         private void ColumnWidthChanged() {
@@ -171,7 +170,8 @@ namespace VisBox {
         private StringFormat _strFormatNodes = new StringFormat();
         public TreeDetailsView() {
             InitializeComponent();
-            
+            this.ResizeDelay = 300;
+            this.ResizeDelayEnabled = true;
             
             _strFormatNodes.LineAlignment   = StringAlignment.Center;
             _strFormatNodes.Trimming        = StringTrimming.EllipsisCharacter;
@@ -241,6 +241,7 @@ namespace VisBox {
         
         void PMainSizeChanged ( object sender, EventArgs e ) {
             NumberOfVisibleNodesChanged();
+            ColumnWidthChanged();
         }
         
         void TreeDetailsViewMouseUp ( object sender, MouseEventArgs e ) {
@@ -485,16 +486,17 @@ namespace VisBox {
                 return reachedBottomEndOfCanvas = true;
             }
             
-            int     parentX     = areaToDraw.X;
+            int         parentX         = areaToDraw.X;
             
-            SizeF   nodeSize    = node.GetItemSize();
-            int     rowHeight   = (int)nodeSize.Height;
+            SizeF       nodeSize        = node.GetItemSize();
+            int         rowHeight       = (int)nodeSize.Height;
             
-            int     treeLineX   = areaToDraw.X + Indent / 2;
-            int     treeLineY   = areaToDraw.Y + rowHeight / 2;
+            int         treeLineX       = areaToDraw.X + Indent / 2;
+            int         treeLineY       = areaToDraw.Y + rowHeight / 2;
             
-            RectangleF previousClip = gr.ClipBounds;
-            RectangleF columnClip   = gr.ClipBounds;
+            RectangleF  previousClip    = gr.ClipBounds;
+            RectangleF  columnClip      = gr.ClipBounds;
+            string      itemText        = "";
             
             if ( areaToDraw.Y > -rowHeight ) {
                 /* At least part of node is on visible screen, so draw it! */
@@ -513,7 +515,14 @@ namespace VisBox {
                 gr.SetClip( columnClip );
                 
                 /* Draw first column text ============================================== */
-                gr.DrawString(node.Text, node.Font, node.Brush, strBox, _strFormatNodes);
+                itemText = node.Text;
+                try {
+                    if ( node.ShowRelatedObject ) {
+                        itemText = node.GetRelatedObject().ToString();
+                    }
+                } catch {}
+                
+                gr.DrawString(itemText, node.Font, node.Brush, strBox, _strFormatNodes);
                         
                 /* Draw tree lines ===================================================== */
                 /* Draw horizontal dotted line to node's text */
@@ -533,8 +542,17 @@ namespace VisBox {
                         Math.Max( areaToDraw.X, _columns[idx].BoundBox.Left ),
                         areaToDraw.Y, _columns[idx].Width, rowHeight );
                     strBox.Width = _columns[idx].BoundBox.Right - strBox.Left;
-                    gr.DrawString(node.Subitems[idx-1].Text,
-                                  node.Subitems[idx-1].Font, node.Subitems[idx-1].Brush, strBox, _strFormatNodes);
+                    
+                    itemText = node.Subitems[idx-1].Text;
+                    try {
+                        if ( node.Subitems[idx-1].ShowRelatedObject ) {
+                            object relObj = node.Subitems[idx-1].GetRelatedObject();
+                            itemText = relObj.ToString();
+                        }
+                    } catch {}
+                    
+                    gr.DrawString(itemText, node.Subitems[idx-1].Font,
+                                  node.Subitems[idx-1].Brush, strBox, _strFormatNodes);
                 }
                 
                 _numberOfDrawnNodes++;
@@ -697,6 +715,19 @@ namespace VisBox {
         
         public bool IsMouseOver = false;
         public bool IsMouseDown = false;
+        
+        public delegate object GetObjectEvent();
+        public delegate void SetObjectEvent(object obj);
+        
+        [NonSerialized]
+        public GetObjectEvent GetRelatedObject;
+        
+        [NonSerialized]
+        public SetObjectEvent SetRelatedObject;
+        
+        
+        [NonSerialized]
+        public bool ShowRelatedObject = false;
         
         public TreeDetailsViewSubItem() { }
         

@@ -129,6 +129,12 @@ namespace tester
 ////                treeDetailsView1.Nodes.Add( new TreeDetailsViewItem("Node idx: " + idx) );
 ////            }
             
+            TreeDetailsViewItem tdvi = treeDetailsView1.AddNode( "Related object!" );
+            TreeDetailsViewSubItem tdvsi = tdvi.AddSubitem("Empty string?");
+            
+//            tdvsi.GetRelatedObject = () => zipBar7.Value;
+            
+            tdvsi.ShowRelatedObject = true;
             treeDetailsView1.NumberOfVisibleNodesChanged();
 		}
 		
