@@ -90,8 +90,13 @@ namespace tester
 			treeDetailsView1.Width = 300;
 			treeDetailsView1.Height = 120;
 //			treeDetailsView1.Columns.Clear();
-//			treeDetailsView1.Nodes.Clear();
-            
+			treeDetailsView1.Nodes.Clear();
+            for (int idx = 0; idx < 10; idx++) {
+                TreeDetailsViewItem ti = treeDetailsView1.AddNode( new TreeDetailsViewItem( "Node idx: " + idx ) );
+                for (int idx2 = 0; idx2 < 10; idx2++) {
+                    ti.AddSubNode( "Node idx: " + idx + (char)('A' + idx2) );
+                }
+            }
             
 //			Controls.Add( treeDetailsView1 );
 //			treeDetailsView1.BringToFront();

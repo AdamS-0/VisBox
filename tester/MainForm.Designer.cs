@@ -829,7 +829,8 @@ namespace tester
 		    this.treeDetailsView1.Columns.Add(treeDetailsViewColumnItem1);
 		    this.treeDetailsView1.Columns.Add(treeDetailsViewColumnItem2);
 		    this.treeDetailsView1.Columns.Add(treeDetailsViewColumnItem3);
-		    this.treeDetailsView1.Location = new System.Drawing.Point(640, 54);
+		    this.treeDetailsView1.Dock = System.Windows.Forms.DockStyle.Right;
+		    this.treeDetailsView1.Location = new System.Drawing.Point(701, 0);
 		    this.treeDetailsView1.Name = "treeDetailsView1";
 		    treeDetailsViewItem1.Collapsed = false;
 		    treeDetailsViewItem1.Font = new System.Drawing.Font("Arial", 10F);
@@ -871,7 +872,7 @@ namespace tester
 		    treeDetailsViewItem1.Subitems.Add(treeDetailsViewSubItem5);
 		    treeDetailsViewItem1.Text = "Header";
 		    this.treeDetailsView1.Nodes.Add(treeDetailsViewItem1);
-		    this.treeDetailsView1.Size = new System.Drawing.Size(325, 150);
+		    this.treeDetailsView1.Size = new System.Drawing.Size(325, 287);
 		    this.treeDetailsView1.TabIndex = 56;
 		    this.treeDetailsView1.Text = "TreeDetailsView1";
 		    this.treeDetailsView1.TreeLine = null;

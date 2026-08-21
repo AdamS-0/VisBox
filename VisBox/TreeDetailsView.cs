@@ -114,7 +114,11 @@ namespace VisBox {
             }
             
             vScrlBr.SmallChange = _smallestNodeHeight;
-            return totalHeight + _smallestNodeHeight;
+            try {
+                totalHeight += _smallestNodeHeight*2;
+            } catch {}
+            
+            return totalHeight;
         }
         
         
@@ -196,10 +200,10 @@ namespace VisBox {
         
         
         
-        public TreeDetailsViewItem AddNode(TreeDetailsViewItem subItem) {
-            _nodes.Add( subItem );
+        public TreeDetailsViewItem AddNode(TreeDetailsViewItem subNode) {
+            _nodes.Add( subNode );
             NumberOfVisibleNodesChanged();
-            return subItem;
+            return subNode;
         }
         
         public TreeDetailsViewItem AddNode(string text) {
@@ -363,6 +367,8 @@ namespace VisBox {
         
         private int _numberOfDrawnNodes = 0;
         void TreeDetailsViewPaint ( object sender, PaintEventArgs e ) {
+            _btns.Clear();
+            
             _numberOfDrawnNodes = 0;
             Graphics gr = e.Graphics;
             base.OnPaint(e);
@@ -643,6 +649,17 @@ namespace VisBox {
             return AddSubitem( new TreeDetailsViewSubItem( text ) );
         }
         
+        
+        public TreeDetailsViewItem AddSubNode(TreeDetailsViewItem subNode) {
+            _nodes.Add( subNode );
+            return subNode;
+        }
+        
+        public TreeDetailsViewItem AddSubNode(string text) {
+            return AddSubNode( new TreeDetailsViewItem( text ) );
+        }
+        
+        
         public new SizeF GetItemSize() {
             SizeF size = _gr.MeasureString(Text, Font, PointF.Empty, StringFormat.GenericTypographic);
             size.Height += 1;
@@ -725,9 +742,11 @@ namespace VisBox {
         [NonSerialized]
         public SetObjectEvent SetRelatedObject;
         
-        
         [NonSerialized]
         public bool ShowRelatedObject = false;
+        
+        [NonSerialized]
+        public object Tag = null;
         
         public TreeDetailsViewSubItem() { }
         
