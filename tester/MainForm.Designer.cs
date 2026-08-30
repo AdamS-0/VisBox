@@ -70,6 +70,7 @@ namespace tester
 		private VisBox.ZipBar zipBar7;
 		private System.Windows.Forms.Button btnShowPlotProperty;
 		private VisBox.TreeDetailsView treeDetailsView1;
+		private System.Windows.Forms.Label label3;
 		
 		/// <summary>
 		/// Disposes resources used by the form.
@@ -165,6 +166,7 @@ namespace tester
 		    this.zipBar7 = new VisBox.ZipBar();
 		    this.btnShowPlotProperty = new System.Windows.Forms.Button();
 		    this.treeDetailsView1 = new VisBox.TreeDetailsView();
+		    this.label3 = new System.Windows.Forms.Label();
 		    this.SuspendLayout();
 		    // 
 		    // lamp1
@@ -830,7 +832,7 @@ namespace tester
 		    this.treeDetailsView1.Columns.Add(treeDetailsViewColumnItem2);
 		    this.treeDetailsView1.Columns.Add(treeDetailsViewColumnItem3);
 		    this.treeDetailsView1.Dock = System.Windows.Forms.DockStyle.Right;
-		    this.treeDetailsView1.Location = new System.Drawing.Point(701, 0);
+		    this.treeDetailsView1.Location = new System.Drawing.Point(579, 0);
 		    this.treeDetailsView1.Name = "treeDetailsView1";
 		    treeDetailsViewItem1.Collapsed = false;
 		    treeDetailsViewItem1.Font = new System.Drawing.Font("Arial", 10F);
@@ -872,10 +874,18 @@ namespace tester
 		    treeDetailsViewItem1.Subitems.Add(treeDetailsViewSubItem5);
 		    treeDetailsViewItem1.Text = "Header";
 		    this.treeDetailsView1.Nodes.Add(treeDetailsViewItem1);
-		    this.treeDetailsView1.Size = new System.Drawing.Size(325, 287);
+		    this.treeDetailsView1.Size = new System.Drawing.Size(447, 287);
 		    this.treeDetailsView1.TabIndex = 56;
 		    this.treeDetailsView1.Text = "TreeDetailsView1";
 		    this.treeDetailsView1.TreeLine = null;
+		    // 
+		    // label3
+		    // 
+		    this.label3.Location = new System.Drawing.Point(668, 295);
+		    this.label3.Name = "label3";
+		    this.label3.Size = new System.Drawing.Size(125, 23);
+		    this.label3.TabIndex = 57;
+		    this.label3.Text = "label3";
 		    // 
 		    // MainForm
 		    // 
@@ -883,6 +893,7 @@ namespace tester
 		    this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 		    this.BackColor = System.Drawing.SystemColors.Control;
 		    this.ClientSize = new System.Drawing.Size(1026, 327);
+		    this.Controls.Add(this.label3);
 		    this.Controls.Add(this.treeDetailsView1);
 		    this.Controls.Add(this.btnShowPlotProperty);
 		    this.Controls.Add(this.zipBar7);

@@ -19,6 +19,10 @@ namespace VisBox {
     /// </summary>
     public partial class TreeDetailsView : VisElement {
         
+        public delegate void ItemMouseEvent(object sender, EventArgs e);
+        public ItemMouseEvent ItemMouseEnter;
+        public ItemMouseEvent ItemMouseLeave;
+        
         private class TreeViewItemBtnInfo {
             public Point Location = new Point(0, 0);
             public TreeDetailsViewItem Node;
@@ -291,7 +295,7 @@ namespace VisBox {
         private TreeDetailsViewColumnItem _colMouseDown = null;
         void PMainMouseMove ( object sender, MouseEventArgs e ) {
             bool requiredRefresh = false;
-            if ( _columns.Count > 0 ) {                
+            if ( _columns.Count > 0 ) {
                 Point ptRelMouse = new Point( e.X - _colStart.X, e.Y - _colStart.Y);
                 
                 if ( _colMouseDown != null ) {
@@ -359,10 +363,55 @@ namespace VisBox {
                     _colMouseDown = null;
                 }
             }
+            requiredRefresh = requiredRefresh || CheckForMouseOnTreeDetailViewItem( e.X, e.Y );
             
             if ( requiredRefresh ) {
                 pMain.Refresh();
             }
+        }
+        
+        private bool CheckForMouseOnTreeDetailViewItem( int mouseX, int mouseY ) {
+            bool statusChanged = false;
+            foreach ( TreeDetailsViewItem node in _nodes ) {
+                statusChanged = statusChanged || CheckForMouseOnTreeDetailViewItemInternal( mouseX, mouseY, node );
+            }
+            return statusChanged;
+        }
+        
+        private bool CheckForMouseOnTreeDetailViewItemInternal( int mouseX, int mouseY, TreeDetailsViewItem node ) {
+            bool statusChanged = false;
+            if ( !node.Collapsed ) {
+                try {
+                    foreach ( TreeDetailsViewItem nodeChild in node.Nodes ) {
+                        statusChanged = statusChanged || CheckForMouseOnTreeDetailViewItemInternal( mouseX, mouseY, nodeChild );
+                    }
+                } catch {}
+            }
+            
+            bool lastMouseOnItem = node.IsMouseOver;
+            
+            Point mouseRel = new Point( mouseX - node.AreaOnCanvas.X , mouseY - node.AreaOnCanvas.Y );
+            if ( ( mouseRel.Y >= 0 ) && ( mouseRel.Y <= node.AreaOnCanvas.Height ) ) { 
+                if ( ( mouseRel.X >= 0 ) && ( mouseRel.X <= node.AreaOnCanvas.Width ) ) { 
+                    /* MousePointer on element */
+                    node.IsMouseOver = true;
+                } else { node.IsMouseOver = false; }
+            } else { node.IsMouseOver = false; }
+            
+            if          ( !lastMouseOnItem && node.IsMouseOver ) {
+                /* Mouse just entered on item! */
+                if ( this.ItemMouseEnter != null ) {
+                    this.ItemMouseEnter( node, new EventArgs() );
+                }
+                statusChanged = true;
+            } else if   ( lastMouseOnItem && !node.IsMouseOver ) {
+                /* Mouse just leaved item! */
+                if ( this.ItemMouseLeave != null ) {
+                    this.ItemMouseLeave( node, new EventArgs() );
+                }
+                statusChanged = true;
+            }
+            return statusChanged;
         }
         
         private int _numberOfDrawnNodes = 0;
@@ -507,6 +556,12 @@ namespace VisBox {
             if ( areaToDraw.Y > -rowHeight ) {
                 /* At least part of node is on visible screen, so draw it! */
                 
+                node.AreaOnCanvas.Y = areaToDraw.Y;
+                node.AreaOnCanvas.X = 0;
+                node.AreaOnCanvas.Width = areaToDraw.Width;
+                node.AreaOnCanvas.Height = rowHeight;
+                
+                
                 RectangleF strBox = new RectangleF(
                     areaToDraw.X + Indent, areaToDraw.Y,
                     areaToDraw.Width, rowHeight );
@@ -528,7 +583,7 @@ namespace VisBox {
                     }
                 } catch {}
                 
-                gr.DrawString(itemText, node.Font, node.Brush, strBox, _strFormatNodes);
+                gr.DrawString( itemText, node.Font, node.Brush, strBox, _strFormatNodes);
                         
                 /* Draw tree lines ===================================================== */
                 /* Draw horizontal dotted line to node's text */
@@ -631,6 +686,9 @@ namespace VisBox {
             get { return _nodes; }
             set {_nodes = value; }
         }
+        
+        
+        public Rectangle AreaOnCanvas = new Rectangle();
         
         public TreeDetailsViewItem() { }
         
@@ -747,6 +805,12 @@ namespace VisBox {
         
         [NonSerialized]
         public object Tag = null;
+
+        [NonSerialized]
+        public object Tag2 = null;
+        
+        [NonSerialized]
+        public object Tag3 = null;
         
         public TreeDetailsViewSubItem() { }
         

@@ -87,7 +87,7 @@ namespace tester
 			treeDetailsView1.Left = 700;
 			treeDetailsView1.Top = 100;
 			treeDetailsView1.FlatStyle = VisBox.VisElement.VisFlatStyle.Collapsed;
-			treeDetailsView1.Width = 300;
+			treeDetailsView1.Width = 400;
 			treeDetailsView1.Height = 120;
 //			treeDetailsView1.Columns.Clear();
 			treeDetailsView1.Nodes.Clear();
@@ -141,6 +141,13 @@ namespace tester
             
             tdvsi.ShowRelatedObject = true;
             treeDetailsView1.NumberOfVisibleNodesChanged();
+            treeDetailsView1.ItemMouseEnter += TreeDetailsView1ItemMouseEnter;
+		}
+		
+		private void TreeDetailsView1ItemMouseEnter(object sender, EventArgs e) {
+		    int dummy1 = 0;
+		    TreeDetailsViewItem node = sender as TreeDetailsViewItem;
+		    label3.Text = node.Text;
 		}
 		
 		
