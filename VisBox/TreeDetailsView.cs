@@ -23,6 +23,8 @@ namespace VisBox {
         public ItemMouseEvent ItemMouseEnter;
         public ItemMouseEvent ItemMouseLeave;
         
+        private Timer _timerRefresh = new Timer();
+        
         private class TreeViewItemBtnInfo {
             public Point Location = new Point(0, 0);
             public TreeDetailsViewItem Node;
@@ -198,9 +200,23 @@ namespace VisBox {
                     ControlStyles.UserPaint |
                     ControlStyles.ResizeRedraw, true );
             
+            _timerRefresh.Interval = 80;
+            _timerRefresh.Tick += MouseMoveTimer_Tick;
+            _timerRefresh.Start();
             NumberOfVisibleNodesChanged();
         }
         
+        
+        private bool requiredRefresh = false;
+        private void RequestRefresh() {
+            requiredRefresh = true;
+        }
+        private void MouseMoveTimer_Tick ( object sender, EventArgs e ) {
+            if ( requiredRefresh ) {
+                requiredRefresh = false;
+                pMain.Refresh();
+            }
+        }
         
         
         
@@ -228,11 +244,13 @@ namespace VisBox {
         
         
         void VScrlBrValueChanged ( object sender, EventArgs e ) {
-            this.Refresh();
+//            this.Refresh();
+            RequestRefresh();
         }
         
         void HScrlBrValueChanged ( object sender, EventArgs e ) {
-            this.Refresh();
+//            this.Refresh();
+            RequestRefresh();
         }
        
         private void PMainMouseWheel(object sender, MouseEventArgs e) {
@@ -366,7 +384,8 @@ namespace VisBox {
             requiredRefresh = requiredRefresh || CheckForMouseOnTreeDetailViewItem( e.X, e.Y );
             
             if ( requiredRefresh ) {
-                pMain.Refresh();
+                RequestRefresh();
+//                pMain.Refresh();
             }
         }
         

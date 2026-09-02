@@ -284,6 +284,13 @@ namespace tester
         }
 		
 		
+		private int _cntrPaint = 0;
+        void TreeDetailsView1Paint ( object sender, PaintEventArgs e ) {
+		    _cntrPaint++;
+		    label3.Text += "\r\n" + _cntrPaint;
+        }
+		
+		
 		
 		
 		

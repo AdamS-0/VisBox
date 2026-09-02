@@ -878,12 +878,13 @@ namespace tester
 		    this.treeDetailsView1.TabIndex = 56;
 		    this.treeDetailsView1.Text = "TreeDetailsView1";
 		    this.treeDetailsView1.TreeLine = null;
+		    this.treeDetailsView1.Paint += new System.Windows.Forms.PaintEventHandler(this.TreeDetailsView1Paint);
 		    // 
 		    // label3
 		    // 
-		    this.label3.Location = new System.Drawing.Point(668, 295);
+		    this.label3.Location = new System.Drawing.Point(665, 296);
 		    this.label3.Name = "label3";
-		    this.label3.Size = new System.Drawing.Size(125, 23);
+		    this.label3.Size = new System.Drawing.Size(125, 31);
 		    this.label3.TabIndex = 57;
 		    this.label3.Text = "label3";
 		    // 
