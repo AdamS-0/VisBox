@@ -200,7 +200,7 @@ namespace VisBox {
                     ControlStyles.UserPaint |
                     ControlStyles.ResizeRedraw, true );
             
-            _timerRefresh.Interval = 80;
+            _timerRefresh.Interval = 50;
             _timerRefresh.Tick += MouseMoveTimer_Tick;
             _timerRefresh.Start();
             NumberOfVisibleNodesChanged();
@@ -551,7 +551,6 @@ namespace VisBox {
             }
         }
         
-        
         private bool DrawNode( ref Graphics gr, ref TreeDetailsViewItem node, ref Rectangle areaToDraw, RectangleF maxClipBounding, bool isLastChild ) {
             bool reachedBottomEndOfCanvas = false;
             
@@ -580,6 +579,9 @@ namespace VisBox {
                 node.AreaOnCanvas.Width = areaToDraw.Width;
                 node.AreaOnCanvas.Height = rowHeight;
                 
+                if ( node.IsMouseOver ) {
+                    gr.FillRectangle( node.BrushSelection, node.AreaOnCanvas );
+                }
                 
                 RectangleF strBox = new RectangleF(
                     areaToDraw.X + Indent, areaToDraw.Y,
@@ -802,6 +804,20 @@ namespace VisBox {
         
         [NonSerialized]
         public Brush Brush = new SolidBrush(_foreColorDefault);
+
+
+        private static Color _selectedBackColorDefault = Color.Gainsboro;
+        private Color _selectedBackColor = _selectedBackColorDefault;
+        public Color SelectedBackColor {
+            get { return _selectedBackColorDefault; }
+            set {
+                _selectedBackColor = value;
+                BrushSelection = new SolidBrush( _selectedBackColor );
+            }
+        }
+        
+        [NonSerialized]
+        public Brush BrushSelection = new SolidBrush(_selectedBackColorDefault);
         
         
         private static Bitmap _bmp = new Bitmap(10, 10);
