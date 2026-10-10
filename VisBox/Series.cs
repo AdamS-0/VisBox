@@ -56,26 +56,75 @@ namespace VisBox {
             
         }
         
-        public void DrawSeries ( ref Graphics gr, float scaleX, float scaleY, float axMin, float ayMin, float canvHeightPx ) {
-            float drawX = 0, drawY = 0;
+		private void FindLimits( ref int idxStart, ref int idxStop, float axMin, float axMax) {
+            idxStart = 0; idxStop = dataX.Count;
             
+            /* Find first point that can be put on visible chart */
+            for ( idxStart = 0; idxStart < dataX.Count - 1; idxStart++ ) {
+                if ( dataX[idxStart + 1] >= axMin ) { break; }
+            }
+           
+            /* Find last point that can be put on visible chart */
+            for ( idxStop = dataX.Count - 1; idxStop > idxStart; idxStop-- ) {
+                if ( dataX[idxStop] < axMax ) { idxStop++; break; }
+            }
+            idxStop = Math.Min( idxStop, dataX.Count );
+        }
+		
+        public void DrawSeries ( ref Graphics gr, float scaleX, float scaleY, float axMin, float axMax, float ayMin, float canvHeightPx ) {
             if ( dataX.Count != dataY.Count ) {
                 throw new Exception("Length of two vectors are not equal!");
             }
             
-            drawX = ( (float)dataX [ 0 ] - axMin ) * scaleX;
-            drawY = canvHeightPx - ( dataY [ 0 ] - ayMin ) * scaleY;
-            PointF pL = new PointF(drawX, drawY);
+            int idxStart = 0;
+            int idxStop = dataX.Count;
+            FindLimits( ref idxStart, ref idxStop, axMin, axMax );
+            
+            int drawX = (int)( ( (float)dataX [ idxStart ] - axMin ) * scaleX );
+            int drawY = (int)( canvHeightPx - ( dataY [ idxStart ] - ayMin ) * scaleY );
+//            PointF drawLast  new PointF(drawX, drawY);
+            
+            int pxXMin = 0, pxXMax = 0;
+            int pxYMin = 0, pxYMax = 0;
+            Point pxLast = new Point( drawX, drawY );
+            bool canSkipThisLine = false;
             
             // Draw series
-            for ( int idx = 0; idx < dataX.Count; idx++ ) {
-                drawX = ( dataX [ idx ] - axMin ) * scaleX;
-                drawY = canvHeightPx - ( dataY [ idx ] - ayMin ) * scaleY;
+            for ( int idx = idxStart + 1; idx < idxStop; idx++ ) {
+                canSkipThisLine = false;
+                drawX = (int)( ( dataX [ idx ] - axMin ) * scaleX );
+                drawY = (int)( canvHeightPx - ( dataY [ idx ] - ayMin ) * scaleY );
                 
-                gr.DrawLine( Pen, pL.X, pL.Y, drawX, drawY );
+                /* Check for redundant draw instructions in one column */
+                if ( pxLast.X == drawX ) {
+                    /* Points are on the same column */
+                    if      ( pxYMin > drawY ) { pxYMin = drawY; }
+                    else if ( pxYMax < drawY ) { pxYMax = drawY; }
+                    else {
+                        /* This point is between previously painted ones, so we can skip it */
+                        canSkipThisLine = true;
+                    }
+                } else { pxYMin = pxYMax = drawY; } /* Update column's limits */
                 
-                pL.X = (float)drawX;
-                pL.Y = (float)drawY;
+                if ( !canSkipThisLine ) {
+                    /* Check for redundant draw instructions in one row */
+                    if ( pxLast.Y == drawY ) {
+                        /* Points are on the same row */
+                        if      ( pxXMin > drawX ) { pxXMin = drawX; }
+                        else if ( pxXMax < drawX ) { pxXMax = drawX; }
+                        else {
+                            /* This point is between previously painted ones, so we can skip it */
+                            canSkipThisLine = true;
+                        }
+                    } else { pxXMin = pxXMax = drawX; } /* Update row's limits */
+                }
+                
+                if ( !canSkipThisLine ) {
+                    gr.DrawLine( Pen, pxLast.X, pxLast.Y, drawX, drawY );
+                }
+                
+                pxLast.X = drawX;
+                pxLast.Y = drawY;
             }
         }
         

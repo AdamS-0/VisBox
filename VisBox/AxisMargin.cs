@@ -17,25 +17,25 @@ namespace VisBox
         [Category("VisBox")]
         [Browsable(true)]
         [DefaultValue("0")]
-        public float Left { get; set; }
+        public int Left { get; set; }
         
         [Category("VisBox")]
         [Browsable(true)]
         [DefaultValue("0")]
-        public float Right { get; set; }
+        public int Right { get; set; }
         
         [Category("VisBox")]
         [Browsable(true)]
         [DefaultValue("0")]
-        public float Top { get; set; }
+        public int Top { get; set; }
         
         [Category("VisBox")]
         [Browsable(true)]
         [DefaultValue("0")]
-        public float Bottom { get; set; }
+        public int Bottom { get; set; }
         
         public AxisMargin() { }
-        public AxisMargin(float left, float right, float top, float bottom) {
+        public AxisMargin(int left, int right, int top, int bottom) {
             this.Left = left;
             this.Right = right;
             this.Top = top;
