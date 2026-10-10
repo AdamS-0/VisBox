@@ -89,6 +89,7 @@ namespace VisBox {
             set { _axisLimitsY = value; }
         }
         
+		private AxisMargin _axisMarginLast = new AxisMargin(0, 0, 0, 0);
         private AxisMargin _axisMargin = new AxisMargin();
         [Category("VisBox")]
         [Browsable(true)]
@@ -123,6 +124,13 @@ namespace VisBox {
         
         private void UpdateCanvasSize() {
             canvas = GetInnerSpace2Draw();
+			/* Update Canvas with axisMargins */
+            canvas.X += _axisMargin.Left;
+            canvas.Y += _axisMargin.Top;
+            
+            canvas.Width -= ( _axisMargin.Left + _axisMargin.Right );
+            canvas.Height -= ( _axisMargin.Top + _axisMargin.Bottom );
+			
             bmp = new Bitmap( canvas.Width, canvas.Height );
         }
         
@@ -166,7 +174,7 @@ namespace VisBox {
                         if( ser.dataX[i] > AxisLimitsX.Max ) { AxisLimitsX.Max = ser.dataX[i]; }
                     }
                 }
-                if( AxisLimitsX.Min == AxisLimitsX.Max ) {
+                if( (int)AxisLimitsX.Min == (int)AxisLimitsX.Max ) {
                     AxisLimitsX.Min -= 0.1f;
                     AxisLimitsX.Max += 0.1f;
                 }
@@ -189,7 +197,7 @@ namespace VisBox {
                         if( ser.dataY[i] > AxisLimitsY.Max ) { AxisLimitsY.Max = ser.dataY[i]; }
                     }
                 }
-                if( AxisLimitsY.Min == AxisLimitsY.Max ) {
+                if( (int)AxisLimitsY.Min == (int)AxisLimitsY.Max ) {
                     AxisLimitsY.Min -= 0.1f;
                     AxisLimitsY.Max += 0.1f;
                 }
@@ -225,7 +233,7 @@ namespace VisBox {
                     throw new Exception("Length of two vectors are not equal!");
                 }
                 
-                ser.DrawSeries(ref gr, _drawScaleX, _drawScaleY, AxisLimitsX.Min, AxisLimitsY.Min, canvas.Height);
+                ser.DrawSeries(ref gr, _drawScaleX, _drawScaleY, AxisLimitsX.Min, AxisLimitsX.Max, AxisLimitsY.Min, canvas.Height);
             }
             
             foreach( Series ser in Series ) {
@@ -336,7 +344,7 @@ namespace VisBox {
         
         void PlotPaint(object sender, PaintEventArgs e) {
             Rectangle inner = GetInnerSpace();
-            e.Graphics.DrawImage( bmp, inner.X, inner.Y );
+			e.Graphics.DrawImage( bmp, inner.X + _axisMargin.Left, inner.Y + _axisMargin.Top );
         }
         
         

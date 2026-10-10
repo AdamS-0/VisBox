@@ -215,16 +215,14 @@ namespace VisBox {
 		
 		public Rectangle GetInnerSpace2Draw() {
 		    Rectangle r1 = GetInnerSpace();
-//            r1.Width += -1 + (int)( _borderWidth );
-//            r1.Height += -1 + (int)( _borderWidth );
-//            
-//            r1.X -= (int)( _borderWidth / 2 );
-//            r1.Y -= (int)( _borderWidth / 2 );
-            r1.X += 2;
-            r1.Y += 2;
-            r1.Width -= 6;
-            r1.Height -= 6;
             
+			if( FlatStyle != VisFlatStyle.Flat ) {
+                r1.X += 2;
+                r1.Y += 2;
+                r1.Width -= 4;
+                r1.Height -= 4;
+            }
+			
             return r1;
         }
 		
