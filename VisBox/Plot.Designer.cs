@@ -22,15 +22,33 @@ namespace VisBox
 		/// Disposes resources used by the control.
 		/// </summary>
 		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing) {
-				if (components != null) {
-					components.Dispose();
-				}
-			}
-			base.Dispose(disposing);
-		}
+        protected override void Dispose(bool disposing) {
+            if (disposing) {                
+                if (components != null) { components.Dispose(); }
+                
+                if ( _gridX != null ) { _gridX.Dispose(); _gridX = null; }
+                if ( _gridY != null ) { _gridY.Dispose(); _gridY = null; }
+                if ( _gridXminor != null ) { _gridXminor.Dispose(); _gridXminor = null; }
+                if ( _gridYminor != null ) { _gridYminor.Dispose(); _gridYminor = null; }
+                
+                if ( bmp != null ) { bmp.Dispose(); bmp = null; }
+                
+                if ( Series != null ) {
+                    foreach ( Series ser in Series ) { 
+                        if ( ser != null ) {
+                            ser.Dispose();
+                        }
+                    }
+                    Series.Clear();
+                    Series = null;
+                }
+                
+                if ( _axisLimitsX != null ) { _axisLimitsX.Dispose(); _axisLimitsX = null; }
+                if ( _axisLimitsY != null ) { _axisLimitsY.Dispose(); _axisLimitsY = null; }
+            }
+    
+            base.Dispose(disposing);
+        }
 		
 		/// <summary>
 		/// This method is required for Windows Forms designer support.

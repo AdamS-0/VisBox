@@ -70,10 +70,6 @@ namespace VisBox {
         Bitmap bmp;
         
         public List<Series> Series = new List<Series>();
-//		public List<Series> Series {
-//		    get { return _series; }
-//		    set { _series = value; }
-//		}
         
         private AxisLimits _axisLimitsX = new AxisLimits();
         [Category("VisBox")]

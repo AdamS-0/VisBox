@@ -14,7 +14,7 @@ using System.Drawing;
 namespace VisBox {
 //    [TypeConverter( typeof(ExpandableObjectConverter))]
 //    [Serializable]
-    public class Series {
+public class Series : IDisposable {
         
         [Category("VisBox")]
         public List<float> dataX { get; set; }
@@ -55,6 +55,16 @@ namespace VisBox {
             this.Name = name;
             
         }
+        
+        #region IDisposable implementation
+        public void Dispose() {
+            dataX = null;
+            dataY = null;
+            Marker = null;
+            Pen = null;
+            Name = null;
+        }
+        #endregion
         
 		private void FindLimits( ref int idxStart, ref int idxStop, float axMin, float axMax) {
             idxStart = 0; idxStop = dataX.Count;

@@ -15,7 +15,7 @@ namespace VisBox {
     /// </summary>
     /// 
     [TypeConverter(typeof(ExpandableObjectConverter))]
-    public class AxisLimits {
+    public class AxisLimits : IDisposable {
         
         [Category("VisBox")]
         [Browsable(true)]
@@ -41,6 +41,11 @@ namespace VisBox {
             
         }
         
+        #region IDisposable implementation
+        public void Dispose() {
+            
+        }
+        #endregion
     }
     
 } 

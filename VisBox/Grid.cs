@@ -14,7 +14,7 @@ using System.Drawing;
 namespace VisBox {
 
     [TypeConverter(typeof(ExpandableObjectConverter))]
-    public class GridDot {
+    public class GridDot : IDisposable {
         [Category("VisBox")]
         public float Value { get; set; }
         
@@ -25,10 +25,18 @@ namespace VisBox {
             this.Name = name;
             this.Value = value;
         }
+
+        #region IDisposable implementation
+
+        public void Dispose() {
+            Name = "";
+        }
+
+        #endregion
     }
     
     [TypeConverter(typeof(ExpandableObjectConverter))]
-    public class Grid {
+    public class Grid : IDisposable {
         [Category("VisBox")]
         [Browsable(true)]
         [Description("Overrides user defined grid settings")]
@@ -123,7 +131,23 @@ namespace VisBox {
             this.Format = usersFormat;
             ReCalculateGrid( gridMin, gridMax );
         }
-        
+
+        #region IDisposable implementation
+        public void Dispose() {
+            LabelBrush = null;
+            _pen = null;
+            _format = null;
+            if ( _dots != null ) {
+                foreach( GridDot dot in _dots ) {
+                    if ( dot != null ) {
+                        dot.Dispose();
+                    }
+                }
+                _dots.Clear();
+                _dots = null;
+            }
+        }
+        #endregion        
         
         /// <summary>
         /// Recalculate grid dots for given conditions
