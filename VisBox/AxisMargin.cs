@@ -1,6 +1,6 @@
 ﻿/*
  * Created by SharpDevelop.
- * User: AS
+ * User: AdamS-0
  * Date: 16.05.2026
  * Time: 13:57
  * 

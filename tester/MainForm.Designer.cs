@@ -765,10 +765,10 @@ namespace tester
 		    axisLimits2.Max = 0F;
 		    axisLimits2.Min = 0F;
 		    this.plot1.AxisLimitsY = axisLimits2;
-		    axisMargin1.Bottom = 0F;
-		    axisMargin1.Left = 0F;
-		    axisMargin1.Right = 0F;
-		    axisMargin1.Top = 0F;
+		    axisMargin1.Bottom = 0;
+		    axisMargin1.Left = 0;
+		    axisMargin1.Right = 0;
+		    axisMargin1.Top = 0;
 		    this.plot1.AxisMargin = axisMargin1;
 		    this.plot1.BackColor = System.Drawing.Color.Gainsboro;
 		    this.plot1.BackgroundColor = System.Drawing.Color.Bisque;

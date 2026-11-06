@@ -1,6 +1,6 @@
 ﻿/*
  * Created by SharpDevelop.
- * User: AS
+ * User: AdamS-0
  * Date: 19.08.2026
  * Time: 07:44
  * 
@@ -53,7 +53,6 @@ namespace VisBox
             this.pMain.TabIndex = 2;
             this.pMain.SizeChanged += new System.EventHandler(this.PMainSizeChanged);
             this.pMain.Paint += new System.Windows.Forms.PaintEventHandler(this.TreeDetailsViewPaint);
-            this.pMain.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PMainMouseDown);
             this.pMain.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PMainMouseMove);
             this.pMain.MouseUp += new System.Windows.Forms.MouseEventHandler(this.TreeDetailsViewMouseUp);
             // 

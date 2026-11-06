@@ -119,8 +119,17 @@
     <Compile Include="Switch.Designer.cs">
       <DependentUpon>Switch.cs</DependentUpon>
     </Compile>
+    <Compile Include="TreeDetailsView.Behaviour.cs">
+      <DependentUpon>TreeDetailsView.cs</DependentUpon>
+    </Compile>
     <Compile Include="TreeDetailsView.cs" />
     <Compile Include="TreeDetailsView.Designer.cs">
+      <DependentUpon>TreeDetailsView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TreeDetailsView.Draw.cs">
+      <DependentUpon>TreeDetailsView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TreeDetailsViewDeps.cs">
       <DependentUpon>TreeDetailsView.cs</DependentUpon>
     </Compile>
     <Compile Include="VisElement.cs" />
