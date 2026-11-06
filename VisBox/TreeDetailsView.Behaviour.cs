@@ -8,6 +8,7 @@
  */
 using System;
 using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace VisBox {
@@ -16,9 +17,14 @@ namespace VisBox {
     /// </summary>
     partial class TreeDetailsView {
         
+        [DllImport("user32.dll")]
+        static extern short GetAsyncKeyState(System.Windows.Forms.Keys vKey);
+        
         #region PRIVATE_PROPS
         private int _smallestNodeHeight = int.MaxValue;
-        private Point _colMouseDownPoint = new Point(0, 0);
+        private Point _mousePosColResizeStart = new Point(0, 0);
+        private Point _colHeaderResizeDownStart = new Point(0, 0);
+        
         private int _colMouseDownLastWidth = 0;
         private TreeDetailsViewColumnItem _colMouseDown = null;
         private bool requiredRefresh = false;
@@ -34,6 +40,24 @@ namespace VisBox {
             requiredRefresh = true;
         }
         private void MouseMoveTimer_Tick ( object sender, EventArgs e ) {
+            if ( _colMouseDown != null ) {
+                if( GetAsyncKeyState( Keys.LButton ) == 0 ) {
+                    /* LMB not pressed */
+                    _colMouseDown = null;
+                } else {
+                
+//                if ( _colMouseDown.IsWidthChange ) {
+                    int newWidth = _colMouseDownLastWidth + ( MousePosition.X - _mousePosColResizeStart.X );;
+                    if ( newWidth >= _colMouseDown.MinimumWidth ) {
+                        _colMouseDown.Width = newWidth;
+                        requiredRefresh = true;
+                        ColumnWidthChanged();
+                    }
+//                }
+                }
+            }
+            
+            
             if ( requiredRefresh ) {
                 requiredRefresh = false;
                 pMain.Refresh();
@@ -200,19 +224,8 @@ namespace VisBox {
         
         private void PMainMouseMove ( object sender, MouseEventArgs e ) {
             bool requiredRefreshDuringMove = false;
-            if ( _columns.Count > 0 ) {
+            if ( ( _columns.Count > 0 ) && ( _colMouseDown == null ) ) {
                 Point ptRelMouse = new Point( e.X - _colStart.X, e.Y - _colStart.Y);
-                
-                if ( _colMouseDown != null ) {
-                    if ( _colMouseDown.IsWidthChange ) {
-                        int newWidth = _colMouseDownLastWidth + ( e.X - _colMouseDownPoint.X );;
-                        if ( newWidth >= _colMouseDown.MinimumWidth ) {
-                            _colMouseDown.Width = newWidth;
-                            requiredRefreshDuringMove = true;
-                            ColumnWidthChanged();
-                        }
-                    }
-                }
                 
                 /* Check if mouse over columns header */
                 if ( ( ptRelMouse.Y >= 0 ) && ( ptRelMouse.Y < _columnsHeaderHeight ) ) {
@@ -224,7 +237,7 @@ namespace VisBox {
                                 /* MouseDown now! */
                                 if ( !col.IsMouseDown && ( _colMouseDown == null ) ) {
                                     /* Mouse down first! */
-                                    _colMouseDownPoint = new Point( e.X, e.Y );
+                                    _mousePosColResizeStart = MousePosition;// new Point( e.X, e.Y );
                                     _colMouseDownLastWidth = col.Width;
                                     _colMouseDown = col;
                                     if ( ptRelMouse.X > ( col.Width - 3 ) ) { col.IsWidthChange = true; }
