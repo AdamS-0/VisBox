@@ -60,6 +60,14 @@ namespace VisBox {
             get { return _penTreeLine; }
             set { _penTreeLine = value; }
         }
+        
+        private bool _fitColumnOnDoubleClick = true;
+        [Category("VisBox")]
+        [DefaultValue(typeof(bool), "true")]
+        public bool FitColumnOnDoubleClick {
+            get { return _fitColumnOnDoubleClick; }
+            set { _fitColumnOnDoubleClick = value; }
+        }
         #endregion
 
         public TreeDetailsView() {

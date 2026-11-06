@@ -82,9 +82,12 @@ namespace VisBox {
             return AddSubNode( new TreeDetailsViewItem( text ) );
         }
         
-        
         public new SizeF GetItemSize() {
-            SizeF size = _gr.MeasureString(Text, Font, PointF.Empty, StringFormat.GenericTypographic);
+            return GetItemSize(Text);
+        }
+        
+        public new SizeF GetItemSize(string textToMeasure) {
+            SizeF size = _gr.MeasureString(textToMeasure, Font, PointF.Empty, StringFormat.GenericTypographic);
             size.Height += 1;
             
             float maxHeight = size.Height;
@@ -200,7 +203,11 @@ namespace VisBox {
         }
         
         public SizeF GetItemSize() {
-            SizeF size = _gr.MeasureString(Text, _font, PointF.Empty, StringFormat.GenericTypographic);
+            return GetItemSize( Text );
+        }
+        
+        public SizeF GetItemSize(string textToMeasure) {
+            SizeF size = _gr.MeasureString(textToMeasure, _font, PointF.Empty, StringFormat.GenericTypographic);
             size.Height += 1;
             return size;
         }

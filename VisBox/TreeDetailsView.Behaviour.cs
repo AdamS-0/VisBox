@@ -48,11 +48,7 @@ namespace VisBox {
                 
 //                if ( _colMouseDown.IsWidthChange ) {
                     int newWidth = _colMouseDownLastWidth + ( MousePosition.X - _mousePosColResizeStart.X );;
-                    if ( newWidth >= _colMouseDown.MinimumWidth ) {
-                        _colMouseDown.Width = newWidth;
-                        requiredRefresh = true;
-                        ColumnWidthChanged();
-                    }
+                    SetNewColumndWidth( ref _colMouseDown, newWidth );
 //                }
                 }
             }
@@ -64,6 +60,13 @@ namespace VisBox {
             }
         }
         
+        private void SetNewColumndWidth( ref TreeDetailsViewColumnItem column, int newWidth) {
+            if ( newWidth >= column.MinimumWidth ) {
+                column.Width = newWidth;
+                requiredRefresh = true;
+                ColumnWidthChanged();
+            }
+        }
         
         private int GetNumOfVisibleChildNodes(ref TreeDetailsViewItem node) {
             int num = 0;
@@ -237,10 +240,12 @@ namespace VisBox {
                                 /* MouseDown now! */
                                 if ( !col.IsMouseDown && ( _colMouseDown == null ) ) {
                                     /* Mouse down first! */
-                                    _mousePosColResizeStart = MousePosition;// new Point( e.X, e.Y );
-                                    _colMouseDownLastWidth = col.Width;
-                                    _colMouseDown = col;
-                                    if ( ptRelMouse.X > ( col.Width - 3 ) ) { col.IsWidthChange = true; }
+                                    if ( ptRelMouse.X > ( col.Width - 3 ) ) {    
+                                        col.IsWidthChange = true;
+                                        _mousePosColResizeStart = MousePosition;// new Point( e.X, e.Y );
+                                        _colMouseDownLastWidth = col.Width;
+                                        _colMouseDown = col;
+                                    }
                                 }
                                 col.IsMouseDown = true;
                             } else {
@@ -326,6 +331,91 @@ namespace VisBox {
                 statusChanged = true;
             }
             return statusChanged;
+        }
+        
+        
+        private void PMainMouseDoubleClick( object sender, MouseEventArgs e ) {
+            if ( _fitColumnOnDoubleClick == false ) { return; }
+            
+            if ( _columns.Count > 0 ) {
+                Point ptRelMouse = new Point( e.X - _colStart.X, e.Y - _colStart.Y);
+                
+                /* Check if mouse over columns header */
+                if ( ( ptRelMouse.Y >= 0 ) && ( ptRelMouse.Y < _columnsHeaderHeight ) ) {
+                    /* Mouse over columns header! */
+                    for ( int idx = 0; idx < _columns.Count; idx++ ) {
+                        TreeDetailsViewColumnItem col = _columns[idx];
+                        int oldWidth = col.Width;
+                        if ( ( ptRelMouse.X > 0 ) && ( ptRelMouse.X <= col.Width + 1 ) ) {
+                            UpdateColumnWidthByDoubleClick( idx, ref col );
+                        }
+                        
+                        ptRelMouse.X -= oldWidth;
+                    }
+                }
+            }
+        }
+        
+        private void UpdateColumnWidthByDoubleClick(int colId, ref TreeDetailsViewColumnItem column) {
+            int maxColumnWidth = GetColumnMaxWidthByData( colId );
+            SetNewColumndWidth( ref column, maxColumnWidth );
+        }
+        
+        private int GetColumnMaxWidthByData( int colId ) {
+            int maxColumnWidth = 0;
+            if ( _nodes == null ) { return -1; }
+            for ( int idx = 0; idx < _nodes.Count; idx++ ) {
+                TreeDetailsViewItem node = _nodes[idx];
+                GetColumnMaxWidthByDataSubNode( ref maxColumnWidth, ref node, colId, 1 );
+            }
+            return maxColumnWidth;
+        }
+        
+        private void GetColumnMaxWidthByDataSubNode( ref int maxColumnWidth, ref TreeDetailsViewItem node, int colId, int indentLevel ) {
+            if ( node == null ) { return; }
+            
+            int itemWidth = 0;
+            
+            if ( colId == 0 ) {
+                string itemText = node.Text;
+                try {
+                    if ( ( node.ShowRelatedObject ) &&
+                        ( node.GetRelatedObject != null ) )
+                    {
+                        itemText = node.GetRelatedObject().ToString();
+                    }
+                } catch {}
+                
+                if ( node.ShowRelatedObject ) {
+                    itemText = node.GetRelatedObject().ToString();
+                }
+                
+                itemWidth = 6 + (int)(node.GetItemSize(itemText).Width) + indentLevel * this.Indent;
+            } else if ( node.Subitems != null ) {
+                if ( node.Subitems.Count > ( colId - 1 ) ) {
+                    string itemText = node.Subitems[colId-1].Text;
+                    try {
+                        if ( ( node.Subitems[colId-1].ShowRelatedObject ) && 
+                            ( node.Subitems[colId-1].GetRelatedObject != null ) )
+                        {
+                            object relObj = node.Subitems[colId-1].GetRelatedObject();
+                            itemText = relObj.ToString();
+                        }
+                    } catch {}
+                    
+                    TreeDetailsViewSubItem nodeSubItem = node.Subitems[colId - 1];
+                    itemWidth = (int)(nodeSubItem.GetItemSize(itemText).Width) + 10;
+                }
+            }
+            
+            if ( maxColumnWidth < itemWidth ) { maxColumnWidth = itemWidth; }
+            
+            if ( ( node.Nodes != null ) && !node.Collapsed ) {
+                for ( int idx = 0; idx < node.Nodes.Count; idx++ ) {
+                    TreeDetailsViewItem nodeNext = node.Nodes[idx];
+                    GetColumnMaxWidthByDataSubNode( ref maxColumnWidth, ref nodeNext, colId, indentLevel + 1 );
+                }
+            }
         }
         
     }

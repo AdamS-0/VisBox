@@ -95,6 +95,7 @@ namespace tester
                 TreeDetailsViewItem ti = treeDetailsView1.AddNode( new TreeDetailsViewItem( "Node idx: " + idx ) );
                 for (int idx2 = 0; idx2 < 10; idx2++) {
                     ti.AddSubNode( "Node idx: " + idx + (char)('A' + idx2) );
+                    ti.AddSubitem( " SubItem #" + idx );
                 }
             }
             
@@ -134,7 +135,7 @@ namespace tester
 ////                treeDetailsView1.Nodes.Add( new TreeDetailsViewItem("Node idx: " + idx) );
 ////            }
             
-            TreeDetailsViewItem tdvi = treeDetailsView1.AddNode( "Related object!" );
+            TreeDetailsViewItem tdvi = treeDetailsView1.AddNode( "Related obj!" );
             TreeDetailsViewSubItem tdvsi = tdvi.AddSubitem("Empty string?");
             
 //            tdvsi.GetRelatedObject = () => zipBar7.Value;

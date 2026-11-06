@@ -214,7 +214,9 @@ namespace VisBox {
                     
                     itemText = node.Subitems[idx-1].Text;
                     try {
-                        if ( node.Subitems[idx-1].ShowRelatedObject ) {
+                        if ( ( node.Subitems[idx-1].ShowRelatedObject ) && 
+                            ( node.Subitems[idx-1].GetRelatedObject != null ) )
+                        {
                             object relObj = node.Subitems[idx-1].GetRelatedObject();
                             itemText = relObj.ToString();
                         }

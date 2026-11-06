@@ -53,6 +53,7 @@ namespace VisBox
             this.pMain.TabIndex = 2;
             this.pMain.SizeChanged += new System.EventHandler(this.PMainSizeChanged);
             this.pMain.Paint += new System.Windows.Forms.PaintEventHandler(this.TreeDetailsViewPaint);
+            this.pMain.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.PMainMouseDoubleClick);
             this.pMain.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PMainMouseMove);
             this.pMain.MouseUp += new System.Windows.Forms.MouseEventHandler(this.TreeDetailsViewMouseUp);
             // 
@@ -74,14 +75,14 @@ namespace VisBox
             this.hScrlBr.TabIndex = 0;
             this.hScrlBr.ValueChanged += new System.EventHandler(this.HScrlBrValueChanged);
             // 
-            // TreeListView
+            // TreeDetailsView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.pMain);
             this.Controls.Add(this.hScrlBr);
             this.Controls.Add(this.vScrlBr);
-            this.Name = "TreeListView";
+            this.Name = "TreeDetailsView";
             this.ResumeLayout(false);
 
         }
