@@ -138,27 +138,69 @@ public class Series : IDisposable {
             }
         }
         
-        public void DrawMarkers ( ref Graphics gr, float scaleX, float scaleY, float axMin, float ayMin, float canvHeightPx ) {
+        public void DrawMarkers ( ref Graphics gr, float scaleX, float scaleY, float axMin, float axMax, float ayMin, float canvHeightPx ) {
             if ( Marker.Symbol == ' ' ) { return; }
-            
             if ( dataX.Count != dataY.Count ) {
                 throw new Exception("Length of two vectors are not equal!");
             }
             
             Brush markerBrush = new SolidBrush(Marker.Color);
             Font markerFont = new Font("Arial", 10);
-            float drawX = 0, drawY = 0;
-            
             StringFormat markerFormat = new StringFormat();
             markerFormat.LineAlignment = StringAlignment.Center;
             markerFormat.Alignment = StringAlignment.Center;
             
-            // Draw markers
-            for ( int i = 0; i < dataX.Count; i++ ) {
-                drawX = ( dataX [ i ] - axMin ) * scaleX;
-                drawY = canvHeightPx - ( dataY [ i ] - ayMin ) * scaleY;
-                gr.DrawString( Marker.Symbol.ToString(), markerFont, markerBrush, drawX, drawY, markerFormat );
-            } 
+            int idxStart = 0;
+            int idxStop = dataX.Count;
+            FindLimits( ref idxStart, ref idxStop, axMin, axMax );
+            
+            int drawX = (int)( ( (float)dataX [ idxStart ] - axMin ) * scaleX );
+            int drawY = (int)( canvHeightPx - ( dataY [ idxStart ] - ayMin ) * scaleY );
+
+            int pxXMin = 0, pxXMax = 0;
+            int pxYMin = 0, pxYMax = 0;
+            Point pxLast = new Point( drawX, drawY );
+            bool canSkipThisMarker = false;
+            
+            string symbol = Marker.Symbol.ToString();
+            
+            // Draw series
+            for ( int idx = idxStart; idx < idxStop; idx++ ) {
+                canSkipThisMarker = false;
+                drawX = (int)( ( dataX [ idx ] - axMin ) * scaleX );
+                drawY = (int)( canvHeightPx - ( dataY [ idx ] - ayMin ) * scaleY );
+                
+                /* Check for redundant draw instructions in one column */
+                if ( pxLast.X == drawX ) {
+                    /* Points are on the same column */
+                    if      ( pxYMin > drawY ) { pxYMin = drawY; }
+                    else if ( pxYMax < drawY ) { pxYMax = drawY; }
+                    else {
+                        /* This point is between previously painted ones, so we can skip it */
+                        canSkipThisMarker = true;
+                    }
+                } else { pxYMin = pxYMax = drawY; } /* Update column's limits */
+                
+                if ( !canSkipThisMarker ) {
+                    /* Check for redundant draw instructions in one row */
+                    if ( pxLast.Y == drawY ) {
+                        /* Points are on the same row */
+                        if      ( pxXMin > drawX ) { pxXMin = drawX; }
+                        else if ( pxXMax < drawX ) { pxXMax = drawX; }
+                        else {
+                            /* This point is between previously painted ones, so we can skip it */
+                            canSkipThisMarker = true;
+                        }
+                    } else { pxXMin = pxXMax = drawX; } /* Update row's limits */
+                }
+                
+                if ( !canSkipThisMarker ) {
+                    gr.DrawString( symbol, markerFont, markerBrush, drawX, drawY, markerFormat );
+                }
+                
+                pxLast.X = drawX;
+                pxLast.Y = drawY;
+            }
         }
     }
 }

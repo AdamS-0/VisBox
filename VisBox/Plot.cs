@@ -119,15 +119,17 @@ namespace VisBox {
         
         
         private void UpdateCanvasSize() {
-            canvas = GetInnerSpace2Draw();
-			/* Update Canvas with axisMargins */
-            canvas.X += _axisMargin.Left;
-            canvas.Y += _axisMargin.Top;
-            
-            canvas.Width -= ( _axisMargin.Left + _axisMargin.Right );
-            canvas.Height -= ( _axisMargin.Top + _axisMargin.Bottom );
-			
-            bmp = new Bitmap( canvas.Width, canvas.Height );
+            try {
+                canvas = GetInnerSpace2Draw();
+    			/* Update Canvas with axisMargins */
+                canvas.X += _axisMargin.Left;
+                canvas.Y += _axisMargin.Top;
+                
+                canvas.Width -= ( _axisMargin.Left + _axisMargin.Right );
+                canvas.Height -= ( _axisMargin.Top + _axisMargin.Bottom );
+    			
+                bmp = new Bitmap( canvas.Width, canvas.Height );
+            } catch {}
         }
         
         
@@ -237,7 +239,7 @@ namespace VisBox {
                     throw new Exception("Length of two vectors are not equal!");
                 }
                 
-                ser.DrawMarkers(ref gr, _drawScaleX, _drawScaleY, AxisLimitsX.Min, AxisLimitsY.Min, canvas.Height);
+                ser.DrawMarkers(ref gr, _drawScaleX, _drawScaleY, AxisLimitsX.Min, AxisLimitsX.Max, AxisLimitsY.Min, canvas.Height);
             }
         }
         
