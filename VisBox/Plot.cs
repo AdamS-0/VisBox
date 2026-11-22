@@ -14,8 +14,22 @@ using System.Windows.Forms;
 
 namespace VisBox {
     
+    [TypeConverter(typeof(ExpandableObjectConverter))]
     public class Marker {
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        [Bindable(true)]
+        [DefaultValue(typeof(Color), "Color.Blue")]
+        [Category("VisBox")]
         public Color Color { get; set; }
+        
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        [Bindable(true)]
+        [DefaultValue(typeof(char), " ")]
+        [Category("VisBox")]
         public char Symbol { get; set; }
         
         public Marker() {
@@ -69,7 +83,14 @@ namespace VisBox {
         Rectangle canvas;
         Bitmap bmp;
         
-        public List<Series> Series = new List<Series>();
+        
+        protected List<Series> _series = new List<Series>();
+        [TypeConverter(typeof(CollectionConverter))]
+        public List<Series> Series {
+            get { return _series; }
+            set { _series = value; }
+        }
+
         
         private AxisLimits _axisLimitsX = new AxisLimits();
         [Category("VisBox")]
@@ -92,7 +113,10 @@ namespace VisBox {
         [Description("Used during AxisLimits Autoscale option is set. Adds given value as % of |max - min| values to axis limits")]
         public AxisMargin AxisMargin {
             get { return _axisMargin; }
-            set { _axisMargin = value; }
+            set {
+                _axisMargin = value;
+                UpdateCanvasSize();
+            }
         }
         
         
@@ -104,9 +128,67 @@ namespace VisBox {
             set { base.ColorInner = value; }
         }
         
+        
+        
+        private static Bitmap _bmp = new Bitmap(10, 10);
+        private static Graphics _gr = Graphics.FromImage( _bmp );
+        private SizeF GetTitleSize() {
+            SizeF size = _gr.MeasureString(_title, _titleFont, PointF.Empty, StringFormat.GenericTypographic);
+            size.Height += 1;
+            return size;
+        }
+        SizeF _titleSize = new SizeF(0, 0);
+        
+        private string _title = "";
+        [Category("VisBox")]
+        [Browsable(true)]
+        [Description("Plot title")]
+        [DefaultValue(typeof(String), "")]
+        public string Title {
+            get { return _title; }
+            set {
+                _title = value;
+                _titleSize = GetTitleSize();
+                UpdateCanvasSize();
+            }
+        }
+        
+        private Font _titleFont = new Font( "Arial", 10 );
+        [Category("VisBox")]
+        [Browsable(true)]
+        [Description("Plot title's font")]
+        public Font TitleFont {
+            get { return _titleFont; }
+            set {
+                _titleFont = value;
+                _titleSize = GetTitleSize();
+                UpdateCanvasSize();
+            }
+        }
+        
+        private static Color _titleColorDefault = Color.Black;
+        [NonSerialized]
+        public Brush TitleBrush = new SolidBrush(_titleColorDefault);
+        
+        private Color _titleColor = _titleColorDefault;
+        [Category("VisBox")]
+        [Browsable(true)]
+        [Description("Plot title's color")]
+        [DefaultValue(typeof(Color), "Color.Black")]
+        public Color TitleColor {
+            get { return _titleColor; }
+            set {
+                _titleColor = value;
+                TitleBrush = new SolidBrush( _titleColor );
+            }
+        }
+        
+        private StringFormat _titleStrFormat = new StringFormat();
+        
         private PropEditor _propEditor = new PropEditor();
         
         public Plot() {
+            _titleStrFormat.Alignment = StringAlignment.Center;
             InitializeComponent();
             
             Init();
@@ -127,6 +209,11 @@ namespace VisBox {
                 
                 canvas.Width -= ( _axisMargin.Left + _axisMargin.Right );
                 canvas.Height -= ( _axisMargin.Top + _axisMargin.Bottom );
+                
+                if ( _title.Length > 0 ) {
+                    canvas.Y += (int)_titleSize.Height;
+                    canvas.Height -= (int)(_titleSize.Height);
+                }
     			
                 bmp = new Bitmap( canvas.Width, canvas.Height );
             } catch {}
@@ -172,9 +259,17 @@ namespace VisBox {
                         if( ser.dataX[i] > AxisLimitsX.Max ) { AxisLimitsX.Max = ser.dataX[i]; }
                     }
                 }
-                if( (int)AxisLimitsX.Min == (int)AxisLimitsX.Max ) {
-                    AxisLimitsX.Min -= 0.1f;
-                    AxisLimitsX.Max += 0.1f;
+                
+                float autoScaleMargin = AxisLimitsX.AutoscaleMargin;
+                if( AxisLimitsX.Min == AxisLimitsX.Max ) {
+                    autoScaleMargin = 0.1f;
+                }
+                
+                if ( ( autoScaleMargin > 0.0f ) && ( autoScaleMargin <= 1.0f ) ) {
+                    float dX = AxisLimitsX.Max - AxisLimitsX.Min;
+                    if ( dX == 0 ) { dX = 1f; }
+                    AxisLimitsX.Min -= dX*autoScaleMargin;
+                    AxisLimitsX.Max += dX*autoScaleMargin;
                 }
                 
                 float deltaX = AxisLimitsX.Max - AxisLimitsX.Min;
@@ -195,9 +290,17 @@ namespace VisBox {
                         if( ser.dataY[i] > AxisLimitsY.Max ) { AxisLimitsY.Max = ser.dataY[i]; }
                     }
                 }
-                if( (int)AxisLimitsY.Min == (int)AxisLimitsY.Max ) {
-                    AxisLimitsY.Min -= 0.1f;
-                    AxisLimitsY.Max += 0.1f;
+                
+                float autoScaleMargin = AxisLimitsY.AutoscaleMargin;
+                if( AxisLimitsY.Min == AxisLimitsY.Max ) {
+                    autoScaleMargin = 0.1f;
+                }
+                
+                if ( ( autoScaleMargin > 0.0f ) && ( autoScaleMargin <= 1.0f ) ) {
+                    float dY = AxisLimitsY.Max - AxisLimitsY.Min;
+                    if ( dY == 0 ) { dY = 1f; }
+                    AxisLimitsY.Min -= dY*autoScaleMargin;
+                    AxisLimitsY.Max += dY*autoScaleMargin;
                 }
                 
                 float deltaY = AxisLimitsY.Max - AxisLimitsY.Min;
@@ -214,6 +317,7 @@ namespace VisBox {
             CalculateDrawScaler();
             
             gr.Clear( _colorInner );
+            
             gr.DrawRectangle(new Pen(Color.Gray), 0, 0, canvas.Width - 1, canvas.Height - 1);
             
             DrawGrid(ref gr);
@@ -222,7 +326,6 @@ namespace VisBox {
             
             Refresh();
         }
-        
         
         public void DrawSeries(ref Graphics gr) {
             
@@ -249,7 +352,7 @@ namespace VisBox {
             
         }
         
-        
+        private Font _gridFont = new Font("Arial",  10);
         public void DrawGridY(ref Graphics gr) {
             float drawY = 0;
             float drawX = 0;
@@ -278,7 +381,7 @@ namespace VisBox {
                     drawY = canvas.Height - (gDot.Value - AxisLimitsY.Min) * _drawScaleY;
                     gr.DrawLine( gridYminor.Pen, drawX, drawY, canvas.Width, drawY );
                     if( gridYminor.ShowLables ) {
-                        gr.DrawString(gDot.Name, new Font("Arial",  10), gridYminor.LabelBrush,  0, drawY - 8);
+                        gr.DrawString(gDot.Name, _gridFont, gridYminor.LabelBrush, 0, drawY - 8);
                     }
                 }
             }
@@ -289,7 +392,7 @@ namespace VisBox {
                 drawY = canvas.Height - (gDot.Value - AxisLimitsY.Min) * _drawScaleY;
                 gr.DrawLine( gridY.Pen, drawX, drawY, canvas.Width, drawY );
                 if( gridY.ShowLables ) {
-                    gr.DrawString(gDot.Name, new Font("Arial",  10), gridY.LabelBrush,  0, drawY - 8);
+                    gr.DrawString(gDot.Name, _gridFont, gridY.LabelBrush, 0, drawY - 8);
                 }
             }
         }
@@ -323,7 +426,7 @@ namespace VisBox {
                     drawX = (gDot.Value - AxisLimitsX.Min) * _drawScaleX;
                     gr.DrawLine( gridYminor.Pen, drawX, drawY, drawX, canvas.Height );
                     if( gridXminor.ShowLables ) {
-                        gr.DrawString(gDot.Name, new Font("Arial",  10), gridXminor.LabelBrush,  drawX, 8, strFrmtX);
+                        gr.DrawString(gDot.Name, _gridFont, gridXminor.LabelBrush,  drawX, 8, strFrmtX);
                     }
                 }
             }
@@ -334,15 +437,19 @@ namespace VisBox {
                 drawX = (gDot.Value - AxisLimitsX.Min) * _drawScaleX;
                 gr.DrawLine( gridX.Pen, drawX, drawY, drawX, canvas.Height );
                 if( gridX.ShowLables ) {
-                    gr.DrawString(gDot.Name, new Font("Arial",  10), gridX.LabelBrush,  drawX, 8, strFrmtX);
+                    gr.DrawString(gDot.Name, _gridFont, gridX.LabelBrush,  drawX, 8, strFrmtX);
                 }
             }
         }
         
         
         void PlotPaint(object sender, PaintEventArgs e) {
-            Rectangle inner = GetInnerSpace();
-			e.Graphics.DrawImage( bmp, inner.X + _axisMargin.Left, inner.Y + _axisMargin.Top );
+            if ( _title != null ) {
+                if ( _title.Length > 0 ) { 
+                   e.Graphics.DrawString( _title, _titleFont, TitleBrush, Width/2, _axisMargin.Top, _titleStrFormat );
+                }
+            }
+			e.Graphics.DrawImage( bmp, canvas.X + _axisMargin.Left, canvas.Y + _axisMargin.Top );
         }
         
         
@@ -363,7 +470,14 @@ namespace VisBox {
         
         private PropEditor _seriesEditor = new PropEditor();
         void ShowSeriesPropsToolStripMenuItemClick ( object sender, EventArgs e ) {
-            _seriesEditor.ShowPropertyOf( Series );
+            if ( Series == null ) { return; }
+            if ( Series.Count == 1 ) {
+                _seriesEditor.ShowPropertyOf( Series[0] );
+            } else if ( Series.Count > 1 ) {
+                SeriesContainer serCon = new SeriesContainer();
+                serCon.Series = Series;
+                _seriesEditor.ShowPropertyOf( serCon );
+            }
         }
         
         

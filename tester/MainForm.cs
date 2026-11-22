@@ -99,54 +99,25 @@ namespace tester
                 }
             }
             
-//			Controls.Add( treeDetailsView1 );
-//			treeDetailsView1.BringToFront();
-			
-//			treeDetailsView1.AddColumn( "Name" );
-//			treeDetailsView1.AddColumn( "Type" );
-//			treeDetailsView1.AddColumn( "Value" );
-//            
-//            TreeDetailsViewItem trvi = new TreeDetailsViewItem("Node A");
-//            
-//            TreeDetailsViewItem trviA2 = new TreeDetailsViewItem( "Node A2");
-//            trviA2.Font = new Font( "Times New Roman", 15 );
-//            trviA2.Nodes.Add( new TreeDetailsViewItem("A2a") );
-//            trviA2.Nodes.Add( new TreeDetailsViewItem("A2b") );
-//            trviA2.Subitems.Add( new TreeDetailsViewSubItem("test1") );
-//            trviA2.Subitems.Add( new TreeDetailsViewSubItem("test2") );
-//            trvi.Nodes.Add( new TreeDetailsViewItem( "Node A1") );
-//            trvi.Nodes.Add( trviA2 );
-//            trvi.Nodes.Add( new TreeDetailsViewItem( "Node A3") );
-//            
-//            treeDetailsView1.Nodes.Add( trvi );
-//            treeDetailsView1.Nodes.Add( new TreeDetailsViewItem("Node B") );
-//            treeDetailsView1.Nodes.Add( new TreeDetailsViewItem("Node C") );
-////            treeDetailsView1.Nodes.Add( new TreeDetailsViewItem("Node D") );
-////            treeDetailsView1.Nodes.Add( new TreeDetailsViewItem("Node E") );
-////            treeDetailsView1.Nodes.Add( new TreeDetailsViewItem("Node F") );
-////            treeDetailsView1.Nodes.Add( new TreeDetailsViewItem("Node G") );
-////            treeDetailsView1.Nodes.Add( new TreeDetailsViewItem("Node H") );
-////            treeDetailsView1.Nodes.Add( new TreeDetailsViewItem("Node I") );
-////            treeDetailsView1.Nodes.Add( new TreeDetailsViewItem("Node J") );
-////            treeDetailsView1.Nodes.Add( new TreeDetailsViewItem("Node K") );
-////            treeDetailsView1.Nodes.Add( new TreeDetailsViewItem("Node L") );
-////            
-////            for (int idx = 0; idx < 1000; idx++) {
-////                treeDetailsView1.Nodes.Add( new TreeDetailsViewItem("Node idx: " + idx) );
-////            }
-            
             TreeDetailsViewItem tdvi = treeDetailsView1.AddNode( "Related obj!" );
             TreeDetailsViewSubItem tdvsi = tdvi.AddSubitem("Empty string?");
             
-//            tdvsi.GetRelatedObject = () => zipBar7.Value;
+            /* There are two ways to assign object to TDVI:
+               a) by direct reference */
+            tdvsi.GetRelatedObject = () => zipBar7.Value;
+            /* b) by indirect getter */
+//            tdvsi.GetRelatedObject = getZipBar7Value;
             
             tdvsi.ShowRelatedObject = true;
             treeDetailsView1.NumberOfVisibleNodesChanged();
             treeDetailsView1.ItemMouseEnter += TreeDetailsView1ItemMouseEnter;
 		}
 		
+		object getZipBar7Value() {
+		    return zipBar7.Value;
+		}
+		
 		private void TreeDetailsView1ItemMouseEnter(object sender, EventArgs e) {
-		    int dummy1 = 0;
 		    TreeDetailsViewItem node = sender as TreeDetailsViewItem;
 		    label3.Text = node.Text;
 		}

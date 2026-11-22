@@ -12,8 +12,8 @@ using System.ComponentModel;
 using System.Drawing;
 
 namespace VisBox {
-//    [TypeConverter( typeof(ExpandableObjectConverter))]
-//    [Serializable]
+//[TypeConverter( typeof(ExpandableObjectConverter))]
+//[Serializable]
 public class Series : IDisposable {
         
         [Category("VisBox")]
@@ -26,7 +26,29 @@ public class Series : IDisposable {
         public Marker Marker { get; set; }
         
         [Category("VisBox")]
-        public Pen Pen { get; set; }
+        public Pen Pen = new Pen(Color.Blue, 1.0f);
+        
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        [Bindable(true)]
+        [DefaultValue(typeof(Color), "Color.Blue")]
+        [Category("VisBox")]
+        public Color PenColor {
+            get { return Pen.Color; }
+            set { Pen.Color = value; }
+        }
+        
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        [Bindable(true)]
+        [DefaultValue(typeof(float), "1.0f")]
+        [Category("VisBox")]
+        public float PenWidth {
+            get { return Pen.Width; }
+            set { Pen.Width = value; }
+        }
         
         [Category("VisBox")]
         public string Name { get; set; }
@@ -203,6 +225,14 @@ public class Series : IDisposable {
             }
         }
     }
+
+
+public class SeriesContainer {
+    
+    [Category("VisBox")]
+    public List<Series> Series { get; set; }
+    
+    public SeriesContainer() { }
 }
 
-
+}

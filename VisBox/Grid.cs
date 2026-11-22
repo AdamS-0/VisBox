@@ -21,6 +21,11 @@ namespace VisBox {
         [Category("VisBox")]
         public string Name { get; set; }
         
+        public GridDot() {
+            this.Name = "0";
+            this.Value = 0;
+        }
+        
         public GridDot(float value, string name = "") {
             this.Name = name;
             this.Value = value;

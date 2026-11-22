@@ -33,6 +33,11 @@ namespace VisBox {
         [DefaultValue(typeof(bool), "False")]
         public bool Autoscale { get; set; }
         
+        [Category("VisBox")]
+        [Browsable(true)]
+        [DefaultValue(typeof(float), "0,0")]
+        public float AutoscaleMargin { get; set; }
+        
         public AxisLimits() { }
         public AxisLimits(float min, float max, bool autoscale) {
             this.Min = min;
