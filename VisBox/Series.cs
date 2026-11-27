@@ -88,7 +88,7 @@ public class Series : IDisposable {
         }
         #endregion
         
-		private void FindLimits( ref int idxStart, ref int idxStop, float axMin, float axMax) {
+        private void FindLimits( ref int idxStart, ref int idxStop, double axMin, double axMax) {
             idxStart = 0; idxStop = dataX.Count;
             
             /* Find first point that can be put on visible chart */
@@ -102,8 +102,8 @@ public class Series : IDisposable {
             }
             idxStop = Math.Min( idxStop, dataX.Count );
         }
-		
-        public void DrawSeries ( ref Graphics gr, float scaleX, float scaleY, float axMin, float axMax, float ayMin, float canvHeightPx ) {
+        
+        public void DrawSeries ( ref Graphics gr, double scaleX, double scaleY, double axMin, double axMax, double ayMin, float canvHeightPx ) {
             if ( dataX.Count != dataY.Count ) {
                 throw new Exception("Length of two vectors are not equal!");
             }
@@ -160,7 +160,7 @@ public class Series : IDisposable {
             }
         }
         
-        public void DrawMarkers ( ref Graphics gr, float scaleX, float scaleY, float axMin, float axMax, float ayMin, float canvHeightPx ) {
+        public void DrawMarkers ( ref Graphics gr, double scaleX, double scaleY, double axMin, double axMax, double ayMin, float canvHeightPx ) {
             if ( Marker.Symbol == ' ' ) { return; }
             if ( dataX.Count != dataY.Count ) {
                 throw new Exception("Length of two vectors are not equal!");

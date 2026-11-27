@@ -16,7 +16,7 @@ namespace VisBox {
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public class GridDot : IDisposable {
         [Category("VisBox")]
-        public float Value { get; set; }
+        public double Value { get; set; }
         
         [Category("VisBox")]
         public string Name { get; set; }
@@ -26,7 +26,7 @@ namespace VisBox {
             this.Value = 0;
         }
         
-        public GridDot(float value, string name = "") {
+        public GridDot(double value, string name = "") {
             this.Name = name;
             this.Value = value;
         }
@@ -159,12 +159,12 @@ namespace VisBox {
         /// </summary>
         /// <param name="gridMin"></param>
         /// <param name="gridMax"></param>
-        public void ReCalculateGrid ( float gridMin, float gridMax, float userScale = 1.0f ) {
+        public void ReCalculateGrid ( double gridMin, double gridMax, float userScale = 1.0f ) {
             if ( userScale == 0 ) { userScale = 1.0f; }
             if ( Dots != null ) { Dots.Clear(); }
             
             if ( gridMin > gridMax ) {
-                float swapMem = gridMin;
+                double swapMem = gridMin;
                 gridMin = gridMax;
                 gridMax = swapMem;
             }
@@ -180,11 +180,11 @@ namespace VisBox {
         /// <param name="axisMax"></param>
         /// <param name="usersFormat"></param>
         /// <returns></returns>
-        public static List<GridDot> GetGridFromLimits ( float axisMin, float axisMax, string usersFormat = "", float userScale = 1.0f ) {
+        public static List<GridDot> GetGridFromLimits ( double axisMin, double axisMax, string usersFormat = "", float userScale = 1.0f ) {
             List<GridDot> gridDots = new List<GridDot>();
             string gridDotNameFormat = "";
-            float gridWidth = 1;
-            float gridScale = 1;
+            double gridWidth = 1;
+            double gridScale = 1;
             int gridNum = 0;
             
             if ( axisMin == axisMax ) {
@@ -192,7 +192,7 @@ namespace VisBox {
                 axisMax += 0.1f;
             }
             
-            float deltaAxis = axisMax - axisMin;
+            double deltaAxis = axisMax - axisMin;
             
             if ( usersFormat.Length == 0 ) {
                 gridDotNameFormat = deltaAxis > 99999.0f || deltaAxis < 0.001 ? "0.###E-0" : "";
@@ -222,12 +222,15 @@ namespace VisBox {
             else if ( gridNum <  4 ) { gridScale *= 0.5f; }
             
             gridScale *= userScale;
+            gridNum = (int)( deltaAxis / gridScale );
             
             // Calculatee next grid points
-            float fGridDot = (int)( axisMin / gridScale ) * gridScale;
-            while ( fGridDot <= axisMax ) {
-                gridDots.Add( new GridDot(fGridDot, fGridDot.ToString( gridDotNameFormat )) );
-                fGridDot += gridScale;
+            double dGridDot = (int)( axisMin / gridScale ) * gridScale;
+            int gridNo = 0;
+            int gridNoMax = Math.Max( Math.Min( gridNum, 100 ), 0 ) + 1;
+            while ( ( dGridDot <= axisMax ) && ( (gridNo++) <= gridNoMax ) ) {
+                gridDots.Add( new GridDot(dGridDot, dGridDot.ToString( gridDotNameFormat )) );
+                dGridDot += gridScale;
             }
             
             return gridDots;

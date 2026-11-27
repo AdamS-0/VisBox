@@ -20,12 +20,12 @@ namespace VisBox {
         [Category("VisBox")]
         [Browsable(true)]
         [DefaultValue(typeof(float), "-0,1")]
-        public float Min { get; set; }
+        public double Min { get; set; }
         
         [Category("VisBox")]
         [Browsable(true)]
         [DefaultValue(typeof(float), "1,1")]
-        public float Max { get; set; }
+        public double Max { get; set; }
         
         [Category("VisBox")]
         [Browsable(true)]
@@ -39,7 +39,7 @@ namespace VisBox {
         public float AutoscaleMargin { get; set; }
         
         public AxisLimits() { }
-        public AxisLimits(float min, float max, bool autoscale) {
+        public AxisLimits(double min, double max, bool autoscale) {
             this.Min = min;
             this.Max = max;
             this.Autoscale = autoscale;

@@ -76,10 +76,10 @@ namespace VisBox {
             set { _gridYminor = value; }
         }
         
-        float _drawScaleX = 1;
-        float _drawScaleY = 1;
-        float _drawDeltaX = 1;
-        float _drawDeltaY = 1;
+        double _drawScaleX = 1;
+        double _drawScaleY = 1;
+        double _drawDeltaX = 1;
+        double _drawDeltaY = 1;
         Rectangle canvas;
         Bitmap bmp;
         
@@ -106,7 +106,7 @@ namespace VisBox {
             set { _axisLimitsY = value; }
         }
         
-		private AxisMargin _axisMarginLast = new AxisMargin(0, 0, 0, 0);
+        private AxisMargin _axisMarginLast = new AxisMargin(0, 0, 0, 0);
         private AxisMargin _axisMargin = new AxisMargin();
         [Category("VisBox")]
         [Browsable(true)]
@@ -203,7 +203,7 @@ namespace VisBox {
         private void UpdateCanvasSize() {
             try {
                 canvas = GetInnerSpace2Draw();
-    			/* Update Canvas with axisMargins */
+                /* Update Canvas with axisMargins */
                 canvas.X += _axisMargin.Left;
                 canvas.Y += _axisMargin.Top;
                 
@@ -214,7 +214,7 @@ namespace VisBox {
                     canvas.Y += (int)_titleSize.Height;
                     canvas.Height -= (int)(_titleSize.Height);
                 }
-    			
+                
                 bmp = new Bitmap( canvas.Width, canvas.Height );
             } catch {}
         }
@@ -261,18 +261,18 @@ namespace VisBox {
                 }
                 
                 float autoScaleMargin = AxisLimitsX.AutoscaleMargin;
-                if( AxisLimitsX.Min == AxisLimitsX.Max ) {
+                if( (int)AxisLimitsX.Min == (int)AxisLimitsX.Max ) {
                     autoScaleMargin = 0.1f;
                 }
                 
                 if ( ( autoScaleMargin > 0.0f ) && ( autoScaleMargin <= 1.0f ) ) {
-                    float dX = AxisLimitsX.Max - AxisLimitsX.Min;
+                    double dX = AxisLimitsX.Max - AxisLimitsX.Min;
                     if ( dX == 0 ) { dX = 1f; }
                     AxisLimitsX.Min -= dX*autoScaleMargin;
                     AxisLimitsX.Max += dX*autoScaleMargin;
                 }
                 
-                float deltaX = AxisLimitsX.Max - AxisLimitsX.Min;
+                double deltaX = AxisLimitsX.Max - AxisLimitsX.Min;
                 AxisLimitsX.Min -= deltaX*AxisMargin.Left;
                 AxisLimitsX.Max += deltaX*AxisMargin.Right;
             }
@@ -292,18 +292,18 @@ namespace VisBox {
                 }
                 
                 float autoScaleMargin = AxisLimitsY.AutoscaleMargin;
-                if( AxisLimitsY.Min == AxisLimitsY.Max ) {
+                if( (int)AxisLimitsY.Min == (int)AxisLimitsY.Max ) {
                     autoScaleMargin = 0.1f;
                 }
                 
                 if ( ( autoScaleMargin > 0.0f ) && ( autoScaleMargin <= 1.0f ) ) {
-                    float dY = AxisLimitsY.Max - AxisLimitsY.Min;
+                    double dY = AxisLimitsY.Max - AxisLimitsY.Min;
                     if ( dY == 0 ) { dY = 1f; }
                     AxisLimitsY.Min -= dY*autoScaleMargin;
                     AxisLimitsY.Max += dY*autoScaleMargin;
                 }
                 
-                float deltaY = AxisLimitsY.Max - AxisLimitsY.Min;
+                double deltaY = AxisLimitsY.Max - AxisLimitsY.Min;
                 AxisLimitsY.Min -= deltaY*AxisMargin.Bottom;
                 AxisLimitsY.Max += deltaY*AxisMargin.Top;
             }
@@ -354,8 +354,8 @@ namespace VisBox {
         
         private Font _gridFont = new Font("Arial",  10);
         public void DrawGridY(ref Graphics gr) {
-            float drawY = 0;
-            float drawX = 0;
+            double drawY = 0;
+            double drawX = 0;
             
             if( !gridY.GridOn ) { return; }
             if(gridY.Dots == null) { return; }
@@ -379,9 +379,9 @@ namespace VisBox {
                 foreach( GridDot gDot in gridYminor.Dots ) {
                     // Draw major grid lines
                     drawY = canvas.Height - (gDot.Value - AxisLimitsY.Min) * _drawScaleY;
-                    gr.DrawLine( gridYminor.Pen, drawX, drawY, canvas.Width, drawY );
+                    gr.DrawLine( gridYminor.Pen, (int)drawX, (int)drawY, canvas.Width, (int)drawY );
                     if( gridYminor.ShowLables ) {
-                        gr.DrawString(gDot.Name, _gridFont, gridYminor.LabelBrush, 0, drawY - 8);
+                        gr.DrawString(gDot.Name, _gridFont, gridYminor.LabelBrush, 0, (int)drawY - 8);
                     }
                 }
             }
@@ -390,16 +390,16 @@ namespace VisBox {
             foreach( GridDot gDot in gridY.Dots ) {
                 // Draw major grid lines
                 drawY = canvas.Height - (gDot.Value - AxisLimitsY.Min) * _drawScaleY;
-                gr.DrawLine( gridY.Pen, drawX, drawY, canvas.Width, drawY );
+                gr.DrawLine( gridY.Pen, (int)drawX, (int)drawY, canvas.Width, (int)drawY );
                 if( gridY.ShowLables ) {
-                    gr.DrawString(gDot.Name, _gridFont, gridY.LabelBrush, 0, drawY - 8);
+                    gr.DrawString(gDot.Name, _gridFont, gridY.LabelBrush, 0, (int)drawY - 8);
                 }
             }
         }
         
         public void DrawGridX(ref Graphics gr) {
-            float drawY = 0;
-            float drawX = 0;
+            double drawY = 0;
+            double drawX = 0;
             
             if( !gridX.GridOn ) { return; }
             if(gridX.Dots == null) { return; }
@@ -424,9 +424,9 @@ namespace VisBox {
                 foreach( GridDot gDot in gridXminor.Dots ) {
                     // Draw major grid lines
                     drawX = (gDot.Value - AxisLimitsX.Min) * _drawScaleX;
-                    gr.DrawLine( gridYminor.Pen, drawX, drawY, drawX, canvas.Height );
+                    gr.DrawLine( gridYminor.Pen, (int)drawX, (int)drawY, (int)drawX, canvas.Height );
                     if( gridXminor.ShowLables ) {
-                        gr.DrawString(gDot.Name, _gridFont, gridXminor.LabelBrush,  drawX, 8, strFrmtX);
+                        gr.DrawString(gDot.Name, _gridFont, gridXminor.LabelBrush, (int)drawX, 8, strFrmtX);
                     }
                 }
             }
@@ -435,9 +435,9 @@ namespace VisBox {
             foreach( GridDot gDot in gridX.Dots ) {
                 // Draw major grid lines
                 drawX = (gDot.Value - AxisLimitsX.Min) * _drawScaleX;
-                gr.DrawLine( gridX.Pen, drawX, drawY, drawX, canvas.Height );
+                gr.DrawLine( gridX.Pen, (int)drawX, (int)drawY, (int)drawX, canvas.Height );
                 if( gridX.ShowLables ) {
-                    gr.DrawString(gDot.Name, _gridFont, gridX.LabelBrush,  drawX, 8, strFrmtX);
+                    gr.DrawString(gDot.Name, _gridFont, gridX.LabelBrush, (int)drawX, 8, strFrmtX);
                 }
             }
         }
@@ -449,7 +449,7 @@ namespace VisBox {
                    e.Graphics.DrawString( _title, _titleFont, TitleBrush, Width/2, _axisMargin.Top, _titleStrFormat );
                 }
             }
-			e.Graphics.DrawImage( bmp, canvas.X + _axisMargin.Left, canvas.Y + _axisMargin.Top );
+            e.Graphics.DrawImage( bmp, canvas.X + _axisMargin.Left, canvas.Y + _axisMargin.Top );
         }
         
         
