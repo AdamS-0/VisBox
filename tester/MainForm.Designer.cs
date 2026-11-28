@@ -759,11 +759,13 @@ namespace tester
 		    // 
 		    // plot1
 		    // 
-		    axisLimits1.Max = 200F;
-		    axisLimits1.Min = 0F;
+		    axisLimits1.AutoscaleMargin = 0F;
+		    axisLimits1.Max = 200D;
+		    axisLimits1.Min = 0D;
 		    this.plot1.AxisLimitsX = axisLimits1;
-		    axisLimits2.Max = 0F;
-		    axisLimits2.Min = 0F;
+		    axisLimits2.AutoscaleMargin = 0F;
+		    axisLimits2.Max = 0D;
+		    axisLimits2.Min = 0D;
 		    this.plot1.AxisLimitsY = axisLimits2;
 		    axisMargin1.Bottom = 0;
 		    axisMargin1.Left = 0;
@@ -779,9 +781,11 @@ namespace tester
 		    this.plot1.FlatStyle = VisBox.VisElement.VisFlatStyle.Collapsed;
 		    this.plot1.Location = new System.Drawing.Point(548, 3);
 		    this.plot1.Name = "plot1";
-		    this.plot1.Size = new System.Drawing.Size(472, 284);
+		    this.plot1.Size = new System.Drawing.Size(242, 284);
 		    this.plot1.TabIndex = 52;
 		    this.plot1.Text = "plot1";
+		    this.plot1.TitleColor = System.Drawing.Color.Black;
+		    this.plot1.TitleFont = new System.Drawing.Font("Arial", 10F);
 		    // 
 		    // txtBxPlotMarker
 		    // 

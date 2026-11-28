@@ -84,13 +84,9 @@ namespace VisBox {
         Bitmap bmp;
         
         
-        protected List<Series> _series = new List<Series>();
+        [NonSerialized]
         [TypeConverter(typeof(CollectionConverter))]
-        public List<Series> Series {
-            get { return _series; }
-            set { _series = value; }
-        }
-
+        public List<Series> Series = new List<Series>();
         
         private AxisLimits _axisLimitsX = new AxisLimits();
         [Category("VisBox")]
@@ -194,6 +190,10 @@ namespace VisBox {
             Init();
         }
         
+        
+        protected override void Internal_FlatStyleChanged() {
+            UpdateCanvasSize();
+        }
         
         void PlotResize(object sender, EventArgs e) {
             Init();
@@ -480,13 +480,6 @@ namespace VisBox {
             }
         }
         
-        
-        
-
-        
     }
-    
-    
-    
     
 }

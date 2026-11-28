@@ -69,10 +69,12 @@ namespace VisBox {
 		[DefaultValue(typeof(VisFlatStyle), "Flat")]
 		public VisFlatStyle FlatStyle{
 			get { return _flatStyle; }
-			set { _flatStyle = value; }
+			set { _flatStyle = value; Internal_FlatStyleChanged(); }
 		}
 		
-		
+		protected virtual void Internal_FlatStyleChanged() {
+		  
+		}
 		
 		
 		public enum Direction{
